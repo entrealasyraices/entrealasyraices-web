@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Carrito — Entre Alas y Raíces</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@600&family=Quattrocento&family=Quattrocento+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"><script defer src="script.js"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="images/logo-entrealas.jpg" alt="Logo"><span class="title">Sanar, sostener y crecer</span></a>
+    <nav class="menu">
+      <a href="productos.html">Productos</a>
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="carrito.html" class="btn btn-outline">Carrito <span class="badge" data-cart-badge></span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ATTENTION -->
+  <section class="section bg-attention">
+    <div class="container card">
+      <h1 style="font-family:'Quattrocento'">Tu carrito</h1>
+      <p>Revisa tus productos y procede al pago seguro en plataforma externa.</p>
+    </div>
+  </section>
+
+  <!-- INTEREST -->
+  <section class="section bg-interest">
+    <div class="container card">
+      <table class="table">
+        <thead>
+          <tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr>
+        </thead>
+        <tbody id="cart-table-body"></tbody>
+      </table>
+      <div class="mt-4" style="display:flex; justify-content:space-between; align-items:center">
+        <strong>Total:</strong>
+        <strong id="cart-total">$0</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTION -->
+  <section class="section bg-action">
+    <div class="container center">
+      <a class="btn btn-outline" href="productos.html">Seguir comprando</a>
+      <button class="btn btn-primary" onclick="goToPayment()">Pagar</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container cols">
+    <div class="brand-small"><img src="images/logo-entrealas.jpg" alt="Logo"><div><strong>Entre Alas y Raíces SpA</strong></div></div>
+    <div><strong>Soporte</strong><p class="mt-3"><a href="contacto.html">¿Problemas con el pago?</a></p></div>
+    <div><strong>Seguridad</strong><p class="mt-3">Redirección a plataforma externa (ej. Mercado Pago).</p></div>
+  </div>
+</footer>
+</body>
+</html>
