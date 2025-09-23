@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Productos — Entre Alas y Raíces</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@600&family=Quattrocento&family=Quattrocento+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"><script defer src="script.js"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="images/logo-entrealas.jpg" alt="Logo"><span class="title">Sanar, sostener y crecer</span></a>
+    <nav class="menu">
+      <a href="quienes-somos.html">Quiénes somos</a>
+      <a href="mision-vision.html">Misión y Visión</a>
+      <a href="valores.html">Valores</a>
+      <a href="productos.html">Productos</a>
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="carrito.html" class="btn btn-outline">Carrito <span class="badge" data-cart-badge></span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ATTENTION -->
+  <section class="section bg-attention">
+    <div class="container card">
+      <h1 style="font-family:'Quattrocento'">Herramientas terapéuticas</h1>
+      <p>Manual robusto, diseño inclusivo y resultados observables.</p>
+    </div>
+  </section>
+
+  <!-- INTEREST / Catálogo -->
+  <section class="section bg-interest" id="catalogo">
+    <div class="container grid-3">
+
+      <!-- Raíces Fuertes, Alas Conscientes -->
+      <article class="card" id="raices-fuertes">
+        <img src="images/raices-fuertes.jpg" alt="Raíces Fuertes, Alas Conscientes">
+        <h3 class="mt-3 m0">Raíces Fuertes, Alas Conscientes</h3>
+        <p class="mt-3">Competencias parentales y vínculos protectores en tres ejes: Protección, Resignificación y Fortalecimiento.</p>
+        <p><strong>$39.990</strong></p>
+        <div class="cta">
+          <button class="btn btn-primary" onclick="addToCart({id:'raices-fuertes',name:'Raíces Fuertes, Alas Conscientes',price:39990,desc:'Set completo 3 ejes'})">Agregar al carrito</button>
+          <a class="btn btn-outline" href="#raices-fuertes">Detalles</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="images/pistas-crianza.jpg" alt="Pistas de Crianza">
+        <h3 class="mt-3 m0">Pistas de Crianza</h3>
+        <p class="mt-3">Decisiones cotidianas: límites, rutinas, regulación emocional y comunicación.</p>
+        <p><strong>$24.990</strong></p>
+        <button class="btn btn-primary" onclick="addToCart({id:'pistas-crianza',name:'Pistas de Crianza',price:24990})">Agregar al carrito</button>
+      </article>
+
+      <article class="card">
+        <img src="images/entre-lineas.jpg" alt="Entre Líneas">
+        <h3 class="mt-3 m0">Entre Líneas</h3>
+        <p class="mt-3">Vínculo adolescente–adulto significativo desde enfoque narrativo y sistémico.</p>
+        <p><strong>$29.990</strong></p>
+        <button class="btn btn-primary" onclick="addToCart({id:'entre-lineas',name:'Entre Líneas',price:29990})">Agregar al carrito</button>
+      </article>
+
+      <article class="card">
+        <img src="images/ciclos-compartidos.jpg" alt="Ciclos Compartidos">
+        <h3 class="mt-3 m0">Ciclos Compartidos</h3>
+        <p class="mt-3">Recorrido narrativo de 40 cartas para diadas, familias o comunidad.</p>
+        <p><strong>$27.990</strong></p>
+        <button class="btn btn-primary" onclick="addToCart({id:'ciclos-compartidos',name:'Ciclos Compartidos',price:27990})">Agregar al carrito</button>
+      </article>
+
+      <article class="card">
+        <img src="images/carita-dice.jpg" alt="Mi Carita Dice">
+        <h3 class="mt-3 m0">Mi Carita Dice</h3>
+        <p class="mt-3">Expresión emocional temprana en primera infancia.</p>
+        <p><strong>$19.990</strong></p>
+        <button class="btn btn-primary" onclick="addToCart({id:'mi-carita-dice',name:'Mi Carita Dice',price:19990})">Agregar al carrito</button>
+      </article>
+
+      <article class="card">
+        <img src="images/alma-colores.jpg" alt="Alma en Colores">
+        <h3 class="mt-3 m0">Alma en Colores</h3>
+        <p class="mt-3">Exploración emocional mediante recursos artísticos.</p>
+        <p><strong>$22.990</strong></p>
+        <button class="btn btn-primary" onclick="addToCart({id:'alma-colores',name:'Alma en Colores',price:22990})">Agregar al carrito</button>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- DESIRE / Beneficios -->
+  <section class="section bg-desire">
+    <div class="container grid-3">
+      <div class="card"><h3 class="m0">Diseño inclusivo</h3><p class="mt-3">Lenguaje claro, representación diversa y seguridad en imágenes.</p></div>
+      <div class="card"><h3 class="m0">Manual robusto</h3><p class="mt-3">Dinámica, ejemplos clínicos y criterios de adecuación.</p></div>
+      <div class="card"><h3 class="m0">Impacto observable</h3><p class="mt-3">Relatos, acuerdos y seguimiento de compromisos.</p></div>
+    </div>
+  </section>
+
+  <!-- ACTION -->
+  <section class="section bg-action">
+    <div class="container center">
+      <a class="btn btn-secondary" href="carrito.html">Ir al carrito</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container cols">
+    <div class="brand-small"><img src="images/logo-entrealas.jpg" alt="Logo"><div><strong>Entre Alas y Raíces SpA</strong><br><small>RUT: 78.224.149-4</small></div></div>
+    <div><strong>Contacto</strong><p class="mt-3"><a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a></p></div>
+    <div><strong>Soporte</strong><p class="mt-3"><a href="contacto.html">¿Necesitas ayuda?</a></p></div>
+  </div>
+</footer>
+</body>
+</html>
