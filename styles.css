@@ -1,0 +1,237 @@
+/* =========================
+   Entre Alas y Raíces - styles.css
+   Sistema visual transversal + AIDA
+   ========================= */
+
+/* Tipografías (cargadas vía <link> en HTML) */
+:root{
+  /* Marca */
+  --brand-orange: #F2943E; /* naranjo institucional cálido */
+  --brand-green:  #2E7D66; /* verde institucional sobrio */
+
+  /* Pasteles de apoyo (calidez, cercanía) */
+  --mint:   #E9F6F1;
+  --peach:  #FFEDE0;
+  --sand:   #FFF8ED;
+  --lilac:  #F3F0FF;
+
+  /* Neutros */
+  --white:  #FFFFFF;
+  --ink:    #1F2937;  /* texto principal */
+  --ink-2:  #374151;  /* subtítulo/paragraph */
+  --muted:  #6B7280;  /* apoyo */
+  --border: #E5E7EB;
+
+  /* Sombra y radios */
+  --shadow: 0 10px 25px rgba(0,0,0,.06);
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+
+  /* Tipografía base */
+  --size-h1: clamp(2.2rem, 3vw, 3.2rem);
+  --size-h2: clamp(1.6rem, 2.2vw, 2.2rem);
+  --size-h3: clamp(1.25rem, 1.6vw, 1.6rem);
+  --size-body: 1rem;
+  --size-small: .95rem;
+
+  /* Espaciados */
+  --container: 1180px;
+  --space-1: .5rem;
+  --space-2: .75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4rem;
+
+  /* Transiciones */
+  --t: .25s ease;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: 'Lora', serif;
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.65;
+  font-size: var(--size-body);
+}
+
+img{max-width:100%;display:block}
+a{color:var(--brand-green);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.container{
+  width: min(100% - 2rem, var(--container));
+  margin-inline:auto;
+}
+
+/* ====== Header & Nav ====== */
+.header{
+  position: sticky; top:0; z-index: 50;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(6px);
+  border-bottom:1px solid var(--border);
+}
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: .6rem 0;
+}
+.brand{display:flex; align-items:center; gap:.75rem}
+.brand img{height:56px; width:auto; border-radius:.5rem}
+.brand .title{font-family: 'Quattrocento', serif; font-size:1.1rem; color:var(--ink)}
+.menu{display:flex; gap:1rem; align-items:center; flex-wrap:wrap}
+.menu a{
+  font-family: 'Quattrocento Sans', sans-serif;
+  padding:.5rem .8rem; border-radius:.75rem;
+}
+.menu a.active, .menu a:hover{
+  background: var(--mint);
+  text-decoration:none;
+}
+
+/* ====== Botones ====== */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.5rem;
+  font-family: 'Poppins', sans-serif; font-weight:600;
+  padding:.8rem 1.2rem; border-radius: var(--radius-lg);
+  border:2px solid transparent;
+  transition: var(--t);
+  cursor:pointer;
+}
+.btn-primary{
+  background: var(--brand-green);
+  color: var(--white);
+}
+.btn-primary:hover{filter: brightness(1.05)}
+.btn-secondary{
+  background: var(--brand-orange);
+  color: var(--white);
+}
+.btn-outline{
+  background: transparent; color: var(--brand-green);
+  border-color: var(--brand-green);
+}
+.btn-outline:hover{background: var(--mint)}
+
+/* ====== Tarjetas / Secciones ====== */
+.card{
+  background: var(--white);
+  border:1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+}
+
+.section{padding: var(--space-7) 0}
+.section-header{
+  margin-bottom: var(--space-4);
+}
+.section-header h2{
+  font-family: 'Quattrocento', serif;
+  font-size: var(--size-h2);
+  margin:0 0 .5rem;
+}
+.section-header p{color:var(--muted); margin:0}
+
+/* ====== AIDA helper backgrounds ====== */
+.bg-attention{background: linear-gradient(180deg, var(--peach), var(--sand))}
+.bg-interest{background: var(--white)}
+.bg-desire{background: linear-gradient(180deg, var(--mint), var(--lilac))}
+.bg-action{background: var(--white)}
+
+/* ====== Hero (ATTENTION) ====== */
+.hero{
+  display:grid; gap: var(--space-5);
+  grid-template-columns: 1.1fr .9fr;
+  align-items:center;
+  padding: var(--space-6) 0;
+}
+.hero h1{
+  font-family:'Quattrocento', serif;
+  font-size: var(--size-h1);
+  margin:0 0 var(--space-3);
+}
+.hero p{color:var(--ink-2); margin:0 0 var(--space-4)}
+.hero .cta{display:flex; gap: .75rem; flex-wrap:wrap}
+.hero .panel{
+  background: var(--white);
+  border:1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow);
+}
+
+/* ====== Grids ====== */
+.grid-3{
+  display:grid; gap: var(--space-4);
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid-2{
+  display:grid; gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 900px){
+  .hero{grid-template-columns: 1fr}
+  .grid-3{grid-template-columns: 1fr}
+  .grid-2{grid-template-columns: 1fr}
+}
+
+/* ====== Listas con íconos simples (css) ====== */
+.list-check{list-style:none; padding:0; margin:0}
+.list-check li{
+  padding-left:1.75rem; position:relative; margin:.4rem 0;
+}
+.list-check li:before{
+  content:'✔'; position:absolute; left:0; top:.15rem;
+  color: var(--brand-green); font-weight:700;
+}
+
+/* ====== Tablas simples ====== */
+.table{
+  width:100%; border-collapse: collapse;
+  font-size: .98rem;
+}
+.table th, .table td{border:1px solid var(--border); padding:.75rem; text-align:left}
+.table th{background: #FAFAFB}
+
+/* ====== Formularios ====== */
+.input, .select, .textarea{
+  width:100%; padding:.85rem 1rem;
+  border:1px solid var(--border); border-radius: .8rem;
+  font-family: 'Lora', serif;
+}
+.textarea{min-height:140px}
+
+/* ====== Footer ====== */
+.footer{
+  padding: var(--space-6) 0; border-top:1px solid var(--border);
+  background: #FCFCFD;
+  color: var(--muted);
+}
+.footer .cols{display:grid; gap:var(--space-4); grid-template-columns: 2fr 1fr 1fr}
+.footer a{color:var(--muted)}
+.footer .brand-small{display:flex; align-items:center; gap:.6rem}
+.footer img{height:40px; border-radius:.4rem}
+@media (max-width: 900px){ .footer .cols{grid-template-columns:1fr} }
+
+/* ====== Utilidades ====== */
+.m0{margin:0}
+.center{text-align:center}
+.mt-3{margin-top:var(--space-3)}
+.mt-4{margin-top:var(--space-4)}
+.mt-5{margin-top:var(--space-5)}
+.mb-4{margin-bottom:var(--space-4)}
+.hidden{display:none}
+.badge{
+  display:inline-block; padding:.35rem .6rem; border-radius: .6rem;
+  background: var(--mint); color: var(--brand-green); font-size:.9rem;
+}
+.notice{
+  background: var(--sand); border:1px solid var(--border);
+  padding: .9rem 1rem; border-radius: .8rem;
+}
