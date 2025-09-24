@@ -235,3 +235,68 @@ a:hover{text-decoration:underline}
   background: var(--sand); border:1px solid var(--border);
   padding: .9rem 1rem; border-radius: .8rem;
 }
+/* --- MENÚ RESPONSIVE --- */
+
+/* Ocultar menú en pantallas pequeñas */
+.menu {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff; /* color de fondo del menú desplegado */
+  position: absolute;
+  top: 60px; /* altura debajo del header */
+  right: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* Mostrar menú cuando está activo */
+.menu.is-open {
+  display: flex;
+}
+
+/* Botón hamburguesa visible solo en pantallas pequeñas */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    width: 200px;
+  }
+}
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.menu a {
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+.menu a:hover {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+.header {
+  position: relative;
+  z-index: 2000;
+}
+
