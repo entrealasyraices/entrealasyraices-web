@@ -44,40 +44,6 @@
   }
   </script>
   
-  <style>
-  /* Botón oculto en escritorio */
-  .menu-toggle{display:none;}
-
-  /* Menú responsive en móvil */
-  @media (max-width: 768px){
-    .menu-toggle{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:0;
-      background:#2E7D66;
-      color:#fff;
-      font-size:1.25rem;
-      line-height:1;
-      padding:.5rem .75rem;
-      border-radius:.5rem;
-      cursor:pointer;
-      margin-left:auto; /* empuja el botón a la derecha */
-    }
-    /* Por defecto, el nav no se muestra en móvil */
-    header .menu{
-      display:none;
-      flex-direction:column;
-      gap:.75rem;
-      margin-top:.75rem;
-    }
-    /* Cuando está abierto */
-    header .menu.is-open{
-      display:flex;
-    }
-  }
-</style>
-
 </head>
 <body>
 
