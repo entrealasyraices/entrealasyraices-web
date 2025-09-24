@@ -237,41 +237,48 @@ a:hover{text-decoration:underline}
 }
 /* --- MENÚ RESPONSIVE --- */
 
-/* Ocultar menú en pantallas pequeñas */
+/* Por defecto en escritorio: menú visible en fila */
 .menu {
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  background: #fff; /* color de fondo del menú desplegado */
-  position: absolute;
-  top: 60px; /* altura debajo del header */
-  right: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-/* Mostrar menú cuando está activo */
-.menu.is-open {
   display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
-/* Botón hamburguesa visible solo en pantallas pequeñas */
-.menu-toggle {
-  display: none;
-  font-size: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-/* Ajustes para móviles */
+/* Ocultar menú en pantallas pequeñas */
 @media (max-width: 768px) {
+  .menu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .menu.is-open {
+    display: flex;
+  }
+
   .menu-toggle {
     display: block;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
+}
+
+/* Botón hamburguesa oculto en escritorio */
+.menu-toggle {
+  display: none;
+}
+
 
   .menu {
     position: absolute;
