@@ -306,4 +306,48 @@ a:hover{text-decoration:underline}
   position: relative;
   z-index: 2000;
 }
+/* =====================
+   MENÚ RESPONSIVE
+   ===================== */
+
+/* El botón ☰ no se muestra en escritorio */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* En escritorio el menú está en línea */
+.menu {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Para pantallas chicas (ej: móviles) */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block; /* Muestra el botón ☰ */
+  }
+
+  .menu {
+    display: none; /* Oculta el menú por defecto */
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #fff; /* Fondo para destacar el menú */
+    position: absolute;
+    top: 60px; /* debajo del header */
+    right: 10px;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .menu.is-open {
+    display: flex; /* Muestra el menú cuando el toggle lo abre */
+  }
+}
 
