@@ -43,6 +43,41 @@
     "email":"contacto@entrealasyraices.cl"
   }
   </script>
+  
+  <style>
+  /* Botón oculto en escritorio */
+  .menu-toggle{display:none;}
+
+  /* Menú responsive en móvil */
+  @media (max-width: 768px){
+    .menu-toggle{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:0;
+      background:#2E7D66;
+      color:#fff;
+      font-size:1.25rem;
+      line-height:1;
+      padding:.5rem .75rem;
+      border-radius:.5rem;
+      cursor:pointer;
+      margin-left:auto; /* empuja el botón a la derecha */
+    }
+    /* Por defecto, el nav no se muestra en móvil */
+    header .menu{
+      display:none;
+      flex-direction:column;
+      gap:.75rem;
+      margin-top:.75rem;
+    }
+    /* Cuando está abierto */
+    header .menu.is-open{
+      display:flex;
+    }
+  }
+</style>
+
 </head>
 <body>
 
@@ -51,7 +86,10 @@
     <a href="index.html" class="brand" aria-label="Inicio">
       <img src="images/logo-entrealas.jpg" alt="Logo Entre Alas y Raíces">
       <span class="title">Sanar, sostener y crecer</span>
-    </a>
+    </a> 
+    
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+
     <nav class="menu" aria-label="Navegación principal">
       <a href="quienes-somos.html">Quiénes somos</a>
       <a href="mision-vision.html">Misión y Visión</a>
@@ -209,6 +247,20 @@
     </div>
   </div>
 </footer>
+  
+<script defer src="script.js"></script>
+  
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+    if (toggle && menu) {
+      toggle.addEventListener("click", () => {
+        menu.classList.toggle("is-open");
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
