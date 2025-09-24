@@ -237,47 +237,51 @@ a:hover{text-decoration:underline}
 }
 /* --- MENÚ RESPONSIVE --- */
 
-/* Escritorio (por defecto): menú horizontal y botón oculto */
+/* Menú en escritorio: horizontal */
 .menu {
   display: flex;
-  gap: 1rem;
+  justify-content: flex-end; /* Alinea a la derecha */
+  gap: 1.5rem;
   align-items: center;
 }
 
+/* Ocultar botón hamburguesa en escritorio */
 .menu-toggle {
-  display: none;              /* oculto en desktop */
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  display: none;
 }
 
-/* Móvil: <768px -> botón visible, menú oculto (hasta abrir) */
+/* Para pantallas pequeñas (máx. 768px) */
 @media (max-width: 768px) {
-  .menu-toggle {
-    display: inline-flex;      /* mostrar hamburguesa en móvil */
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    background: #2E7D66;
-    border-radius: .5rem;
-    padding: .5rem .75rem;
-  }
-
   .menu {
-    display: none;             /* oculto por defecto en móvil */
-    position: absolute;
-    top: 60px;                 /* ajusta según tu header */
-    right: 20px;
+    display: none; /* Oculto por defecto */
     flex-direction: column;
     gap: 10px;
     background: #fff;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
   }
+
+  .menu.is-open {
+    display: flex; /* Se muestra cuando el botón abre */
+  }
+
+  /* Botón hamburguesa visible solo en móvil */
+  .menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: auto;
+  }
+}
+
 
   .menu.is-open {
     display: flex;             /* se muestra al abrir */
