@@ -237,33 +237,53 @@ a:hover{text-decoration:underline}
 }
 /* --- MENÚ RESPONSIVE --- */
 
-/* Por defecto en escritorio: menú visible en fila */
+/* Escritorio (por defecto): menú horizontal y botón oculto */
 .menu {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-/* Ocultar menú en pantallas pequeñas */
+.menu-toggle {
+  display: none;              /* oculto en desktop */
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Móvil: <768px -> botón visible, menú oculto (hasta abrir) */
 @media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-flex;      /* mostrar hamburguesa en móvil */
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #2E7D66;
+    border-radius: .5rem;
+    padding: .5rem .75rem;
+  }
+
   .menu {
-    display: none;
+    display: none;             /* oculto por defecto en móvil */
+    position: absolute;
+    top: 60px;                 /* ajusta según tu header */
+    right: 20px;
     flex-direction: column;
     gap: 10px;
     background: #fff;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
     z-index: 1000;
   }
 
   .menu.is-open {
-    display: flex;
+    display: flex;             /* se muestra al abrir */
   }
+}
+
 
   .menu-toggle {
     display: block;
