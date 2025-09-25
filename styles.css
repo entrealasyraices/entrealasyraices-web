@@ -279,4 +279,103 @@ a:hover{text-decoration:underline}
     }
 }
 
+/* ===========================
+   AIDA UPGRADE (2025-09-25)
+   Menú, carrito, carrusel, teaser, productos destacado y contacto
+   =========================== */
+
+/* Paleta complementaria sobre tu sistema actual */
+:root{
+  --brand-green-dark: #1F5A42;   /* verde más intenso para slogan */
+  --whatsapp-green: #25d366;     /* botón flotante opcional */
+}
+
+/* Slogan junto al logo: “Sanar, sostener y crecer” en verde más fuerte */
+.site-slogan{
+  color: var(--brand-green-dark);
+  font-weight: 600;
+}
+
+/* ===== NAV / MENÚ ===== */
+/* Nota: en el HTML luego agregaremos estas clases a los enlaces correspondientes */
+.navbar a.nav-productos{
+  background: var(--brand-green);   /* tu verde institucional */
+  color: #fff;
+  padding: .55rem .9rem;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.navbar a.nav-productos:hover{ filter:brightness(.95); }
+
+.navbar a.nav-carrito{
+  border: 2px solid var(--brand-green);
+  color: var(--ink, #1f2937);       /* usa tu neutral si existe */
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  position: relative;
+  text-decoration: none;
+}
+.navbar a.nav-carrito:hover{ background: var(--mint, #E9F6F1); }
+
+.navbar a.nav-carrito .badge{
+  position: absolute; top:-8px; right:-8px;
+  background: crimson; color:#fff;
+  font-size: .7rem; padding: 2px 6px; border-radius: 999px;
+  min-width: 18px; text-align: center;
+}
+
+.navbar a.nav-whatsapp{ display:inline-flex; align-items:center; gap:6px; }
+
+/* ===== HERO / CARRUSEL ===== */
+.hero{ background: var(--peach, #FFEDC0); padding:40px 0; }
+.hero-inner{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center; }
+@media (max-width: 900px){ .hero-inner{ grid-template-columns:1fr; } }
+
+.carousel{ position:relative; overflow:hidden; border-radius:14px; box-shadow: var(--shadow); background:#fff; }
+.carousel-track{ display:flex; transition: transform .6s ease; }
+.carousel-slide{ min-width:100%; }
+.carousel-slide img{ display:block; width:100%; height:auto; }
+.carousel-dots{ position:absolute; left:50%; transform:translateX(-50%); bottom:10px; display:flex; gap:8px; }
+.carousel-dots button{
+  width:10px; height:10px; border-radius:50%; border:none; background:#ddd; cursor:pointer;
+}
+.carousel-dots button.active{ background: var(--brand-green); }
+
+/* Teaser de la herramienta destacada (mini card en home) */
+.teaser{
+  margin-top:20px; background:#fff; border-radius:14px;
+  box-shadow: var(--shadow); padding:16px 18px;
+  display:flex; gap:16px; align-items:center;
+}
+.teaser img{ width:88px; height:88px; object-fit:cover; border-radius:10px; }
+.teaser .t-text{ flex:1; }
+.teaser .t-text h4{ margin:0 0 6px; }
+
+/* ===== CARDS DE PRODUCTO ===== */
+.card{ background:#fff; border-radius:14px; box-shadow: var(--shadow); padding:18px; }
+.card--destacado{ border:2px solid var(--brand-green); position:relative; }
+.card--destacado::before{
+  content:"Destacado"; position:absolute; top:10px; left:10px;
+  background: var(--brand-green); color:#fff; font-size:.75rem;
+  padding:4px 8px; border-radius:999px;
+}
+
+/* ===== CONTACTO (logo en columna derecha) ===== */
+.contacto-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media (max-width: 900px){ .contacto-grid{ grid-template-columns:1fr; } }
+.contacto-logo-box{
+  display:flex; align-items:center; justify-content:center; background:#fff;
+  border-radius:14px; box-shadow: var(--shadow); padding:24px;
+}
+.contacto-logo-box img{ max-width:360px; height:auto; }
+
+/* ===== BOTÓN FLOTANTE WHATSAPP (opcional) ===== */
+.whatsapp-float{
+  position:fixed; right:18px; bottom:18px; z-index:9999;
+  display:inline-flex; align-items:center; gap:8px;
+  background: var(--whatsapp-green); color:#fff;
+  padding:12px 14px; border-radius:999px; box-shadow: var(--shadow);
+  text-decoration:none;
+}
+.whatsapp-float:hover{ filter:brightness(.95); }
 
