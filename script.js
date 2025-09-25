@@ -84,3 +84,71 @@ function goToPayment(){
   // location.href = 'https://www.mercadopago.cl/checkout/v1/redirect?preference-id=XXXX';
   location.href = 'https://www.mercadopago.cl/';
 }
+/* =========================================
+   AIDA – JS base (carrusel + badge carrito)
+   Pegar al FINAL de script.js
+   ========================================= */
+
+/* 1) Carrusel del Home (#homeCarousel) */
+(function initHomeCarousel(){
+  const root = document.getElementById('homeCarousel');
+  if (!root) return; // si no estamos en el home, salir
+
+  const track = root.querySelector('.carousel-track');
+  const slides = Array.from(root.querySelectorAll('.carousel-slide'));
+  const dotsWrap = root.querySelector('.carousel-dots');
+  if (!track || slides.length === 0 || !dotsWrap) return;
+
+  let index = 0, timer = null;
+
+  // Crear dots
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Ir a imagen ' + (i + 1));
+    if (i === 0) b.classList.add('active');
+    b.addEventListener('click', () => go(i, true));
+    dotsWrap.appendChild(b);
+  });
+  const dots = Array.from(dotsWrap.querySelectorAll('button'));
+
+  function go(i, stopAuto){
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach(d => d.classList.remove('active'));
+    if (dots[index]) dots[index].classList.add('active');
+    if (stopAuto && timer) clearInterval(timer);
+  }
+
+  // Auto-play suave
+  timer = setInterval(() => go(index + 1, false), 4500);
+
+  // Accesibilidad: detener con visibilidad oculta de la pestaña
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && timer) clearInterval(timer);
+    else timer = setInterval(() => go(index + 1, false), 4500);
+  });
+})();
+
+/* 2) Badge del carrito (muestra cantidad si existe en localStorage) */
+(function initCartBadge(){
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+
+  try {
+    // Ajusta la clave si usas otra. Por ahora tomamos 'cartCount'
+    const count = Number(localStorage.getItem('cartCount') || 0);
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'inline-block';
+    }
+  } catch (e) {
+    // Silencioso si el navegador bloquea localStorage
+  }
+})();
+
+/* 3) (Opcional) Preparado para video en menú — desactivado
+// document.getElementById('nav-video')?.addEventListener('click', (e) => {
+//   e.preventDefault();
+//   // Aquí abriríamos un modal e insertaríamos <iframe src="..."></iframe>
+// });
+*/
