@@ -47,44 +47,74 @@
 </head>
 <body>
 
-<header class="header">
-  <div class="container nav">
-    <a href="index.html" class="brand" aria-label="Inicio">
-      <img src="images/logo-entrealas.jpg" alt="Logo Entre Alas y Raíces">
-      <span class="title">Sanar, sostener y crecer</span>
-    </a> 
-    
-    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
-
-    <nav class="menu" aria-label="Navegación principal">
-      <a href="quienes-somos.html">Quiénes somos</a>
-      <a href="mision-vision.html">Misión y Visión</a>
-      <a href="valores.html">Valores</a>
-      <a href="productos.html">Productos</a>
-      <a href="capacitaciones.html">Capacitaciones</a>
-      <a href="contacto.html">Contacto</a>
-      <a href="carrito.html" class="btn btn-outline">Carrito <span class="badge" data-cart-badge></span></a>
-    </nav>
+<header>
+  <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+    <a href="index.html">
+      <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="height:48px;">
+    </a>
+    <span class="site-slogan">Sanar, sostener y crecer</span>
   </div>
+
+  <nav class="navbar" aria-label="Principal">
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="mision-vision.html">Misión y Visión</a>
+    <!-- <a href="#" id="nav-video">Video</a>  Espacio reservado (desactivado por ahora) -->
+    <a href="productos.html" class="nav-productos">Productos</a>
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="contacto.html">Contacto</a>
+
+    <a class="nav-whatsapp" href="https://wa.me/56933351449?text=Hola%20vengo%20desde%20la%20web%20de%20Entre%20Alas%20y%20Ra%C3%ADces" target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp">
+      WhatsApp
+    </a>
+
+    <a href="carrito.html" class="nav-carrito" aria-label="Carrito">
+      Carrito <span class="badge" id="cartBadge" style="display:none">0</span>
+    </a>
+  </nav>
 </header>
+
 
 <main>
 
   <!-- ATTENTION -->
-  <section class="bg-attention">
-    <div class="container hero">
-      <div>
-        <h1>Herramientas terapéuticas que <em>conectan</em>: diálogo, vínculo y resignificación</h1>
-        <p>Diseñamos, producimos y formamos en materiales lúdicos para trabajo con niñez, adolescencia, familias y comunidades. Nuestros recursos integran teoría y práctica con calidez, inclusión y evidencia.</p>
-        <div class="cta">
-          <a class="btn btn-primary" href="productos.html">Nuestros productos</a>
-          <a class="btn btn-secondary" href="capacitaciones.html">Aula virtual</a>
-          <a class="btn btn-outline" href="contacto.html">Escríbenos</a>
-        </div>
+  <section class="hero">
+  <div class="container hero-inner">
+    <!-- Columna izquierda: título + CTA + teaser -->
+    <div>
+      <h1>Herramientas terapéuticas que <em>conectan</em>: diálogo, vínculo y resignificación</h1>
+      <p>Diseñamos, producimos y formamos en materiales lúdicos para trabajo con niñez, adolescencia, familias y comunidades. Nuestros recursos integran teoría y práctica con calidez, inclusión y evidencia.</p>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btn btn-primary" href="productos.html">Ver herramientas</a>
+        <a class="btn" href="contacto.html">Escríbenos</a>
       </div>
-      
+
+      <!-- Teaser breve de la herramienta destacada -->
+      <div class="teaser">
+        <img src="images/raices-fuertes.jpg" alt="Raíces Fuertes, Alas Conscientes">
+        <div class="t-text">
+          <h4>Raíces Fuertes, Alas Conscientes</h4>
+          <small>La herramienta más utilizada en sesiones con adultos cuidadores.</small>
+        </div>
+        <a class="btn btn-small" href="productos.html#raices-fuertes">Descubrir</a>
+      </div>
     </div>
-  </section>
+
+    <!-- Columna derecha: carrusel -->
+    <div>
+      <div class="carousel" id="homeCarousel" aria-label="Galería de herramientas">
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="images/raices-fuertes.jpg" alt="Set Raíces Fuertes sobre mesa de trabajo"></div>
+          <div class="carousel-slide"><img src="images/pistas-crianza.jpg" alt="Pistas de Crianza en intervención"></div>
+          <div class="carousel-slide"><img src="images/entre-lineas.jpg" alt="Entre Líneas con adolescente y adulto"></div>
+          <div class="carousel-slide"><img src="images/ciclos-compartidos.jpg" alt="Ciclos Compartidos en sesión"></div>
+          <div class="carousel-slide"><img src="images/mi-carita-dice.jpg" alt="Mi Carita Dice para expresión emocional"></div>
+        </div>
+        <div class="carousel-dots" role="tablist" aria-label="Paginación carrusel"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- INTEREST -->
   <section class="section bg-interest">
