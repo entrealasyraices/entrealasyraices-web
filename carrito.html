@@ -18,84 +18,88 @@
 <body>
 <header class="header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo-entrealas.jpg" alt="Logo"><span class="title">Sanar, sostener y crecer</span></a>
-    <nav class="menu">
-      <a href="productos.html">Productos</a>
+    <a href="index.html" class="brand" aria-label="Inicio">
+      <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces">
+      <span class="title">Sanar, sostener y crecer</span>
+    </a>
+
+    <nav class="navbar" aria-label="Navegación principal">
+      <a href="quienes-somos.html">Quiénes somos</a>
+      <a href="mision-vision.html">Misión y Visión</a>
+      <a href="productos.html" class="nav-productos">Productos</a>
       <a href="capacitaciones.html">Capacitaciones</a>
       <a href="contacto.html">Contacto</a>
-      <a href="carrito.html" class="btn btn-outline">Carrito <span class="badge" data-cart-badge></span></a>
+      <a href="carrito.html" class="nav-carrito active" aria-current="page">
+        Carrito <span class="badge" data-cart-badge></span>
+      </a>
     </nav>
   </div>
 </header>
 
+
 <main>
-  <!-- ATTENTION -->
-  <section class="section bg-attention">
-    <div class="container card">
-      <h1 style="font-family:'Quattrocento'">Tu carrito</h1>
-      <p>Revisa tus productos y procede al pago seguro en plataforma externa.</p>
-    </div>
-  </section>
+  <section class="section">
+    <div class="container">
 
-  <!-- INTEREST -->
-  <section class="section bg-interest">
-    <div class="container card">
-      <table class="table">
-        <thead>
-          <tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr>
-        </thead>
-        <tbody id="cart-table-body"></tbody>
-      </table>
-      <div class="mt-4" style="display:flex; justify-content:space-between; align-items:center">
-        <strong>Total:</strong>
-        <strong id="cart-total">$0</strong>
+      <div class="section-header center">
+        <h2>Tu carrito</h2>
+        <p class="m0">Revisa los productos seleccionados antes de finalizar tu compra.</p>
       </div>
-    </div>
-  </section>
 
-  <!-- Información de despacho -->
-<section class="section bg-attention">
-  <div class="container card">
-    <h2 class="m0">Información de despacho</h2>
-    <p class="mt-3">
-      El despacho tiene un costo adicional y se realizará dentro de <strong>5 días hábiles</strong> después de la compra.
-      Para coordinar la entrega, por favor completa los siguientes datos de contacto:
-    </p>
+      <!-- Estado con items -->
+      <div class="card" id="cart-has-items">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Ejemplo (borra si no quieres ejemplos visibles) -->
+            <tr>
+              <td>Raíces Fuertes, Alas Conscientes</td>
+              <td>$XX.XXX</td>
+              <td>1</td>
+              <td>$XX.XXX</td>
+              <td><a class="btn btn-small btn-outline" href="#">Quitar</a></td>
+            </tr>
+          </tbody>
+        </table>
 
-    <form class="mt-3">
-      <label>Nombre completo:<br>
-        <input type="text" name="nombre" required>
-      </label><br><br>
+        <div class="grid-2 mt-4">
+          <div class="notice">
+            Si necesitas boleta/factura o tienes dudas, escríbenos por WhatsApp o en <a href="contacto.html">Contacto</a>.
+          </div>
 
-      <label>Dirección:<br>
-        <input type="text" name="direccion" required>
-      </label><br><br>
+          <div class="card">
+            <h3 class="m0">Resumen</h3>
+            <p class="mt-3"><strong>Subtotal:</strong> $XX.XXX</p>
+            <p class="m0"><strong>Total:</strong> $XX.XXX</p>
 
-      <label>Teléfono:<br>
-        <input type="tel" name="telefono" required>
-      </label><br><br>
+            <div class="cta mt-3">
+              <a class="btn btn-outline" href="productos.html">Seguir comprando</a>
+              <a class="btn btn-primary" href="contacto.html?asunto=Compra%20desde%20carrito">Finalizar compra</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <label>Correo electrónico:<br>
-        <input type="email" name="correo" required>
-      </label><br><br>
+      <!-- Estado vacío (déjalo oculto por ahora; útil si luego agregas JS) -->
+      <div class="card center" id="cart-empty" style="display:none">
+        <h3 class="m0">Tu carrito está vacío</h3>
+        <p class="mt-3">Explora nuestras herramientas terapéuticas.</p>
+        <a class="btn btn-primary" href="productos.html">Ver herramientas</a>
+      </div>
 
-      <button type="submit" class="btn btn-primary">Confirmar datos de despacho</button>
-    </form>
-  </div>
-</section>
-
-  <!-- ACTION -->
-  <section class="section bg-action">
-    <div class="container center">
-      <a class="btn btn-outline" href="productos.html">Seguir comprando</a>
-     <p class="mt-3" style="color:#2E7D66; font-weight:bold;">
-  Estamos preparando la tienda, vuelve pronto ✨
-</p>
-<a class="btn btn-outline" href="contacto.html">Consultar</a>
-
+      <p class="center mt-4">¿Aún no eliges? <a href="productos.html">Volver a Productos</a></p>
     </div>
   </section>
 </main>
+
 
 <footer class="footer">
   <div class="container cols">
@@ -104,5 +108,11 @@
     <div><strong>Seguridad</strong><p class="mt-3">Redirección a plataforma externa (ej. Mercado Pago).</p></div>
   </div>
 </footer>
+  <a class="whatsapp-float"
+   href="https://wa.me/56933351449?text=Hola%20vengo%20desde%20la%20web%20de%20Entre%20Alas%20y%20Ra%C3%ADces"
+   target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp">
+  WhatsApp
+</a>
+
 </body>
 </html>
