@@ -13,6 +13,31 @@
   <meta name="theme-color" content="#2E7D66">
 
   <script defer src="script.js"></script>
+  <style>
+  /* Grid de contacto: 2 columnas en escritorio, 1 en móvil */
+  .contacto-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .contacto-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Alinear y limitar ancho del formulario */
+  .contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select,
+  .contact-form button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+</style>
+
 </head>
 
 <body>
@@ -51,60 +76,61 @@
       <p>Cuéntanos en qué podemos ayudarte: compra de productos, aula virtual, co-diseño o soporte.</p>
     </div>
   </section>
-
-  <!-- INTEREST -->
-  <section class="section">
+<!-- INTEREST -->
+<section class="section">
   <div class="container contacto-grid">
-
-    <!-- Columna izquierda: deja aquí tu formulario y texto actual -->
+    <!-- Columna izquierda: FORMULARIO -->
     <div>
-      <!-- ... TODO tu formulario existente ... -->
+      <!-- Usa el mismo action y method que ya tengas; solo agregamos la clase contact-form -->
+      <form class="contact-form" action="https://formspree.io/f/xxxxxx" method="POST">
+        <label>Nombre<br>
+          <input type="text" name="nombre" required>
+        </label><br>
+
+        <label>Correo<br>
+          <input type="email" name="email" required>
+        </label><br>
+
+        <label>Asunto<br>
+          <input type="text" name="asunto">
+        </label><br>
+
+        <label>Mensaje<br>
+          <textarea class="textarea" name="mensaje" required></textarea>
+        </label><br>
+
+        <button class="btn btn-primary" type="submit">Enviar</button>
+      </form>
+
+      <p class="mt-3">
+        <small>También puedes escribir a
+          <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a>
+        </small>
+      </p>
     </div>
 
-    <!-- Columna derecha: logo centrado + (opcional) datos -->
+    <!-- Columna derecha: logo + datos -->
     <aside>
-      <div class="contacto-logo-box">
-        <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces">
+      <div class="contacto-logo-box" style="text-align:center">
+        <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="max-width:220px; height:auto;">
       </div>
 
-      <!-- OPCIONAL: si quieres mantener los datos bajo el logo -->
       <div class="card mt-3">
         <h3 class="m0">Datos de contacto</h3>
-        <p class="m0"><strong>Correo ventas:</strong>
-          <a href="mailto:ventas@entrealasraices.cl">ventas@entrealasraices.cl</a>
-        </p>
-        <p class="m0"><strong>Instagram:</strong>
-          <a href="https://instagram.com/entrealasraices" target="_blank" rel="noopener">@entrealasraices</a>
-        </p>
-        <p class="m0"><strong>WhatsApp:</strong>
-          <a href="https://wa.me/56933351449" target="_blank" rel="noopener">+56 9 3335 1449</a>
+        <p class="m0">
+          <strong>Correo ventas:</strong>
+          <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
+          <strong>Instagram:</strong>
+          <a href="https://instagram.com/entrealasyraices" target="_blank" rel="noopener noreferrer">@entrealasyraices</a><br>
+          <strong>WhatsApp:</strong>
+          <a href="https://wa.me/56933351449" target="_blank" rel="noopener noreferrer">+56 9 3335 1449</a>
         </p>
       </div>
     </aside>
-
   </div>
 </section>
 
-          </label><br><br>
-          <label>Mensaje<br><textarea class="textarea" name="mensaje" required></textarea></label><br>
-          <button class="btn btn-primary" type="submit">Enviar</button>
-        </form>
-        <p class="mt-3"><small>También puedes escribir a <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a></small></p>
-      </div>
-      <div class="card">
-        <h3 class="m0">Datos de contacto</h3>
-        <p class="mt-3 m0">
-          <strong>Correo ventas:</strong> <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
-          <strong>Instagram:</strong> <a href="https://instagram.com/entrealasyraices" target="_blank" rel="noopener noreferrer">@entrealasyraices</a><br>
-          <strong>WhatsApp:</strong> <a href="https://wa.me/56933352449" target="_blank" rel="noopener noreferrer">+56 9 3335 1449</a>
-        </p>
-      </div>
-    </div>
-  </section>
-<div class="contacto-logo-box">
-  <img src="images/logo-entrealas.jpg" alt="Logo Entre Alas y Raíces">
-</div>
-
+ 
   <!-- ACTION -->
   <section class="section bg-action">
     <div class="container center">
