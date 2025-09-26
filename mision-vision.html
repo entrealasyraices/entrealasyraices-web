@@ -18,52 +18,71 @@
 <body>
 <header class="header">
   <div class="container nav">
-    <a href="index.html" class="brand"><img src="images/logo-entrealas.jpg" alt="Logo"><span class="title">Sanar, sostener y crecer</span></a>
-    <nav class="menu">
+    <a href="index.html" class="brand" aria-label="Inicio">
+      <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces">
+      <span class="title">Sanar, sostener y crecer</span>
+    </a>
+
+    <nav class="navbar" aria-label="Navegación principal">
       <a href="quienes-somos.html">Quiénes somos</a>
       <a href="mision-vision.html">Misión y Visión</a>
-      <a href="valores.html">Valores</a>
-      <a href="productos.html">Productos</a>
+      <a href="productos.html" class="nav-productos">Productos</a>
       <a href="capacitaciones.html">Capacitaciones</a>
       <a href="contacto.html">Contacto</a>
-      <a href="carrito.html" class="btn btn-outline">Carrito <span class="badge" data-cart-badge></span></a>
+      <a href="carrito.html" class="nav-carrito">Carrito <span class="badge" data-cart-badge></span></a>
     </nav>
   </div>
 </header>
 
+
 <main>
-  <!-- ATTENTION -->
-  <section class="section bg-attention">
-    <div class="container card">
-      <h1 style="font-family:'Quattrocento'">Misión y Visión</h1>
-      <p>Una guía clara para orientar cada decisión y cada recurso que creamos.</p>
-    </div>
-  </section>
-
-  <!-- INTEREST -->
   <section class="section bg-interest">
-    <div class="container grid-2">
-      <div class="card">
-        <h2 class="m0">Misión</h2>
-        <p class="mt-3">Contribuir al fortalecimiento de los procesos terapéuticos mediante la creación de materiales lúdicos, respetuosos y significativos que potencien la labor de los profesionales y favorezcan vínculos sanos entre niños, adolescentes, familias y comunidades.</p>
+    <div class="container">
+      <div class="section-header center">
+        <h2>Misión y Visión</h2>
+        <p>Desarrollamos materiales terapéuticos lúdicos y formativos que favorecen el diálogo,
+           el vínculo y la resignificación en niñez, adolescencia, familias y comunidades.</p>
       </div>
-      <div class="card">
-        <h2 class="m0">Visión</h2>
-        <p class="mt-3">Ser un referente en innovación terapéutica en Latinoamérica, integrando conocimiento profesional, creatividad y humanidad para aportar a una sociedad que respete la dignidad y los derechos de cada persona.</p>
+
+      <div class="grid-2">
+        <!-- Misión -->
+        <article class="card">
+          <h3 class="m0">Misión</h3>
+          <p class="mt-3">
+            (Pega aquí tu texto de misión) Diseñar, producir y formar en recursos que integren teoría y práctica con calidez,
+            enfoque de derechos y accesibilidad.
+          </p>
+          <ul class="list-check mt-3">
+            <li>Enfoque de derechos y accesibilidad.</li>
+            <li>Uso clínico, educativo y comunitario.</li>
+            <li>Manual y pautas de seguimiento.</li>
+          </ul>
+        </article>
+
+        <!-- Visión -->
+        <article class="card">
+          <h3 class="m0">Visión</h3>
+          <p class="mt-3">
+            (Pega aquí tu texto de visión) Ser un referente en herramientas inclusivas que promueven vínculos protectores
+            y comunidades más cuidadoras.
+          </p>
+          <ul class="list-check mt-3">
+            <li>Resultados observables y replicables.</li>
+            <li>Diseño inclusivo y cercano.</li>
+            <li>Impacto a nivel familiar y comunitario.</li>
+          </ul>
+        </article>
       </div>
-    </div>
-  </section>
 
-  <!-- DESIRE -->
-
-  <!-- ACTION -->
-  <section class="section bg-action">
-    <div class="container center">
-      <a class="btn btn-primary" href="productos.html">Explorar productos</a>
-      <a class="btn btn-secondary" href="capacitaciones.html">Inscribirme a un curso</a>
+      <div class="cta center mt-4">
+        <a class="btn btn-primary" href="productos.html">Ver herramientas</a>
+        <a class="btn btn-outline" href="capacitaciones.html">Capacitaciones</a>
+        <a class="btn" href="contacto.html">Contáctanos</a>
+      </div>
     </div>
   </section>
 </main>
+
 
 <footer class="footer">
   <div class="container cols">
@@ -72,5 +91,11 @@
     <div><strong>Redes</strong><p class="mt-3"><a href="https://instagram.com/entrealasyraices" target="_blank" rel="noopener">@entrealasyraices</a></p></div>
   </div>
 </footer>
+  <a class="whatsapp-float"
+   href="https://wa.me/56933351449?text=Hola%20vengo%20desde%20la%20web%20de%20Entre%20Alas%20y%20Ra%C3%ADces"
+   target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp">
+  WhatsApp
+</a>
+
 </body>
 </html>
