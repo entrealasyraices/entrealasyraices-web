@@ -32,142 +32,127 @@
 </header>
 
 <main>
-  <!-- ATTENTION -->
-  <section class="section bg-attention">
-    <div class="container card">
-      <h1 style="font-family:'Quattrocento'">Herramientas terapéuticas</h1>
-      <p>Manual robusto, diseño inclusivo y resultados observables.</p>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-header center">
+        <h1>Herramientas terapéuticas</h1>
+        <p class="m0">Manual robusto, diseño inclusivo y resultados observables.</p>
+      </header>
     </div>
   </section>
 
-  <!-- INTEREST / Catálogo -->
-  <section class="section bg-interest" id="catalogo">
-   <div class="grid-3" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+  <!-- ============ LISTA DE PRODUCTOS (limpia y uniforme) ============ -->
+  <section class="products-section">
+    <div class="products-grid">
 
-  <!-- DESTACADO / PRIMERO -->
-  <article id="raices-fuertes" class="card card--destacado">
-    <img src="images/raices-fuertes.jpg" alt="Raíces Fuertes, Alas Conscientes" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Raíces Fuertes, Alas Conscientes</h3>
-    <p>Fortalece competencias parentales y vínculos protectores en tres ejes: Protección, Resignificación y Fortalecimiento.</p>
-    <ul>
-      <li>Manual con ejemplos clínicos y criterios de accesibilidad.</li>
-      <li>Indicadores: relato reflexivo, acuerdos y seguimiento.</li>
-      <li>Uso: sesiones 45–60 min; individual/pareja/grupo; trabajo por etapas.</li>
-    </ul>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
-      <a class="btn btn-primary" href="contacto.html">Conocer más</a>
-      <a class="btn" href="carrito.html">Agregar al carrito</a>
-    </div>
-  </article>
-
-  <!-- RESTO DE HERRAMIENTAS -->
-  <article class="card">
-    <img src="images/pistas-crianza.jpg" alt="Pistas de Crianza" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Pistas de Crianza</h3>
-    <p>Guías prácticas y lúdicas para acuerdos y rutinas respetuosas.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-
-  <article class="card">
-    <img src="images/entre-lineas.jpg" alt="Entre Líneas" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Entre Líneas</h3>
-    <p>Vínculo adolescente–adulto significativo desde enfoque narrativo y sistémico.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-
-  <article class="card">
-    <img src="images/ciclos-compartidos.jpg" alt="Ciclos Compartidos" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Ciclos Compartidos</h3>
-    <p>Mapeo de historias y recursos familiares para resignificar y reparar.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-
-  <article class="card">
-    <img src="images/mi-carita-dice.jpg" alt="Mi Carita Dice" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Mi Carita Dice</h3>
-    <p>Expresión emocional temprana con apoyo visual claro y amable.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-
-  <!-- Si usas estas imágenes, puedes añadirlas como extras o dejarlas fuera:
-  <article class="card">
-    <img src="images/palabras-habitan.jpg" alt="Palabras Habitan" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Palabras Habitan</h3>
-    <p>Apoyo narrativo y simbólico para procesos de resignificación.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-
-  <article class="card">
-    <img src="images/alma-colores.jpg" alt="Alma Colores" style="width:100%; border-radius:10px; margin-bottom:10px;">
-    <h3>Alma Colores</h3>
-    <p>Exploración emocional mediante combinaciones cromáticas significativas.</p>
-    <div><a class="btn btn-primary" href="contacto.html">Conocer más</a></div>
-  </article>
-  -->
-
-</div>
-
+      <!-- Raíces Fuertes, Alas Conscientes -->
+      <article id="raices-fuertes" class="product-card">
+        <div class="product-media">
+          <img src="images/raices-fuertes.jpg" alt="Raíces Fuertes, Alas Conscientes">
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">Raíces Fuertes, Alas Conscientes</h3>
+          <p class="product-desc">
+            Set para fortalecer competencias parentales y vínculos protectores. Incluye tarjetas,
+            guías y actividades para trabajo individual, pareja, familia o grupo.
+          </p>
+          <ul class="product-features">
+            <li>3 sets base + 10 situaciones + 10 sensibles por set</li>
+            <li>Manual con ejemplos clínicos y criterios de accesibilidad</li>
+            <li>Indicadores: relato reflexivo, acuerdos y seguimiento</li>
+          </ul>
+        </div>
+        <div class="product-cta">
+          <a class="btn btn-outline" href="contacto.html" aria-label="Más información Raíces Fuertes">Conocer más</a>
+          <a class="btn btn-primary" href="carrito.html?add=raices-fuertes" aria-label="Agregar Raíces Fuertes al carrito">Agregar al carrito</a>
+        </div>
       </article>
 
-      <article class="card">
-        <img src="images/pistas-crianza.jpg" alt="Pistas de Crianza">
-        <h3 class="mt-3 m0">Pistas de Crianza</h3>
-        <p class="mt-3">Decisiones cotidianas: límites, rutinas, regulación emocional y comunicación.</p>
-        <p><strong>Consultar</strong></p>
-        <button class="btn btn-primary" onclick="addToCart({id:'pistas-crianza',name:'Pistas de Crianza',price:24990})">Agregar al carrito</button>
+      <!-- Pistas de Crianza -->
+      <article id="pistas-crianza" class="product-card">
+        <div class="product-media">
+          <img src="images/pistas-crianza.jpg" alt="Pistas de Crianza">
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">Pistas de Crianza</h3>
+          <p class="product-desc">
+            Herramienta lúdica para promover acuerdos parentales observables y coherencia normativa.
+          </p>
+          <ul class="product-features">
+            <li>Tarjetas disparadoras y secuencias de juego</li>
+            <li>Uso en sesiones de 45–60 min</li>
+          </ul>
+        </div>
+        <div class="product-cta">
+          <a class="btn btn-outline" href="contacto.html">Conocer más</a>
+          <a class="btn btn-primary" href="carrito.html?add=pistas-crianza">Agregar al carrito</a>
+        </div>
       </article>
 
-      <article class="card">
-        <img src="images/entre-lineas.png" alt="Entre Líneas">
-        <h3 class="mt-3 m0">Entre Líneas</h3>
-        <p class="mt-3">Vínculo adolescente–adulto significativo desde enfoque narrativo y sistémico.</p>
-        <p><strong>Consultar</strong></p>
-        <button class="btn btn-primary" onclick="addToCart({id:'entre-lineas',name:'Entre Líneas',price:29990})">Agregar al carrito</button>
+      <!-- Entre Líneas -->
+      <article id="entre-lineas" class="product-card">
+        <div class="product-media">
+          <img src="images/entre-lineas.jpg" alt="Entre Líneas">
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">Entre Líneas</h3>
+          <p class="product-desc">
+            Recurso para vínculo adolescente–adulto significativo desde enfoque narrativo y sistémico.
+          </p>
+          <ul class="product-features">
+            <li>Actividades guiadas con indicaciones terapéuticas</li>
+          </ul>
+        </div>
+        <div class="product-cta">
+          <a class="btn btn-outline" href="contacto.html">Conocer más</a>
+          <a class="btn btn-primary" href="carrito.html?add=entre-lineas">Agregar al carrito</a>
+        </div>
       </article>
 
-      <article class="card">
-        <img src="images/ciclos-compartidos.png" alt="Ciclos Compartidos">
-        <h3 class="mt-3 m0">Ciclos Compartidos</h3>
-        <p class="mt-3">Recorrido narrativo de 40 cartas para diadas, familias o comunidad.</p>
-        <p><strong>Consultar</strong></p>
-        <button class="btn btn-primary" onclick="addToCart({id:'ciclos-compartidos',name:'Ciclos Compartidos',price:27990})">Agregar al carrito</button>
+      <!-- Ciclos Compartidos -->
+      <article id="ciclos-compartidos" class="product-card">
+        <div class="product-media">
+          <img src="images/ciclos-compartidos.jpg" alt="Ciclos Compartidos">
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">Ciclos Compartidos</h3>
+          <p class="product-desc">
+            Apoya resignificación, protección y fortalecimiento de vínculos mediante dinámicas por etapas.
+          </p>
+          <ul class="product-features">
+            <li>Incluye secuencias y seguimiento</li>
+          </ul>
+        </div>
+        <div class="product-cta">
+          <a class="btn btn-outline" href="contacto.html">Conocer más</a>
+          <a class="btn btn-primary" href="carrito.html?add=ciclos-compartidos">Agregar al carrito</a>
+        </div>
       </article>
 
-      <article class="card">
-        <img src="images/carita-dice.jpg" alt="Mi Carita Dice">
-        <h3 class="mt-3 m0">Mi Carita Dice</h3>
-        <p class="mt-3">Expresión emocional temprana en primera infancia.</p>
-        <p><strong>Consultar</strong></p>
-        <button class="btn btn-primary" onclick="addToCart({id:'mi-carita-dice',name:'Mi Carita Dice',price:19990})">Agregar al carrito</button>
-      </article>
-
-      <article class="card">
-        <img src="images/alma-colores.jpg" alt="Alma en Colores">
-        <h3 class="mt-3 m0">Alma en Colores</h3>
-        <p class="mt-3">Exploración emocional mediante recursos artísticos.</p>
-        <p><strong>Consultar</strong></p>
-        <button class="btn btn-primary" onclick="addToCart({id:'alma-colores',name:'Alma en Colores',price:22990})">Agregar al carrito</button>
+      <!-- Mi Carita Dice -->
+      <article id="mi-carita-dice" class="product-card">
+        <div class="product-media">
+          <img src="images/mi-carita-dice.jpg" alt="Mi Carita Dice">
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">Mi Carita Dice</h3>
+          <p class="product-desc">
+            Juego para expresión emocional con apoyos visuales, ideal para infancia y trabajo grupal.
+          </p>
+        </div>
+        <div class="product-cta">
+          <a class="btn btn-outline" href="contacto.html">Conocer más</a>
+          <a class="btn btn-primary" href="carrito.html?add=mi-carita-dice">Agregar al carrito</a>
+        </div>
       </article>
 
     </div>
   </section>
+  <!-- ========== /LISTA DE PRODUCTOS ========== -->
 
-  <!-- DESIRE / Beneficios -->
-  <section class="section bg-desire">
-    <div class="container grid-3">
-      <div class="card"><h3 class="m0">Diseño inclusivo</h3><p class="mt-3">Lenguaje claro, representación diversa y seguridad en imágenes.</p></div>
-      <div class="card"><h3 class="m0">Manual robusto</h3><p class="mt-3">Dinámica, ejemplos prácticos y criterios de adecuación.</p></div>
-      <div class="card"><h3 class="m0">Impacto observable</h3><p class="mt-3">Relatos, acuerdos y seguimiento de compromisos.</p></div>
-    </div>
-  </section>
-
-  <!-- ACTION -->
-  <section class="section bg-action">
-    <div class="container center">
-      <a class="btn btn-secondary" href="carrito.html">Ir al carrito</a>
-    </div>
-  </section>
 </main>
+
 
 <footer class="footer">
   <div class="container cols">
