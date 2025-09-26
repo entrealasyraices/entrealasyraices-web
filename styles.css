@@ -425,3 +425,22 @@ a:hover{text-decoration:underline}
 /* Imágenes responsivas por seguridad */
 img{ max-width: 100%; height: auto; display: block; }
 
+/* ===== HERO: que el carrusel ocupe TODO el lado derecho ===== */
+.hero-inner .carousel{
+  width: 100%;
+  /* altura proporcional para que “llene” visualmente el bloque */
+  aspect-ratio: 16 / 10;           /* puedes probar 16/9 o 4/3 si te gusta más */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hero-inner .carousel-track{ display: flex; transition: transform .5s ease; }
+.hero-inner .carousel-slide{ min-width: 100%; }
+
+.hero-inner .carousel img{
+  width: 100%;      /* escala la imagen al ancho del carrusel */
+  height: 100%;     /* iguala la altura al contenedor (aspect-ratio) */
+  object-fit: cover;/* recorta para que se vea “a pantalla llena” */
+  display: block;
+}
+
