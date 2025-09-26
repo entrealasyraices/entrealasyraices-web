@@ -1,15 +1,16 @@
 /* =========================
    Entre Alas y Raíces - styles.css
-   Sistema visual transversal + AIDA
+   Sistema visual transversal + AIDA (consolidado)
    ========================= */
 
-/* Tipografías (cargadas vía <link> en HTML) */
+/* ---------- Variables ---------- */
 :root{
   /* Marca */
-  --brand-orange: #F2943E; /* naranjo institucional cálido */
-  --brand-green:  #2E7D66; /* verde institucional sobrio */
+  --brand-orange: #F2943E;
+  --brand-green:  #2E7D66;
+  --brand-green-dark: #1F5A42;
 
-  /* Pasteles de apoyo (calidez, cercanía) */
+  /* Pasteles de apoyo */
   --mint:   #E9F6F1;
   --peach:  #FFEDE0;
   --sand:   #FFF8ED;
@@ -17,9 +18,9 @@
 
   /* Neutros */
   --white:  #FFFFFF;
-  --ink:    #1F2937;  /* texto principal */
-  --ink-2:  #374151;  /* subtítulo/paragraph */
-  --muted:  #6B7280;  /* apoyo */
+  --ink:    #1F2937;
+  --ink-2:  #374151;
+  --muted:  #6B7280;
   --border: #E5E7EB;
 
   /* Sombra y radios */
@@ -35,7 +36,7 @@
   --size-body: 1rem;
   --size-small: .95rem;
 
-  /* Espaciados */
+  /* Container y espaciados */
   --container: 1180px;
   --space-1: .5rem;
   --space-2: .75rem;
@@ -45,176 +46,186 @@
   --space-6: 3rem;
   --space-7: 4rem;
 
-  /* Transiciones */
-  --t: .25s ease;
+  /* Otros */
+  --whatsapp-green: #25d366;
 }
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* ---------- Base ---------- */
+*{ box-sizing:border-box }
+html{ scroll-behavior:smooth }
 body{
   margin:0;
-  font-family: 'Lora', serif;
+  font-family:'Lora', serif;
   color: var(--ink);
   background: var(--white);
-  line-height: 1.65;
+  line-height:1.65;
   font-size: var(--size-body);
 }
+img{ max-width:100%; height:auto; display:block }
+a{ color:var(--brand-green); text-decoration:none }
+a:hover{ text-decoration:underline }
+.container{ width:min(100% - 2rem, var(--container)); margin-inline:auto; }
 
-img{max-width:100%;display:block}
-a{color:var(--brand-green);text-decoration:none}
-a:hover{text-decoration:underline}
-
-.container{
-  width: min(100% - 2rem, var(--container));
-  margin-inline:auto;
-}
-
-/* ====== Header & Nav ====== */
+/* ---------- Header & Nav ---------- */
 .header{
-  position: sticky; top:0; z-index: 50;
+  position:sticky; top:0; z-index:50;
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(6px);
   border-bottom:1px solid var(--border);
 }
-.nav{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: .6rem 0;
+
+/* Soporte a header antiguo .nav/.menu (por si existe en otras páginas) */
+.nav{ display:flex; align-items:center; justify-content:space-between; padding:.6rem 0; }
+.brand{ display:flex; align-items:center; gap:.75rem }
+.brand img{ height:56px; width:auto; border-radius:.5rem }
+.brand .title{ font-family:'Quattrocento', serif; font-size:1.1rem; color:var(--ink) }
+
+/* Menú moderno .navbar (el que usamos ahora) */
+.navbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:flex-end; /* derecha en desktop */
 }
-.brand{display:flex; align-items:center; gap:.75rem}
-.brand img{height:56px; width:auto; border-radius:.5rem}
-.brand .title{font-family: 'Quattrocento', serif; font-size:1.1rem; color:var(--ink)}
-.menu{display:flex; gap:1rem; align-items:center; flex-wrap:wrap}
+@media (max-width:900px){
+  .navbar{ justify-content:center; } /* centrado en móvil/tablet */
+}
+
+/* Menú legacy .menu (si lo usas en otras páginas) */
+.menu{ display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
 .menu a{
-  font-family: 'Quattrocento Sans', sans-serif;
+  font-family:'Quattrocento Sans', sans-serif;
   padding:.5rem .8rem; border-radius:.75rem;
 }
-.menu a.active, .menu a:hover{
-  background: var(--mint);
-  text-decoration:none;
+.menu a.active, .menu a:hover{ background:var(--mint); text-decoration:none; }
+
+/* Botón hamburguesa (solo si lo usas) */
+.menu-toggle{ display:none; }
+@media (max-width:768px){
+  .menu-toggle{
+    display:block; background:none; border:none; font-size:1.8rem; cursor:pointer; margin-left:auto;
+  }
+  .menu{ display:none; flex-direction:column; gap:1rem; background:#fff; position:absolute; top:60px; right:10px;
+         padding:1rem; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,.1); }
+  .menu.is-open{ display:flex; }
 }
 
-/* ====== Botones ====== */
+/* Accentos del nav */
+.navbar a{ padding:.55rem .9rem; border-radius:10px; text-decoration:none; }
+.navbar a.nav-productos{ background:var(--brand-green); color:#fff; }
+.navbar a.nav-productos:hover{ filter:brightness(.95); }
+.navbar a.nav-carrito{
+  border:2px solid var(--brand-green); color:var(--ink);
+  border-radius:999px; padding:.45rem .9rem; position:relative; text-decoration:none;
+}
+.navbar a.nav-carrito:hover{ background:var(--mint); }
+.navbar a.nav-carrito .badge{
+  position:absolute; top:-8px; right:-8px; background:crimson; color:#fff;
+  font-size:.7rem; padding:2px 6px; border-radius:999px; min-width:18px; text-align:center;
+}
+.site-slogan{ color:var(--brand-green-dark); font-weight:600; text-decoration:none; }
+
+/* ---------- Botones ---------- */
 .btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  gap:.5rem;
-  font-family: 'Poppins', sans-serif; font-weight:600;
-  padding:.8rem 1.2rem; border-radius: var(--radius-lg);
-  border:2px solid transparent;
-  transition: var(--t);
-  cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  font-family:'Poppins', sans-serif; font-weight:600;
+  padding:.8rem 1.2rem; border-radius:var(--radius-lg);
+  border:2px solid transparent; transition:.25s ease; cursor:pointer;
 }
-.btn-primary{
-  background: var(--brand-green);
-  color: var(--white);
-}
-.btn-primary:hover{filter: brightness(1.05)}
-.btn-secondary{
-  background: var(--brand-orange);
-  color: var(--white);
-}
-.btn-outline{
-  background: transparent; color: var(--brand-green);
-  border-color: var(--brand-green);
-}
-.btn-outline:hover{background: var(--mint)}
+.btn-primary{ background:var(--brand-green); color:#fff; }
+.btn-primary:hover{ filter:brightness(1.05) }
+.btn-secondary{ background:var(--brand-orange); color:#fff; }
+.btn-outline{ background:transparent; color:var(--brand-green); border-color:var(--brand-green); }
+.btn-outline:hover{ background:var(--mint) }
+.btn-small{ padding:.5rem .8rem; border-radius:.6rem; }
 
-/* ====== Tarjetas / Secciones ====== */
-.card{
-  background: var(--white);
-  border:1px solid var(--border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow);
-  padding: var(--space-4);
+/* ---------- Tarjetas / Secciones ---------- */
+.card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius-xl); box-shadow:var(--shadow); padding:var(--space-4); }
+.card--destacado{ border:2px solid var(--brand-green); position:relative; }
+.card--destacado::before{
+  content:"Destacado"; position:absolute; top:10px; left:10px; background:var(--brand-green); color:#fff;
+  font-size:.75rem; padding:4px 8px; border-radius:999px;
 }
+.section{ padding:var(--space-7) 0; }
+.section-header{ margin-bottom:var(--space-4); }
+.section-header h2{ font-family:'Quattrocento', serif; font-size:var(--size-h2); margin:0 0 .5rem; }
+.section-header p{ color:var(--muted); margin:0; }
 
-.section{padding: var(--space-7) 0}
-.section-header{
-  margin-bottom: var(--space-4);
-}
-.section-header h2{
-  font-family: 'Quattrocento', serif;
-  font-size: var(--size-h2);
-  margin:0 0 .5rem;
-}
-.section-header p{color:var(--muted); margin:0}
+/* ---------- Fondos AIDA ---------- */
+.bg-attention{ background: linear-gradient(180deg, var(--peach), var(--sand)); }
+.bg-interest{  background: var(--white); }
+.bg-desire{    background: linear-gradient(180deg, var(--mint), var(--lilac)); }
+.bg-action{    background: var(--white); }
 
-/* ====== AIDA helper backgrounds ====== */
-.bg-attention{background: linear-gradient(180deg, var(--peach), var(--sand))}
-.bg-interest{background: var(--white)}
-.bg-desire{background: linear-gradient(180deg, var(--mint), var(--lilac))}
-.bg-action{background: var(--white)}
-
-/* ====== Hero (ATTENTION) ====== */
-
+/* ---------- HERO (Inicio) ---------- */
+.hero{ background: var(--peach); padding:24px 0; }
 .hero h1{
-  font-family:'Quattrocento', serif;
-  font-size: var(--size-h1);
+  font-family:'Quattrocento', serif; font-size:var(--size-h1);
   margin:0 0 var(--space-3);
 }
-.hero p{color:var(--ink-2); margin:0 0 var(--space-4)}
-.hero .cta{display:flex; gap: .75rem; flex-wrap:wrap}
-.hero .panel{
-  background: var(--white);
-  border:1px solid var(--border);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-5);
-  box-shadow: var(--shadow);
+.hero p{ color:var(--ink-2); margin:0 0 var(--space-4); }
+.hero-inner{
+  display:grid;
+  grid-template-columns: 0.85fr 1.15fr; /* derecha más ancha */
+  gap:24px; align-items:center;
 }
+@media (max-width:900px){ .hero-inner{ grid-template-columns:1fr; } }
 
-/* ====== Grids ====== */
-.grid-3{
-  display:grid; gap: var(--space-4);
-  grid-template-columns: repeat(3, 1fr);
-}
-.grid-2{
-  display:grid; gap: var(--space-4);
-  grid-template-columns: repeat(2, 1fr);
-}
-@media (max-width: 900px){
-  .hero{grid-template-columns: 1fr}
-  .grid-3{grid-template-columns: 1fr}
-  .grid-2{grid-template-columns: 1fr}
-}
+/* Columna izquierda centrada */
+.hero-left{ text-align:center; }
+.hero-left h1{ margin:0 auto 12px; max-width:22ch; }
+.hero-left p{ margin:16px auto 0; max-width:56ch; color:var(--ink-2); }
+.hero-left .cta{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:14px; }
 
-/* ====== Listas con íconos simples (css) ====== */
-.list-check{list-style:none; padding:0; margin:0}
-.list-check li{
-  padding-left:1.75rem; position:relative; margin:.4rem 0;
+/* Columna derecha: carrusel lleno */
+.hero-right{ width:100%; }
+.hero-right .carousel{
+  width:100%; aspect-ratio:16 / 10; max-height:420px; border-radius:12px; overflow:hidden; background:#fff; box-shadow:var(--shadow);
 }
-.list-check li:before{
-  content:'✔'; position:absolute; left:0; top:.15rem;
-  color: var(--brand-green); font-weight:700;
+.hero-right .carousel-track{ display:flex; transition:transform .6s ease; }
+.hero-right .carousel-slide{ min-width:100%; }
+.hero-right .carousel img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hero-right .carousel-dots{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:10px; display:flex; gap:8px;
 }
+.hero-right .carousel-dots button{
+  width:10px; height:10px; border-radius:50%; border:none; background:#ddd; cursor:pointer;
+}
+.hero-right .carousel-dots button.active{ background:var(--brand-green); }
 
-/* ====== Tablas simples ====== */
-.table{
-  width:100%; border-collapse: collapse;
-  font-size: .98rem;
-}
-.table th, .table td{border:1px solid var(--border); padding:.75rem; text-align:left}
-.table th{background: #FAFAFB}
+/* ---------- Grids genéricos ---------- */
+.grid-3{ display:grid; gap:var(--space-4); grid-template-columns:repeat(3,1fr); }
+.grid-2{ display:grid; gap:var(--space-4); grid-template-columns:repeat(2,1fr); }
+@media (max-width:900px){ .grid-3{ grid-template-columns:1fr; } .grid-2{ grid-template-columns:1fr; } }
 
-/* ====== Formularios ====== */
+/* ---------- Listas con ícono ---------- */
+.list-check{ list-style:none; padding:0; margin:0; }
+.list-check li{ padding-left:1.75rem; position:relative; margin:.4rem 0; }
+.list-check li:before{ content:'✔'; position:absolute; left:0; top:.15rem; color:var(--brand-green); font-weight:700; }
+
+/* ---------- Tablas ---------- */
+.table{ width:100%; border-collapse:collapse; font-size:.98rem; }
+.table th, .table td{ border:1px solid var(--border); padding:.75rem; text-align:left; }
+.table th{ background:#FAFAFB; }
+
+/* ---------- Formularios ---------- */
 .input, .select, .textarea{
-  width:100%; padding:.85rem 1rem;
-  border:1px solid var(--border); border-radius: .8rem;
-  font-family: 'Lora', serif;
+  width:100%; padding:.85rem 1rem; border:1px solid var(--border); border-radius:.8rem; font-family:'Lora', serif;
 }
-.textarea{min-height:140px}
+.textarea{ min-height:140px; }
 
-/* ====== Footer ====== */
+/* ---------- Footer ---------- */
 .footer{
-  padding: var(--space-6) 0; border-top:1px solid var(--border);
-  background: #FCFCFD;
-  color: var(--muted);
+  padding:var(--space-6) 0; border-top:1px solid var(--border); background:#FCFCFD; color:var(--muted);
 }
-.footer .cols{display:grid; gap:var(--space-4); grid-template-columns: 2fr 1fr 1fr}
-.footer a{color:var(--muted)}
-.footer .brand-small{display:flex; align-items:center; gap:.6rem}
-.footer img{height:40px; border-radius:.4rem}
-@media (max-width: 900px){ .footer .cols{grid-template-columns:1fr} }
+.footer .cols{ display:grid; gap:var(--space-4); grid-template-columns:2fr 1fr 1fr; }
+.footer a{ color:var(--muted); }
+.footer .brand-small{ display:flex; align-items:center; gap:.6rem; }
+.footer img{ height:40px; border-radius:.4rem; }
+@media (max-width:900px){ .footer .cols{ grid-template-columns:1fr; } }
 
-/* ====== Utilidades ====== */
+/* ---------- Utilidades ---------- */
 .m0{margin:0}
 .center{text-align:center}
 .mt-3{margin-top:var(--space-3)}
@@ -222,341 +233,51 @@ a:hover{text-decoration:underline}
 .mt-5{margin-top:var(--space-5)}
 .mb-4{margin-bottom:var(--space-4)}
 .hidden{display:none}
-.badge{
-  display:inline-block; padding:.35rem .6rem; border-radius: .6rem;
-  background: var(--mint); color: var(--brand-green); font-size:.9rem;
-}
-.notice{
-  background: var(--sand); border:1px solid var(--border);
-  padding: .9rem 1rem; border-radius: .8rem;
-}
-/* --- MENÚ RESPONSIVE --- */
+.badge{ display:inline-block; padding:.35rem .6rem; border-radius:.6rem; background:var(--mint); color:var(--brand-green); font-size:.9rem; }
+.notice{ background:var(--sand); border:1px solid var(--border); padding:.9rem 1rem; border-radius:.8rem; }
 
-/* En escritorio: menú horizontal */
-.menu {
-    display: flex;
-    justify-content: flex-end; /* Alineado a la derecha */
-    gap: 1.5rem;
-    align-items: center;
-}
-
-/* Botón hamburguesa oculto en escritorio */
-.menu-toggle {
-    display: none;
-}
-
-/* Para pantallas pequeñas (ej: móviles) */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block; /* Se muestra el botón */
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        cursor: pointer;
-        margin-left: auto;
-    }
-
-    .menu {
-        display: none; /* Oculto por defecto */
-        flex-direction: column;
-        gap: 1rem;
-        background-color: #fff; /* Fondo para destacar el menú */
-        position: absolute;
-        top: 60px; /* debajo del header */
-        right: 10px;
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .menu.is-open {
-        display: flex; /* Se muestra al abrir */
-    }
-}
-
-/* ===========================
-   AIDA UPGRADE (2025-09-25)
-   Menú, carrito, carrusel, teaser, productos destacado y contacto
-   =========================== */
-
-/* Paleta complementaria sobre tu sistema actual */
-:root{
-  --brand-green-dark: #1F5A42;   /* verde más intenso para slogan */
-  --whatsapp-green: #25d366;     /* botón flotante opcional */
-}
-
-/* Slogan junto al logo: “Sanar, sostener y crecer” en verde más fuerte */
-.site-slogan{
-  color: var(--brand-green-dark);
-  font-weight: 600;
-}
-
-/* ===== NAV / MENÚ ===== */
-/* Nota: en el HTML luego agregaremos estas clases a los enlaces correspondientes */
-.navbar a.nav-productos{
-  background: var(--brand-green);   /* tu verde institucional */
-  color: #fff;
-  padding: .55rem .9rem;
-  border-radius: 10px;
-  text-decoration: none;
-}
-.navbar a.nav-productos:hover{ filter:brightness(.95); }
-
-.navbar a.nav-carrito{
-  border: 2px solid var(--brand-green);
-  color: var(--ink, #1f2937);       /* usa tu neutral si existe */
-  border-radius: 999px;
-  padding: .45rem .9rem;
-  position: relative;
-  text-decoration: none;
-}
-.navbar a.nav-carrito:hover{ background: var(--mint, #E9F6F1); }
-
-.navbar a.nav-carrito .badge{
-  position: absolute; top:-8px; right:-8px;
-  background: crimson; color:#fff;
-  font-size: .7rem; padding: 2px 6px; border-radius: 999px;
-  min-width: 18px; text-align: center;
-}
-
-.navbar a.nav-whatsapp{ display:inline-flex; align-items:center; gap:6px; }
-
-/* ===== HERO / CARRUSEL ===== */
-.hero{ background: var(--peach, #FFEDC0); padding:40px 0; }
-.hero-inner{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center; }
-@media (max-width: 900px){ .hero-inner{ grid-template-columns:1fr; } }
-
-.carousel{ position:relative; overflow:hidden; border-radius:14px; box-shadow: var(--shadow); background:#fff; }
-.carousel-track{ display:flex; transition: transform .6s ease; }
-.carousel-slide{ min-width:100%; }
-.carousel-slide img{ display:block; width:100%; height:auto; }
-.carousel-dots{ position:absolute; left:50%; transform:translateX(-50%); bottom:10px; display:flex; gap:8px; }
-.carousel-dots button{
-  width:10px; height:10px; border-radius:50%; border:none; background:#ddd; cursor:pointer;
-}
-.carousel-dots button.active{ background: var(--brand-green); }
-
-/* Teaser de la herramienta destacada (mini card en home) */
-.teaser{
-  margin-top:20px; background:#fff; border-radius:14px;
-  box-shadow: var(--shadow); padding:16px 18px;
-  display:flex; gap:16px; align-items:center;
-}
-.teaser img{ width:88px; height:88px; object-fit:cover; border-radius:10px; }
-.teaser .t-text{ flex:1; }
-.teaser .t-text h4{ margin:0 0 6px; }
-
-/* ===== CARDS DE PRODUCTO ===== */
-.card{ background:#fff; border-radius:14px; box-shadow: var(--shadow); padding:18px; }
-.card--destacado{ border:2px solid var(--brand-green); position:relative; }
-.card--destacado::before{
-  content:"Destacado"; position:absolute; top:10px; left:10px;
-  background: var(--brand-green); color:#fff; font-size:.75rem;
-  padding:4px 8px; border-radius:999px;
-}
-
-/* ===== CONTACTO (logo en columna derecha) ===== */
-.contacto-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-@media (max-width: 900px){ .contacto-grid{ grid-template-columns:1fr; } }
-.contacto-logo-box{
-  display:flex; align-items:center; justify-content:center; background:#fff;
-  border-radius:14px; box-shadow: var(--shadow); padding:24px;
-}
-.contacto-logo-box img{ max-width:360px; height:auto; }
-
-/* ===== BOTÓN FLOTANTE WHATSAPP (opcional) ===== */
+/* ---------- WhatsApp flotante ---------- */
 .whatsapp-float{
   position:fixed; right:18px; bottom:18px; z-index:9999;
   display:inline-flex; align-items:center; gap:8px;
-  background: var(--whatsapp-green); color:#fff;
-  padding:12px 14px; border-radius:999px; box-shadow: var(--shadow);
+  background:var(--whatsapp-green); color:#fff;
+  padding:12px 14px; border-radius:999px; box-shadow:var(--shadow);
   text-decoration:none;
 }
 .whatsapp-float:hover{ filter:brightness(.95); }
-/* ===== FIX LAYOUT HOME (centrado + hero en 2 columnas) ===== */
 
-/* Centrado consistente para contenedores principales */
-.container,
-.topbar,
-.navbar,
-.hero-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
+/* ---------- Contacto (logo en panel derecho) ---------- */
+.contacto-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media (max-width:900px){ .contacto-grid{ grid-template-columns:1fr; } }
+.contacto-logo-box{
+  display:flex; align-items:center; justify-content:center; background:#fff;
+  border-radius:14px; box-shadow:var(--shadow); padding:24px;
 }
+.contacto-logo-box img{ max-width:360px; height:auto; }
 
-/* Nav ordenado: evita que se “amontonen” los enlaces */
-.navbar{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
+/* ---------- Productos (cards & grid) ---------- */
+.products-section{ max-width:1200px; margin:0 auto; padding:0 16px 48px; }
+.products-grid{ display:grid; gap:18px; grid-template-columns:1fr; }
+@media (min-width:640px){ .products-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:900px){ .products-grid{ grid-template-columns:repeat(3,1fr); } }
 
-/* Hero en 2 columnas (texto + carrusel). En móvil -> 1 columna */
-.hero-inner{
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap: 24px;
-  align-items: center;
+.product-card{
+  background:#fff; border:1px solid var(--border); border-radius:14px;
+  box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; height:100%;
 }
-@media (max-width: 900px){
-  .hero-inner{ grid-template-columns: 1fr; }
-}
+.product-media{ aspect-ratio:4 / 3; overflow:hidden; background:#f7f7f7; }
+.product-media img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-/* Carrusel: ancho completo y recorte correcto */
-.carousel{ overflow: hidden; border-radius: 12px; }
-.carousel-track{ display: flex; transition: transform .5s ease; }
-.carousel-slide{ min-width: 100%; }
-.carousel-dots{ display:flex; gap:6px; justify-content:center; margin-top:8px; }
-.carousel-dots button{ width:8px; height:8px; border-radius:999px; border:0; background:#e2e2e2; cursor:pointer; }
-.carousel-dots button.active{ background: var(--brand-green, #2E7D66); }
+.product-body{ padding:16px 16px 12px; }
+.product-title{ font-weight:700; font-size:clamp(18px, 2.2vw, 20px); margin:0 0 6px; text-align:center; }
+.product-desc{ color:var(--ink-2); font-size:.95rem; line-height:1.45; margin:8px 0 0; }
+.product-features{ margin:10px 0 0; padding-left:18px; }
+.product-features li{ margin:2px 0; }
 
-/* Slogan como enlace (verde y sin subrayado) */
-.site-slogan{ color: var(--brand-green, #2E7D66); text-decoration: none; font-weight: 600; }
-
-/* Imágenes responsivas por seguridad */
-img{ max-width: 100%; height: auto; display: block; }
-
-/* ===== HERO: que el carrusel ocupe TODO el lado derecho ===== */
-.hero-inner .carousel{
-  width: 100%;
-  /* altura proporcional para que “llene” visualmente el bloque */
-  aspect-ratio: 16 / 10;           /* puedes probar 16/9 o 4/3 si te gusta más */
-  border-radius: 12px;
-  overflow: hidden;
+.product-cta{
+  display:flex; gap:10px; justify-content:center; align-items:center;
+  padding:12px 16px 18px; margin-top:auto;
 }
-
-.hero-inner .carousel-track{ display: flex; transition: transform .5s ease; }
-.hero-inner .carousel-slide{ min-width: 100%; }
-
-.hero-inner .carousel img{
-  width: 100%;      /* escala la imagen al ancho del carrusel */
-  height: 100%;     /* iguala la altura al contenedor (aspect-ratio) */
-  object-fit: cover;/* recorta para que se vea “a pantalla llena” */
-  display: block;
-}
-/* === HERO: que la imagen/carrusel ocupe TODO el lado derecho === */
-.hero-inner{
-  grid-template-columns: 0.9fr 1.1fr !important; /* derecha un poco más ancha */
-  align-items: center;
-}
-.hero-inner > div{ min-width: 0; }              /* evita que el contenido limite el ancho */
-.hero-inner > div:last-child{ width: 100%; }    /* la columna derecha debe estirarse */
-
-.hero-inner .carousel{
-  width: 100% !important;
-  max-width: none !important;
-  aspect-ratio: 16 / 9;         /* puedes probar 16/10 o 4/3 si te gusta más */
-  border-radius: 12px;
-  overflow: hidden;
-}
-.hero-inner .carousel-track{ display:flex; transition: transform .5s ease; }
-.hero-inner .carousel-slide{ min-width:100%; }
-
-.hero-inner .carousel img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-/* =========================
-   AIDA HERO (FINAL)
-   Carrusel llena el lado derecho y altura controlada
-========================= */
-.hero{ padding: 24px 0; }  /* mantenemos padding del hero */
-
-.hero-inner{
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr; /* derecha más ancha */
-  gap: 24px;
-  align-items: center;
-}
-
-.hero-right{ width: 100%; }
-
-.hero-right .carousel{
-  width: 100%;
-  aspect-ratio: 16 / 10;     /* puedes usar 16/9 si te gusta más */
-  max-height: 420px;         /* evita que la franja rosada se haga gigante */
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.hero-right .carousel-track{ display: flex; transition: transform .5s ease; }
-.hero-right .carousel-slide{ min-width: 100%; }
-
-.hero-right .carousel img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-@media (max-width: 900px){
-  .hero-inner{ grid-template-columns: 1fr; }
-  .hero-right .carousel{ max-height: none; aspect-ratio: 16 / 9; }
-}
-/* =========================
-   HOME: NAV + HERO (inicio)
-   ========================= */
-
-/* 1) Menú alineado a la derecha (desktop) y centrado en móviles */
-.navbar{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  justify-content:flex-end;     /* derecha en pantallas grandes */
-}
-@media (max-width: 900px){
-  .navbar{ justify-content:center; }  /* centrado en móviles/tablets */
-}
-
-/* 2) Centrar el contenido del lado izquierdo del hero */
-.hero .hero-left{
-  text-align:center;
-}
-.hero .hero-left h1{
-  margin:0 auto 12px;
-  max-width: 22ch;      /* limita ancho del título para que respire */
-}
-.hero .hero-left p{
-  margin:16px auto 0;
-  max-width: 56ch;      /* ancho legible del párrafo */
-  color: var(--ink-2);
-}
-.hero .hero-left .cta{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
-
-/* 3) Carrusel: seguridad de tamaño (por si faltan inline styles) */
-.carousel{
-  width:100%;
-  aspect-ratio:16/9;
-  border-radius:12px;
-  overflow:hidden;
-}
-.carousel-track{ display:flex; }
-.carousel-slide{
-  min-width:100%;
-  height:100%;
-}
-.carousel-slide img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-.carousel-dots{
-  display:flex;
-  gap:8px;
-  justify-content:center;
-  margin-top:12px;
-}
-
+.product-cta .btn{ padding:10px 14px; border-radius:10px; border:1px solid var(--border); text-decoration:none; font-weight:600; }
+.product-cta .btn-primary{ background:var(--brand-green); color:#fff; border-color:transparent; }
+.product-cta .btn-outline{ background:#fff; color:var(--ink); }
