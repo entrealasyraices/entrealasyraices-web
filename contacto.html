@@ -41,28 +41,25 @@
 </head>
 
 <body>
+
 <header>
-  <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+  <div class="topbar">
     <a href="index.html">
       <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="height:48px;">
     </a>
-    <span class="site-slogan">Sanar, sostener y crecer</span>
+    <a href="index.html" class="site-slogan">Sanar, sostener y crecer</a>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" aria-label="Abrir menú">☰</button>
   </div>
 
-  <button class="hamburger" aria-label="Abrir menú">☰</button>
-
-  <nav class="navbar" aria-label="Principal">
+  <!-- IMPORTANTE: clase "menu" -->
+  <nav class="navbar menu" aria-label="Principal">
     <a href="quienes-somos.html">Quiénes somos</a>
     <a href="mision-vision.html">Misión y Visión</a>
-    <!-- <a href="#" id="nav-video">Video</a>  Espacio reservado (desactivado por ahora) -->
-    <a href="productos.html" class="nav-productos">Productos</a>
+    <a href="productos.html">Productos</a>
     <a href="capacitaciones.html">Capacitaciones</a>
     <a href="contacto.html">Contacto</a>
-
-    <a class="nav-whatsapp" href="https://wa.me/56933351449?text=Hola%20vengo%20desde%20la%20web%20de%20Entre%20Alas%20y%20Ra%C3%ADces" target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp">
-      WhatsApp
-    </a>
-
     <a href="carrito.html" class="nav-carrito" aria-label="Carrito">
       Carrito <span class="badge" id="cartBadge" style="display:none">0</span>
     </a>
