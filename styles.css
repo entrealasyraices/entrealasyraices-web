@@ -378,4 +378,50 @@ a:hover{text-decoration:underline}
   text-decoration:none;
 }
 .whatsapp-float:hover{ filter:brightness(.95); }
+/* ===== FIX LAYOUT HOME (centrado + hero en 2 columnas) ===== */
+
+/* Centrado consistente para contenedores principales */
+.container,
+.topbar,
+.navbar,
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Nav ordenado: evita que se “amontonen” los enlaces */
+.navbar{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* Hero en 2 columnas (texto + carrusel). En móvil -> 1 columna */
+.hero-inner{
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 900px){
+  .hero-inner{ grid-template-columns: 1fr; }
+}
+
+/* Carrusel: ancho completo y recorte correcto */
+.carousel{ overflow: hidden; border-radius: 12px; }
+.carousel-track{ display: flex; transition: transform .5s ease; }
+.carousel-slide{ min-width: 100%; }
+.carousel-dots{ display:flex; gap:6px; justify-content:center; margin-top:8px; }
+.carousel-dots button{ width:8px; height:8px; border-radius:999px; border:0; background:#e2e2e2; cursor:pointer; }
+.carousel-dots button.active{ background: var(--brand-green, #2E7D66); }
+
+/* Slogan como enlace (verde y sin subrayado) */
+.site-slogan{ color: var(--brand-green, #2E7D66); text-decoration: none; font-weight: 600; }
+
+/* Imágenes responsivas por seguridad */
+img{ max-width: 100%; height: auto; display: block; }
 
