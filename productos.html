@@ -30,13 +30,23 @@
     hyphens: auto;
   }
 
-  /* Imagen responsiva dentro del header de la tarjeta */
+  /* MISMO TAMAÑO VISUAL PARA TODAS LAS IMÁGENES DE PRODUCTO */
+  .product-header {
+    aspect-ratio: 4 / 3;   /* proporción estándar de tus imágenes antiguas */
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
   .product-header img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;     /* recorta sin deformar */
     display: block;
   }
 </style>
+
 
 
 
@@ -103,7 +113,7 @@
         <div class="product-body">
           <h3 class="product-title">Pistas de Crianza</h3>
           <p class="product-desc">
-            Pistas de Crianza es un juego terapéutico-lúdico creado para trabajar con adultos, cuidadores y familias diversas. A través de ilustraciones en estilo pop art, cada carta contiene pistas simbólicas que representan aspectos de la crianza en distintas etapas de la vida: bebés, niños, adolescentes y contextos intergeneracionales.
+            Pistas de Crianza es un juego terapéutico-lúdico creado para trabajar con adultos, cuidadores y familias diversas. A través de ilustraciones, cada carta contiene pistas simbólicas que representan aspectos de la crianza en distintas etapas de la vida: bebés, niños, adolescentes y contextos intergeneracionales.
           </p>
           <ul class="product-features">
             <li>Tarjetas disparadoras y secuencias de juego</li>
