@@ -443,4 +443,28 @@ img{ max-width: 100%; height: auto; display: block; }
   object-fit: cover;/* recorta para que se vea “a pantalla llena” */
   display: block;
 }
+/* === HERO: que la imagen/carrusel ocupe TODO el lado derecho === */
+.hero-inner{
+  grid-template-columns: 0.9fr 1.1fr !important; /* derecha un poco más ancha */
+  align-items: center;
+}
+.hero-inner > div{ min-width: 0; }              /* evita que el contenido limite el ancho */
+.hero-inner > div:last-child{ width: 100%; }    /* la columna derecha debe estirarse */
+
+.hero-inner .carousel{
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: 16 / 9;         /* puedes probar 16/10 o 4/3 si te gusta más */
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hero-inner .carousel-track{ display:flex; transition: transform .5s ease; }
+.hero-inner .carousel-slide{ min-width:100%; }
+
+.hero-inner .carousel img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
