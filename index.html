@@ -58,7 +58,8 @@
 
   <button class="hamburger" aria-label="Abrir menú">☰</button>
 
-<nav class="navbar" aria-label="Principal"
+<nav class="navbar menu" aria-label="Principal"
+
      style="max-width:1200px;margin:0 auto;padding-left:16px;padding-right:16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
     <a href="quienes-somos.html">Quiénes somos</a>
     <a href="mision-vision.html">Misión y Visión</a>
@@ -218,8 +219,8 @@
   
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const toggle = document.querySelector(".menu-toggle");
-    const menu = document.querySelector(".menu");
+    const toggle = document.querySelector(".hamburger");
+    const menu = document.querySelector(".navbar.menu");
     if (toggle && menu) {
       toggle.addEventListener("click", () => {
         menu.classList.toggle("is-open");
@@ -227,6 +228,7 @@
     }
   });
 </script>
+
 
   <a class="whatsapp-float"
    href="https://wa.me/56933351449?text=Hola%20vengo%20desde%20la%20web%20de%20Entre%20Alas%20y%20Ra%C3%ADces"
