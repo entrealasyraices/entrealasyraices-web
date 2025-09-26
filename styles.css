@@ -499,4 +499,64 @@ img{ max-width: 100%; height: auto; display: block; }
   .hero-inner{ grid-template-columns: 1fr; }
   .hero-right .carousel{ max-height: none; aspect-ratio: 16 / 9; }
 }
+/* =========================
+   HOME: NAV + HERO (inicio)
+   ========================= */
+
+/* 1) Menú alineado a la derecha (desktop) y centrado en móviles */
+.navbar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:flex-end;     /* derecha en pantallas grandes */
+}
+@media (max-width: 900px){
+  .navbar{ justify-content:center; }  /* centrado en móviles/tablets */
+}
+
+/* 2) Centrar el contenido del lado izquierdo del hero */
+.hero .hero-left{
+  text-align:center;
+}
+.hero .hero-left h1{
+  margin:0 auto 12px;
+  max-width: 22ch;      /* limita ancho del título para que respire */
+}
+.hero .hero-left p{
+  margin:16px auto 0;
+  max-width: 56ch;      /* ancho legible del párrafo */
+  color: var(--ink-2);
+}
+.hero .hero-left .cta{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+/* 3) Carrusel: seguridad de tamaño (por si faltan inline styles) */
+.carousel{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:12px;
+  overflow:hidden;
+}
+.carousel-track{ display:flex; }
+.carousel-slide{
+  min-width:100%;
+  height:100%;
+}
+.carousel-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.carousel-dots{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin-top:12px;
+}
 
