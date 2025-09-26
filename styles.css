@@ -423,3 +423,42 @@ a:hover{ text-decoration:underline }
   .hero-left p { margin: 8px 0 0; }
 }
 
+/* Header y botón ☰ bien alineados en móvil */
+@media (max-width: 992px) {
+  header { position: relative; }
+
+  /* La franja superior ya es flex: forzamos separación logo/slogan vs. botón */
+  .topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Muestra el botón y ubícalo junto a la topbar */
+  .hamburger {
+    display: inline-block;
+    margin: 0;               /* sin saltos raros */
+    font-size: 2rem;
+    line-height: 1;
+    background: none;
+    border: 0;
+    color: #2E7D66;
+  }
+
+  /* Menú oculto por defecto; se abre con .is-open */
+  .navbar.menu {
+    display: none !important;
+    position: absolute;
+    left: 0; right: 0;
+    top: 70px;               /* debajo del header */
+    background: #fff;
+    padding: 12px 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.10);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    z-index: 1000;
+  }
+  .navbar.menu.is-open { display: block !important; }
+  .navbar.menu a { display: block; padding: 8px 0; }
+}
