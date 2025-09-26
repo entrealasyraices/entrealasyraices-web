@@ -145,12 +145,7 @@ a:hover{text-decoration:underline}
 .bg-action{background: var(--white)}
 
 /* ====== Hero (ATTENTION) ====== */
-.hero{
-  display:grid; gap: var(--space-5);
-  grid-template-columns: 1.1fr .9fr;
-  align-items:center;
-  padding: var(--space-6) 0;
-}
+
 .hero h1{
   font-family:'Quattrocento', serif;
   font-size: var(--size-h1);
@@ -466,5 +461,42 @@ img{ max-width: 100%; height: auto; display: block; }
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* =========================
+   AIDA HERO (FINAL)
+   Carrusel llena el lado derecho y altura controlada
+========================= */
+.hero{ padding: 24px 0; }  /* mantenemos padding del hero */
+
+.hero-inner{
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr; /* derecha más ancha */
+  gap: 24px;
+  align-items: center;
+}
+
+.hero-right{ width: 100%; }
+
+.hero-right .carousel{
+  width: 100%;
+  aspect-ratio: 16 / 10;     /* puedes usar 16/9 si te gusta más */
+  max-height: 420px;         /* evita que la franja rosada se haga gigante */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hero-right .carousel-track{ display: flex; transition: transform .5s ease; }
+.hero-right .carousel-slide{ min-width: 100%; }
+
+.hero-right .carousel img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px){
+  .hero-inner{ grid-template-columns: 1fr; }
+  .hero-right .carousel{ max-height: none; aspect-ratio: 16 / 9; }
 }
 
