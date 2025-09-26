@@ -16,6 +16,23 @@
   
 <!-- estilos locales SOLO para productos.html -->
 <style>
+  /* --- Efecto tarjeta igual a las antiguas --- */
+  .product {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #ffffff;                  /* fondo blanco */
+    border-radius: 16px;                  /* bordes redondeados */
+    border: 1px solid rgba(0,0,0,.06);    /* borde muy suave */
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);/* sombra suave como “despegada” del fondo */
+  }
+
+  /* Cuerpo crece para alinear botones al fondo */
+  .product-body {
+    flex: 1 1 auto;
+    min-height: 180px;                    /* ajusta +/– si algún botón queda desfasado */
+  }
+
   /* Aire interno en título y texto */
   .product-title,
   .product-desc {
@@ -23,44 +40,33 @@
     padding-right: 1rem;
   }
 
-  /* Texto justificado */
+  /* Texto justificado y agradable */
   .product-desc {
     text-align: justify;
     text-wrap: pretty;
     hyphens: auto;
   }
 
-  /* Misma proporción visual para TODAS las imágenes de producto */
+  /* MISMO TAMAÑO VISUAL para todas las imágenes
+     y bordes superiores redondeados visibles */
   .product-header {
-    aspect-ratio: 4 / 3;      /* ajusta a 3/2 si tus antiguas son 3:2 */
+    aspect-ratio: 4 / 3;                  /* cambia a 3/2 si esa es tu proporción real */
     width: 100%;
-    overflow: hidden;          /* necesario para ver los bordes redondeados en la imagen */
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
+    overflow: hidden;                      /* recorta esquinas de la imagen */
+    border-top-left-radius: 16px;          /* redondeo superior igual al de .product */
+    border-top-right-radius: 16px;
   }
   .product-header img {
     width: 100%;
     height: 100%;
-    object-fit: cover;         /* recorta sin deformar */
+    object-fit: cover;                     /* recorte estético sin deformar */
     display: block;
   }
 
-  /* --- Alineación de botones al mismo nivel --- */
-  /* Hacemos que cada tarjeta sea una columna flex y el cuerpo crezca.
-     Así, el bloque de botones cae SIEMPRE al fondo y quedan parejos. */
-  .product {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  .product-body {
-    flex: 1 1 auto;
-    /* Si ves que aún no calzan exacto con las antiguas, ajusta este min-height */
-    min-height: 180px;  /* sube/baja 10–20px según necesites */
-  }
+  /* Botones parejos al mismo nivel y con aire */
   .product-cta {
-    margin-top: auto;          /* empuja los botones hacia abajo */
-    padding: 0 1rem 1rem;      /* mismo aire que el texto */
+    margin-top: auto;
+    padding: 0 1rem 1rem;
     display: flex;
     gap: .75rem;
   }
