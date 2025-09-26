@@ -152,3 +152,14 @@ function goToPayment(){
 //   // Aquí abriríamos un modal e insertaríamos <iframe src="..."></iframe>
 // });
 */
+
+// === Menú hamburguesa (móvil) ===
+const btnHamburger = document.querySelector('.hamburger');
+const navBar = document.querySelector('.navbar');
+
+if (btnHamburger && navBar) {
+  btnHamburger.addEventListener('click', () => {
+    navBar.classList.toggle('is-open');
+  });
+}
+
