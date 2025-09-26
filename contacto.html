@@ -53,19 +53,38 @@
   </section>
 
   <!-- INTEREST -->
-  <section class="section bg-interest">
-    <div class="container grid-2">
-      <div class="card">
-        <form action="https://formsubmit.co/contacto@entrealasyraices.cl" method="POST">
-          <label>Nombre<br><input class="input" type="text" name="nombre" required></label><br><br>
-          <label>Correo<br><input class="input" type="email" name="correo" required></label><br><br>
-          <label>Asunto<br>
-            <select class="select" name="asunto" required>
-              <option value="Compra de producto">Compra de producto</option>
-              <option value="Capacitaciones">Capacitaciones</option>
-              <option value="Co-diseño institucional">Co-diseño institucional</option>
-              <option value="Soporte">Soporte</option>
-            </select>
+  <section class="section">
+  <div class="container contacto-grid">
+
+    <!-- Columna izquierda: deja aquí tu formulario y texto actual -->
+    <div>
+      <!-- ... TODO tu formulario existente ... -->
+    </div>
+
+    <!-- Columna derecha: logo centrado + (opcional) datos -->
+    <aside>
+      <div class="contacto-logo-box">
+        <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces">
+      </div>
+
+      <!-- OPCIONAL: si quieres mantener los datos bajo el logo -->
+      <div class="card mt-3">
+        <h3 class="m0">Datos de contacto</h3>
+        <p class="m0"><strong>Correo ventas:</strong>
+          <a href="mailto:ventas@entrealasraices.cl">ventas@entrealasraices.cl</a>
+        </p>
+        <p class="m0"><strong>Instagram:</strong>
+          <a href="https://instagram.com/entrealasraices" target="_blank" rel="noopener">@entrealasraices</a>
+        </p>
+        <p class="m0"><strong>WhatsApp:</strong>
+          <a href="https://wa.me/56933351449" target="_blank" rel="noopener">+56 9 3335 1449</a>
+        </p>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
           </label><br><br>
           <label>Mensaje<br><textarea class="textarea" name="mensaje" required></textarea></label><br>
           <button class="btn btn-primary" type="submit">Enviar</button>
