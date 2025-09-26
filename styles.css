@@ -281,3 +281,37 @@ a:hover{ text-decoration:underline }
 .product-cta .btn{ padding:10px 14px; border-radius:10px; border:1px solid var(--border); text-decoration:none; font-weight:600; }
 .product-cta .btn-primary{ background:var(--brand-green); color:#fff; border-color:transparent; }
 .product-cta .btn-outline{ background:#fff; color:var(--ink); }
+/* =========================
+   MOBILE A: HERO/CARRUSEL + PRODUCTOS
+   (No modifica la vista en PC)
+   ========================= */
+
+/* --- HERO / CARRUSEL (home) --- */
+@media (max-width: 768px) {
+  /* Intenta cubrir los nombres de sección habituales */
+  .hero, .carousel, .slider, .banner {
+    height: auto !important;
+  }
+  .hero img, .carousel img, .slider img, .banner img {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;   /* más grande y proporcionado en móvil */
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/* --- PRODUCTOS (tarjetas) en móvil: 1 columna legible --- */
+@media (max-width: 768px) {
+  /* Nombres probables de contenedores de grilla */
+  .products-grid, .product-list, .cards-grid, .lista-productos, .contenedor-productos {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !ant;
+  }
+
+  /* Botones sin cortes */
+  .product-cta {
+    flex-wrap: wrap;
+  }
+}
