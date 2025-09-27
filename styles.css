@@ -496,3 +496,62 @@ header { position: relative; }
     display:block;
   }
 }
+/* ====== FIX NAV ESCRITORIO ====== */
+@media (min-width: 769px){
+  /* Que el nav se comporte horizontal y a la derecha */
+  .navbar.menu{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    gap:16px !important;
+    position:static !important;
+    background:transparent !important;
+    padding:0 !important;
+    box-shadow:none !important;
+    margin-left:auto !important;  /* empuja el menú a la derecha */
+  }
+  /* Enlace horizontal (anula “display:block” heredado de móvil) */
+  .navbar.menu a{
+    display:inline-block !important;
+    padding:.55rem .9rem !important;
+  }
+}
+
+/* ====== FIX NAV MÓVIL ====== */
+@media (max-width: 768px){
+  /* Botón visible arriba derecha */
+  .hamburger{
+    display:block !important;
+    position:absolute !important;
+    right:16px; top:16px;
+  }
+
+  /* Menú oculto por defecto */
+  .navbar.menu{
+    display:none !important;
+    flex-direction:column;
+    position:absolute; left:0; right:0; top:60px;
+    background:#fff; padding:16px 20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+    border-bottom:1px solid rgba(0,0,0,.06);
+    z-index:1000;
+  }
+
+  /* Mostramos cuando JS agrega la clase */
+  .navbar.menu.is-open,
+  .navbar.is-open{
+    display:flex !important;
+  }
+
+  .navbar.menu a{ display:block; padding:10px 0; }
+}
+
+/* ====== FIX PUNTOS CARRUSEL EN MÓVIL ====== */
+@media (max-width: 768px){
+  .hero-right .carousel-dots{
+    position:static !important;
+    transform:none !important;
+    margin:10px auto 16px !important; /* bajo la imagen */
+    text-align:center;
+  }
+}
