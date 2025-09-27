@@ -364,48 +364,27 @@ a:hover{ text-decoration:underline }
     margin-left: auto;
   }
 
-  /* Menú oculto por defecto */
+  /* Ocultar menú en móvil por defecto */
   .navbar.menu {
     display: none;
     flex-direction: column;
+    gap: 12px;
     background: #fff;
     position: absolute;
-    top: 60px; /* debajo del header */
+    top: 60px;
     right: 0;
     left: 0;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     z-index: 1000;
   }
 
-  /* Menú abierto */
+  /* Mostrar menú cuando tenga la clase .is-open */
   .navbar.menu.is-open {
     display: flex;
   }
-
-  .navbar.menu a {
-    display: block;
-    padding: 10px 0;
-  }
 }
 
-
-  .navbar.menu {
-    display: none;
-    flex-direction: column;
-    background: white;
-    position: absolute;
-    top: 60px; /* justo bajo el header */
-    right: 0;
-    left: 0;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-
-  .navbar.menu.is-open {
-    display: flex; /* cuando se abre */
-  }
-}
 
 /* ====== HEADER + NAV (FINAL) ====== */
 header { position: relative; }
