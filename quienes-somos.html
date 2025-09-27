@@ -17,19 +17,21 @@
 
 <body>
 <header>
-  <div class="topbar" style="display:flex;align-items:center;gap:12px;padding:10px 0;max-width:1200px;margin:0 auto;padding-left:16px;padding-right:16px;">
+  <div class="topbar">
     <a href="index.html">
       <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="height:48px;">
     </a>
-    <a href="index.html" class="site-slogan" style="text-decoration:none">Sanar, sostener y crecer</a>
+    <a href="index.html" class="site-slogan">Sanar, sostener y crecer</a>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" aria-label="Abrir menú">☰</button>
   </div>
 
-  <button class="hamburger" aria-label="Abrir menú">☰</button>
-
-  <nav class="navbar" aria-label="Principal" style="max-width:1200px;margin:0 auto;padding-left:16px;padding-right:16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+  <!-- IMPORTANTE: clase "menu" -->
+  <nav class="navbar menu" aria-label="Principal">
     <a href="quienes-somos.html">Quiénes somos</a>
     <a href="mision-vision.html">Misión y Visión</a>
-    <a href="productos.html" class="nav-productos">Productos</a>
+    <a href="productos.html">Productos</a>
     <a href="capacitaciones.html">Capacitaciones</a>
     <a href="contacto.html">Contacto</a>
     <a href="carrito.html" class="nav-carrito" aria-label="Carrito">
@@ -37,6 +39,7 @@
     </a>
   </nav>
 </header>
+
 
 
 <main>
