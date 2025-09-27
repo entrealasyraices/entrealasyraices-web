@@ -153,9 +153,10 @@ function goToPayment(){
 // });
 */
 
+
 // === Menú hamburguesa (móvil) ===
 const btnHamburguesa = document.querySelector('.hamburger');
-const barraNavegacion = document.querySelector('.navbar');
+const barraNavegacion = document.querySelector('.navbar.menu');
 
 if (btnHamburguesa && barraNavegacion) {
   btnHamburguesa.addEventListener('click', () => {
