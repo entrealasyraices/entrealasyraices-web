@@ -670,4 +670,59 @@ a:hover{ text-decoration:underline }
     opacity: 1;
   }
 }
+/* --- HEADER --- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Logo+eslogan a la izquierda, hamburguesa a la derecha */
+  padding: 10px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topbar a.site-slogan {
+  margin-left: 12px;
+  font-size: 1rem;
+  color: #2E7D66;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Botón hamburguesa */
+.hamburger {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none; /* solo visible en móviles */
+}
+
+/* Menú en escritorio */
+.navbar.menu {
+  display: flex;
+  gap: 16px;
+}
+
+/* Menú móvil */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* mostrar botón */
+  }
+
+  .navbar.menu {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px; /* justo bajo el header */
+    right: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .navbar.menu.is-open {
+    display: flex; /* cuando se abre */
+  }
+}
 
