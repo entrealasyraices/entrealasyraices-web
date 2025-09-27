@@ -162,4 +162,3 @@ if (btnHamburguesa && barraNavegacion) {
     barraNavegacion.classList.toggle('is-open');
   });
 }
-
