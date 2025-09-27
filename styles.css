@@ -315,399 +315,80 @@ a:hover{ text-decoration:underline }
     flex-wrap: wrap;
   }
 }
-/* ===== MOBILE: NAV + HERO/CARRUSEL ===== */
-
-/* Botón hamburguesa oculto en PC */
-.hamburger {
-  display: none;
-  background: none;
-  border: 0;
-  font-size: 2rem;
-  line-height: 1;
-  cursor: pointer;
-  color: #2E7D66;
-}
-
-/* Reglas para pantallas pequeñas */
-@media (max-width: 992px) {
-  /* Mostrar botón y ocultar enlaces por defecto */
-  .hamburger { 
-    display: inline-block;
-    margin-left: 12px;
-  }
-  .navbar {
-    display: none;                 /* oculto por defecto en móvil */
-    position: absolute;
-    left: 0; right: 0;
-    top: 70px;                     /* bajo el header */
-    background: #fff;
-    padding: 12px 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.10);
-    border-bottom: 1px solid rgba(0,0,0,.06);
-    z-index: 1000;
-  }
-  .navbar.is-open { display: block; }
-  .navbar a { display: block; padding: 8px 0; }
-
-  /* Separación extra entre header y hero para que no se "pegue" */
-  .hero, .banner, .slider, .carousel {
-    margin-top: 8px;
-  }
-
-  /* Carrusel/Hero: que NO quede minúsculo */
-  .hero img, .banner img, .slider img, .carousel img {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 16 / 9;          /* alto visible en móvil */
-    object-fit: cover;
-    display: block;
-  }
-}
-
-/* ===== NAV MÓVIL (no afecta PC) ===== */
-.hamburger {
-  display: none;
-  background: none;
-  border: 0;
-  font-size: 2rem;
-  line-height: 1;
-  cursor: pointer;
-  color: #2E7D66;
-}
-
-@media (max-width: 992px) {
-  .hamburger { display: inline-block; margin-left: 12px; }
-
-  /* El nav trae display:flex inline; lo ocultamos en móvil y lo mostramos al abrir */
-  .navbar.menu {
-    display: none !important;
-    position: absolute;
-    left: 0; right: 0; top: 70px;
-    background: #fff;
-    padding: 12px 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.10);
-    border-bottom: 1px solid rgba(0,0,0,.06);
-    z-index: 1000;
-  }
-  .navbar.menu.is-open { display: block !important; }
-  .navbar.menu a { display: block; padding: 8px 0; }
-}
-
-/* ===== HERO/SLIDER MÓVIL (no toca PC) ===== */
-@media (max-width: 768px) {
-  /* Tu hero tiene un grid inline de 2 columnas; lo forzamos a 1 columna en móvil */
-  .hero-inner { 
-    display: block !important; 
-  }
-
-  /* Banner tipo 16:9 arriba, contenido debajo */
-  .hero-right { margin-top: 12px; }
-  .hero-right .carousel,
-  .hero-right img,
-  .hero-right picture,
-  .hero-right video {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 8px;
-    display: block;
-  }
-
-  /* Título/CTA más legibles */
-  .hero-left h1 {
-    font-size: clamp(28px, 6vw, 36px);
-    line-height: 1.12;
-    margin: 0 0 8px 0;
-  }
-  .hero-left p { margin: 8px 0 0; }
-}
-
-/* Header y botón ☰ bien alineados en móvil */
-@media (max-width: 992px) {
-  header { position: relative; }
-
-  /* La franja superior ya es flex: forzamos separación logo/slogan vs. botón */
-  .topbar {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  /* Muestra el botón y ubícalo junto a la topbar */
-  .hamburger {
-    display: inline-block;
-    margin: 0;               /* sin saltos raros */
-    font-size: 2rem;
-    line-height: 1;
-    background: none;
-    border: 0;
-    color: #2E7D66;
-  }
-
-  /* Menú oculto por defecto; se abre con .is-open */
-  .navbar.menu {
-    display: none !important;
-    position: absolute;
-    left: 0; right: 0;
-    top: 70px;               /* debajo del header */
-    background: #fff;
-    padding: 12px 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.10);
-    border-bottom: 1px solid rgba(0,0,0,.06);
-    z-index: 1000;
-  }
-  .navbar.menu.is-open { display: block !important; }
-  .navbar.menu a { display: block; padding: 8px 0; }
-}
-/* Header móvil: logo + slogan a la izquierda, hamburguesa a la derecha */
-@media (max-width: 992px) {
-  .topbar {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    padding: 10px 16px;
-    position: relative;
-  }
-
-  .site-slogan {
-    margin-left: 8px;
-    font-size: 1rem;
-    white-space: nowrap;
-  }
-
-  .hamburger {
-    display: inline-block;
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #2E7D66;
-  }
-
-  .navbar.menu {
-    display: none !important;
-    position: absolute;
-    top: 60px; /* justo debajo del header */
-    right: 0;
-    left: 0;
-    background: #fff;
-    padding: 12px 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.1);
-    border-bottom: 1px solid rgba(0,0,0,.06);
-    z-index: 1000;
-    text-align: left;
-  }
-
-  .navbar.menu.is-open {
-    display: block !important;
-  }
-
-  .navbar.menu a {
-    display: block;
-    padding: 8px 0;
-  }
-}
-/* Asegurar separación entre carrusel y el siguiente bloque */
-.carousel {
-  margin-bottom: 40px; /* da espacio antes de que empiece "Qué hacemos" */
-}
-
-.carousel-dots {
-  text-align: center;
-  margin-top: 12px;
-  margin-bottom: 20px; /* espacio extra debajo de los puntos */
-}
-/* ===================== */
-/* MENÚ HAMBURGUESA MÓVIL */
-/* ===================== */
-
-/* Estilo base del botón ☰ */
-.hamburger {
-  font-size: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #2E7D66; /* verde de la marca */
-}
-
-/* En pantallas pequeñas: ocultamos menú por defecto */
-@media (max-width: 768px) {
-  .navbar {
-    display: none;
-    flex-direction: column;
-    gap: 14px;
-    background: #fff;
-    position: absolute;
-    top: 60px;   /* queda debajo del header */
-    right: 0;
-    width: 240px;
-    padding: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-    border-radius: 0 0 0 8px;
-  }
-
-  /* Cuando tiene la clase is-open, aparece */
-  .navbar.is-open {
-    display: flex;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  /* El botón ☰ sí aparece en móvil */
-  .hamburger {
-    display: block;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-  }
-}
-
-/* En escritorio: el menú siempre visible, botón oculto */
-@media (min-width: 769px) {
-  .navbar {
-    display: flex !important;
-    flex-direction: row;
-    position: static;
-    box-shadow: none;
-    background: transparent;
-    width: auto;
-    padding: 0;
-  }
-
-  .hamburger {
-    display: none;
-  }
-}
-
-/* Animación suave de entrada */
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-/* ===================== */
-/* MENÚ HAMBURGUESA MÓVIL */
-/* ===================== */
-
-/* Botón ☰ */
-.hamburger {
-  font-size: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #2E7D66; /* verde de la marca */
-}
-
-/* En pantallas pequeñas: menú oculto por defecto */
-@media (max-width: 768px) {
-  .navbar {
-    display: none;
-    flex-direction: column;
-    gap: 14px;
-    background: #fff;
-    position: absolute;
-    top: 60px;   /* debajo del header */
-    right: 0;
-    width: 240px;
-    padding: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-    border-radius: 0 0 0 8px;
-  }
-
-  /* Cuando el JS agrega la clase .is-open, el menú aparece */
-  .navbar.is-open {
-    display: flex;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  /* El botón ☰ aparece en móvil, en la esquina derecha */
-  .hamburger {
-    display: block;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-  }
-}
-
-/* En escritorio: menú siempre visible y botón oculto */
-@media (min-width: 769px) {
-  .navbar {
-    display: flex !important;
-    flex-direction: row;
-    position: static;
-    box-shadow: none;
-    background: transparent;
-    width: auto;
-    padding: 0;
-  }
-
-  .hamburger {
-    display: none;
-  }
-}
-
-/* Animación suave */
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-/* --- HEADER --- */
+/* ===== HEADER & NAV ===== */
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Logo+eslogan a la izquierda, hamburguesa a la derecha */
+  justify-content: flex-start; /* Logo + slogan a la izquierda */
   padding: 10px 16px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.topbar a.site-slogan {
-  margin-left: 12px;
-  font-size: 1rem;
-  color: #2E7D66;
-  text-decoration: none;
-  font-weight: 600;
+.topbar img {
+  height: 48px;
 }
 
-/* Botón hamburguesa */
+.site-slogan {
+  margin-left: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2E7D66;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Botón ☰ oculto en escritorio */
 .hamburger {
-  font-size: 24px;
+  font-size: 26px;
   background: none;
   border: none;
   cursor: pointer;
-  display: none; /* solo visible en móviles */
+  color: #2E7D66;
+  display: none;
 }
 
-/* Menú en escritorio */
+/* Menú por defecto (escritorio) */
 .navbar.menu {
   display: flex;
+  align-items: center;
   gap: 16px;
+  margin-left: auto; /* lo manda a la derecha en PC */
 }
 
-/* Menú móvil */
+/* Vista móvil */
 @media (max-width: 768px) {
+  /* Botón hamburguesa visible arriba a la derecha */
   .hamburger {
-    display: block; /* mostrar botón */
+    display: block;
+    margin-left: auto;
   }
+
+  /* Menú oculto por defecto */
+  .navbar.menu {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    position: absolute;
+    top: 60px; /* debajo del header */
+    right: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  /* Menú abierto */
+  .navbar.menu.is-open {
+    display: flex;
+  }
+
+  .navbar.menu a {
+    display: block;
+    padding: 10px 0;
+  }
+}
+
 
   .navbar.menu {
     display: none;
