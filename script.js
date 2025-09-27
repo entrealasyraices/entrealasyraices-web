@@ -154,12 +154,12 @@ function goToPayment(){
 */
 
 // === Menú hamburguesa (móvil) ===
-const btnHamburger = document.querySelector('.hamburger');
-const navBar = document.querySelector('.navbar');
+const btnHamburguesa = document.querySelector('.hamburger');
+const barraNavegacion = document.querySelector('.navbar');
 
-if (btnHamburger && navBar) {
-  btnHamburger.addEventListener('click', () => {
-    navBar.classList.toggle('is-open');
+if (btnHamburguesa && barraNavegacion) {
+  btnHamburguesa.addEventListener('click', () => {
+    barraNavegacion.classList.toggle('is-open');
   });
 }
 
