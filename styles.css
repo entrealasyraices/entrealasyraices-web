@@ -524,3 +524,77 @@ a:hover{ text-decoration:underline }
   margin-top: 12px;
   margin-bottom: 20px; /* espacio extra debajo de los puntos */
 }
+/* ===================== */
+/* MENÚ HAMBURGUESA MÓVIL */
+/* ===================== */
+
+/* Estilo base del botón ☰ */
+.hamburger {
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2E7D66; /* verde de la marca */
+}
+
+/* En pantallas pequeñas: ocultamos menú por defecto */
+@media (max-width: 768px) {
+  .navbar {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    background: #fff;
+    position: absolute;
+    top: 60px;   /* queda debajo del header */
+    right: 0;
+    width: 240px;
+    padding: 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+    border-radius: 0 0 0 8px;
+  }
+
+  /* Cuando tiene la clase is-open, aparece */
+  .navbar.is-open {
+    display: flex;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  /* El botón ☰ sí aparece en móvil */
+  .hamburger {
+    display: block;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+}
+
+/* En escritorio: el menú siempre visible, botón oculto */
+@media (min-width: 769px) {
+  .navbar {
+    display: flex !important;
+    flex-direction: row;
+    position: static;
+    box-shadow: none;
+    background: transparent;
+    width: auto;
+    padding: 0;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+/* Animación suave de entrada */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
