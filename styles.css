@@ -407,3 +407,92 @@ a:hover{ text-decoration:underline }
   }
 }
 
+/* ====== HEADER + NAV (FINAL) ====== */
+header { position: relative; }
+
+/* Logo + slogan SIEMPRE a la izquierda */
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 16px;
+  max-width:1200px;
+  margin:0 auto;
+}
+.site-slogan{
+  margin-left:8px;
+  font-size:1rem;
+  font-weight:600;
+  color:#2E7D66;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+/* Botón ☰ oculto en escritorio */
+.hamburger{
+  display:none;
+  font-size:28px;
+  background:none;
+  border:0;
+  color:#2E7D66;
+  cursor:pointer;
+  line-height:1;
+}
+
+/* Menú en ESCRITORIO (forzado) */
+@media (min-width: 769px){
+  .navbar.menu{
+    display:flex !important;
+    align-items:center;
+    gap:16px;
+    margin-left:auto;           /* el menú se va a la derecha */
+    position:static !important;
+    background:transparent !important;
+    padding:0 !important;
+    box-shadow:none !important;
+  }
+  .hamburger{ display:none !important; }
+}
+
+/* Menú en MÓVIL */
+@media (max-width: 768px){
+  /* Botón a la derecha del header */
+  .hamburger{
+    display:block;
+    position:absolute;
+    right:16px;
+    top:16px;
+  }
+
+  /* Oculto por defecto; se abre con .is-open */
+  .navbar.menu{
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    left:0; right:0; top:60px;
+    background:#fff;
+    padding:16px 20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+    border-bottom:1px solid rgba(0,0,0,.06);
+    z-index:1000;
+  }
+  .navbar.menu.is-open{ display:flex; }
+  .navbar.menu a{ display:block; padding:10px 0; }
+
+  /* HERO / CARRUSEL grande y legible en móvil */
+  .hero-inner{ display:block !important; }
+  .hero-right{ margin-top:12px; }
+  .hero-right .carousel{
+    width:100% !important;
+    aspect-ratio:16/9;
+    max-height:none;
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .hero-right .carousel img{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover;
+    display:block;
+  }
+}
