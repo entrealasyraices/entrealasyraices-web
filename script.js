@@ -13,6 +13,64 @@
 
 // ======= Carrito simple (localStorage) =======
 const CART_KEY = 'ear_cart_v1';
+// Catálogo base para el carrito
+const PRODUCTS = {
+  'raices-fuertes': {
+    id: 'raices-fuertes',
+    name: 'Raíces Fuertes, Alas Conscientes',
+    price: 44990
+  },
+  'pistas-crianza': {
+    id: 'pistas-crianza',
+    name: 'Pistas de Crianza',
+    price: 34990
+  },
+  'entre-lineas': {
+    id: 'entre-lineas',
+    name: 'Entre Líneas',
+    price: 17990
+  },
+  'ciclos-compartidos': {
+    id: 'ciclos-compartidos',
+    name: 'Ciclos Compartidos',
+    price: 17990
+  },
+  'mi-carita-dice': {
+    id: 'mi-carita-dice',
+    name: 'Mi Carita Dice',
+    price: 16990
+  },
+  'almas-en-colores': {
+    id: 'almas-en-colores',
+    name: 'Almas en Colores',
+    price: 21990
+  },
+  'palabras-que-habitan': {
+    id: 'palabras-que-habitan',
+    name: 'Palabras que Habitan',
+    price: 31990
+  },
+  'soy-presente': {
+    id: 'soy-presente',
+    name: 'Soy Presente',
+    price: 34990
+  },
+  'ecos-que-sanan': {
+    id: 'ecos-que-sanan',
+    name: 'Ecos que Sanan',
+    price: 29990
+  }
+};
+
+// Helper para usar desde el HTML
+function addProductToCart(id){
+  const product = PRODUCTS[id];
+  if(!product){
+    console.error('Producto no encontrado en catálogo:', id);
+    return;
+  }
+  addToCart(product);
+}
 
 function getCart(){
   try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
