@@ -104,9 +104,18 @@ function cartTotal(){
 }
 function updateCartBadge(){
   const sum = getCart().reduce((n,p)=>n+p.qty,0);
-  const badge = document.querySelector('[data-cart-badge]');
-  if(badge){ badge.textContent = sum>0 ? String(sum) : ''; }
+  const badge = document.getElementById('cartBadge');
+  if(!badge) return;
+
+  if(sum > 0){
+    badge.textContent = sum;
+    badge.style.display = 'inline-block';
+  }else{
+    badge.textContent = '';
+    badge.style.display = 'none';
+  }
 }
+
 document.addEventListener('DOMContentLoaded', updateCartBadge);
 
 // Render de carrito (carrito.html)
@@ -190,22 +199,6 @@ function goToPayment(){
   });
 })();
 
-/* 2) Badge del carrito (muestra cantidad si existe en localStorage) */
-(function initCartBadge(){
-  const badge = document.getElementById('cartBadge');
-  if (!badge) return;
-
-  try {
-    // Ajusta la clave si usas otra. Por ahora tomamos 'cartCount'
-    const count = Number(localStorage.getItem('cartCount') || 0);
-    if (count > 0) {
-      badge.textContent = count;
-      badge.style.display = 'inline-block';
-    }
-  } catch (e) {
-    // Silencioso si el navegador bloquea localStorage
-  }
-})();
 
 /* 3) (Opcional) Preparado para video en menú — desactivado
 // document.getElementById('nav-video')?.addEventListener('click', (e) => {
