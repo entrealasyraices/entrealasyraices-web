@@ -151,9 +151,10 @@
           <div id="checkout-items"></div>
 
           <p style="margin-top:1rem; font-size:1.2rem;">
-            <strong>Total: </strong>
-            <span id="checkout-total">$0</span>
-          </p>
+  <strong>Total (incluye envío $2.990 RM): </strong>
+  <span id="checkout-total">$0</span>
+</p>
+
         </div>
 
       </div>
@@ -191,12 +192,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  cont.innerHTML = cart.map(p => `
+    cont.innerHTML = cart.map(p => `
     <p><strong>${p.name}</strong> (x${p.qty})<br>
     <small>$${p.price.toLocaleString('es-CL')}</small></p>
   `).join("");
 
-  total.textContent = "$" + cartTotal().toLocaleString("es-CL");
+  const subtotal = cartTotal();
+  const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
+  total.textContent = "$" + totalConEnvio.toLocaleString("es-CL");
+
 });
 
 
