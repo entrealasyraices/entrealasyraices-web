@@ -3,16 +3,19 @@
    ========================= */
 
 // Nav activa por URL
-(function highlightActiveNav(){
+(function highlightActiveNav() {
   const path = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.menu a').forEach(a=>{
+  document.querySelectorAll('.menu a').forEach(a => {
     const href = a.getAttribute('href');
-    if((!href && path==='index.html') || href === path){ a.classList.add('active'); }
+    if ((!href && path === 'index.html') || href === path) {
+      a.classList.add('active');
+    }
   });
 })();
 
 // ======= Carrito simple (localStorage) =======
 const CART_KEY = 'ear_cart_v1';
+
 // Catálogo base para el carrito
 const PRODUCTS = {
   'raices-fuertes': {
@@ -63,104 +66,122 @@ const PRODUCTS = {
 };
 
 // Helper para usar desde el HTML
-function addProductToCart(id){
+function addProductToCart(id) {
   const product = PRODUCTS[id];
-  if(!product){
+  if (!product) {
     console.error('Producto no encontrado en catálogo:', id);
     return;
   }
   addToCart(product);
 }
 
-function getCart(){
-  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
-  catch { return []; }
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  } catch {
+    return [];
+  }
 }
-function saveCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); }
 
-function addToCart(product){
+function saveCart(items) {
+  localStorage.setItem(CART_KEY, JSON.stringify(items));
+}
+
+function addToCart(product) {
   const cart = getCart();
-  const idx = cart.findIndex(p=>p.id===product.id);
-  if(idx>-1){ cart[idx].qty += product.qty || 1; }
-  else { cart.push({...product, qty: product.qty || 1}); }
+  const idx = cart.findIndex(p => p.id === product.id);
+  if (idx > -1) {
+    cart[idx].qty += product.qty || 1;
+  } else {
+    cart.push({ ...product, qty: product.qty || 1 });
+  }
   saveCart(cart);
   alert('Producto agregado al carrito.');
   updateCartBadge();
 }
-function removeFromCart(id){
-  const cart = getCart().filter(p=>p.id!==id);
-  saveCart(cart);
-  renderCart();
-  updateCartBadge();
-}
-function updateQty(id, qty){
-  const cart = getCart().map(p => p.id===id ? {...p, qty: Math.max(1, qty)} : p);
-  saveCart(cart);
-  renderCart();
-  updateCartBadge();
-}
-function cartTotal(){
-  return getCart().reduce((acc,p)=> acc + (p.price*p.qty), 0);
-}
-function updateCartBadge(){
-  const sum = getCart().reduce((n,p)=>n+p.qty,0);
-  const badge = document.getElementById('cartBadge');
-  if(!badge) return;
 
-  if(sum > 0){
+function removeFromCart(id) {
+  const cart = getCart().filter(p => p.id !== id);
+  saveCart(cart);
+  renderCart();
+  updateCartBadge();
+}
+
+function updateQty(id, qty) {
+  const cart = getCart().map(p =>
+    p.id === id ? { ...p, qty: Math.max(1, qty) } : p
+  );
+  saveCart(cart);
+  renderCart();
+  updateCartBadge();
+}
+
+function cartTotal() {
+  return getCart().reduce((acc, p) => acc + (p.price * p.qty), 0);
+}
+
+function updateCartBadge() {
+  const sum = getCart().reduce((n, p) => n + p.qty, 0);
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+
+  if (sum > 0) {
     badge.textContent = sum;
     badge.style.display = 'inline-block';
-  }else{
+  } else {
     badge.textContent = '';
     badge.style.display = 'none';
   }
 }
 
-document.addEventListener('DOMContentLoaded', updateCartBadge);
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  renderCart();
+});
 
 // Render de carrito (carrito.html)
-function renderCart(){
+function renderCart() {
   const table = document.getElementById('cart-table-body');
   const totalEl = document.getElementById('cart-total');
-  if(!table || !totalEl) return;
+  if (!table || !totalEl) return;
+
   const cart = getCart();
   table.innerHTML = '';
-  cart.forEach(p=>{
+
+  cart.forEach(p => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><strong>${p.name}</strong><br><small>${p.desc||''}</small></td>
+      <td><strong>${p.name}</strong><br><small>${p.desc || ''}</small></td>
       <td>$${p.price.toLocaleString('es-CL')}</td>
       <td>
         <input type="number" min="1" value="${p.qty}" style="width:80px"
-               onchange="updateQty('${p.id}', parseInt(this.value,10))">
+               onchange="updateQty('${p.id}', parseInt(this.value, 10))">
       </td>
-      <td>$${(p.price*p.qty).toLocaleString('es-CL')}</td>
+      <td>$${(p.price * p.qty).toLocaleString('es-CL')}</td>
       <td><button class="btn btn-outline" onclick="removeFromCart('${p.id}')">Eliminar</button></td>
     `;
     table.appendChild(tr);
   });
+
   totalEl.textContent = '$' + cartTotal().toLocaleString('es-CL');
 }
-document.addEventListener('DOMContentLoaded', renderCart);
 
-// Pago externo (ej. Mercado Pago) – link placeholder para editar
-function goToPayment(){
-  if(getCart().length===0){
+// Pago externo – Getnet (placeholder)
+function goToPayment() {
+  if (getCart().length === 0) {
     alert('Tu carrito está vacío.');
     return;
   }
-  // LINK GETNET PROVISORIO
-  location.href = "https://getnet.cl/link-provisorio";
+  // Reemplazar cuando tengas tu link oficial de Getnet
+  location.href = 'https://getnet.cl/link-provisorio';
 }
 
-}
 /* =========================================
-   AIDA – JS base (carrusel + badge carrito)
-   Pegar al FINAL de script.js
+   AIDA – JS base (carrusel)
    ========================================= */
 
 /* 1) Carrusel del Home (#homeCarousel) */
-(function initHomeCarousel(){
+(function initHomeCarousel() {
   const root = document.getElementById('homeCarousel');
   if (!root) return; // si no estamos en el home, salir
 
@@ -181,7 +202,7 @@ function goToPayment(){
   });
   const dots = Array.from(dotsWrap.querySelectorAll('button'));
 
-  function go(i, stopAuto){
+  function go(i, stopAuto) {
     index = (i + slides.length) % slides.length;
     track.style.transform = `translateX(-${index * 100}%)`;
     dots.forEach(d => d.classList.remove('active'));
@@ -199,14 +220,12 @@ function goToPayment(){
   });
 })();
 
-
-/* 3) (Opcional) Preparado para video en menú — desactivado
+/* (Opcional) Preparado para video en menú — desactivado
 // document.getElementById('nav-video')?.addEventListener('click', (e) => {
 //   e.preventDefault();
 //   // Aquí abriríamos un modal e insertaríamos <iframe src="..."></iframe>
 // });
 */
-
 
 // === Menú hamburguesa (móvil) ===
 const btnHamburguesa = document.querySelector('.hamburger');
@@ -214,6 +233,4 @@ const barraNavegacion = document.querySelector('.navbar.menu');
 
 if (btnHamburguesa && barraNavegacion) {
   btnHamburguesa.addEventListener('click', () => {
-    barraNavegacion.classList.toggle('is-open');
-  });
-}
+    barraNavegacion.classList.toggle('is-op
