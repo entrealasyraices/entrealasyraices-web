@@ -307,7 +307,7 @@ a:hover{ text-decoration:underline }
   .products-grid, .product-list, .cards-grid, .lista-productos, .contenedor-productos {
     display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 1rem !ant;
+    gap: 1rem !important;
   }
 
   /* Botones sin cortes */
