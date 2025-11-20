@@ -15,6 +15,8 @@
 
 // ======= Carrito simple (localStorage) =======
 const CART_KEY = 'ear_cart_v1';
+const SHIPPING_COST = 2990; // envío RM
+
 
 // Catálogo base para el carrito
 const PRODUCTS = {
