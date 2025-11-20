@@ -15,8 +15,7 @@
 
 // ======= Carrito simple (localStorage) =======
 const CART_KEY = 'ear_cart_v1';
-const SHIPPING_COST = 2990; // envío RM
-
+const SHIPPING_COST = 2990; // costo fijo de envío RM
 
 // Catálogo base para el carrito
 const PRODUCTS = {
@@ -145,29 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderCart() {
   const table = document.getElementById('cart-table-body');
   const totalEl = document.getElementById('cart-total');
-  if (!table || !totalEl) return;
-
-  const cart = getCart();
-  table.innerHTML = '';
-
-  cart.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${p.name}</strong><br><small>${p.desc || ''}</small></td>
-      <td>$${p.price.toLocaleString('es-CL')}</td>
-      <td>
-        <input type="number" min="1" value="${p.qty}" style="width:80px"
-               onchange="updateQty('${p.id}', parseInt(this.value, 10))">
-      </td>
-      <td>$${(p.price * p.qty).toLocaleString('es-CL')}</td>
-      <td><button class="btn btn-outline" onclick="removeFromCart('${p.id}')">Eliminar</button></td>
-    `;
-    table.appendChild(tr);
-  });
-
-  function renderCart() {
-  const table = document.getElementById('cart-table-body');
-  const totalEl = document.getElementById('cart-total');
   const subtotalEl = document.getElementById('cart-subtotal');
   if (!table || !totalEl) return;
 
@@ -197,7 +173,6 @@ function renderCart() {
   }
   totalEl.textContent = '$' + total.toLocaleString('es-CL');
 }
-
 
 // Pago externo – Getnet (placeholder)
 function goToPayment() {
