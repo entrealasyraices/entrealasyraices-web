@@ -233,4 +233,6 @@ const barraNavegacion = document.querySelector('.navbar.menu');
 
 if (btnHamburguesa && barraNavegacion) {
   btnHamburguesa.addEventListener('click', () => {
-    barraNavegacion.classList.toggle('is-op
+    barraNavegacion.classList.toggle('is-open');
+  });
+}
