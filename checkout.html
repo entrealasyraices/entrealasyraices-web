@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <link rel="canonical" href="https://entrealasyraices.cl/checkout.html">
+  <meta charset="utf-8">
+  <title>Finalizar compra – Entre Alas y Raíces</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="images/logo-entrealas.jpg" type="image/jpeg">
+
+  <script defer src="script.js"></script>
+
+<style>
+/* =======================
+   ESTILOS PROPIOS checkout
+   ======================= */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.checkout-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 3px 10px rgba(0,0,0,.07);
+}
+
+.checkout-card h3 {
+  margin-top: 0;
+}
+
+.checkout-form label {
+  font-weight: 600;
+  margin-top: 1rem;
+  display: block;
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: .7rem;
+  margin-top: .4rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: .95rem;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: .9rem;
+  border-radius: 12px;
+  background: #2E7D66;
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.notice-envio {
+  background: #f5f7f6;
+  border-left: 5px solid #2E7D66;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="topbar">
+    <a href="index.html">
+      <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="height:48px;">
+    </a>
+    <a href="index.html" class="site-slogan">Sanar, sostener y crecer</a>
+    <button class="hamburger" aria-label="Abrir menú">☰</button>
+  </div>
+
+  <nav class="navbar menu">
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="mision-vision.html">Misión y Visión</a>
+    <a href="productos.html">Productos</a>
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="carrito.html" class="nav-carrito">Carrito</a>
+  </nav>
+</header>
+
+
+<main>
+  <section class="section">
+    <div class="container">
+
+      <header class="section-header center">
+        <h1>Finalizar compra</h1>
+        <p class="m0">Completa tus datos para confirmar tu pedido</p>
+      </header>
+
+      <div class="checkout-grid">
+
+        <!-- =======================
+             FORMULARIO
+        ======================== -->
+        <div class="checkout-card">
+          <h3>Datos del comprador</h3>
+
+          <form id="checkoutForm" class="checkout-form">
+
+            <label>Nombre completo</label>
+            <input type="text" name="nombre" required>
+
+            <label>Correo electrónico</label>
+            <input type="email" name="correo" required>
+
+            <label>Teléfono</label>
+            <input type="tel" name="telefono" required>
+
+            <label>Dirección para despacho</label>
+            <input type="text" name="direccion" required>
+
+            <button type="submit" class="btn-pay">Continuar con el pago</button>
+          </form>
+
+          <div class="notice-envio">
+            <strong>Información de entrega:</strong>
+            <p>Despacho a domicilio en la Región Metropolitana dentro de <strong>5 días hábiles</strong>.</p>
+            <p>Costo de envío: <strong>$2.990</strong></p>
+            <p>Dudas o consultas:<br>
+              📧 contacto@entrealasyraices.cl<br>
+              📧 ventas@entrealasyraices.cl
+            </p>
+          </div>
+        </div>
+
+
+        <!-- =======================
+             RESUMEN DE PEDIDO
+        ======================== -->
+        <div class="checkout-card">
+          <h3>Resumen del pedido</h3>
+
+          <div id="checkout-items"></div>
+
+          <p style="margin-top:1rem; font-size:1.2rem;">
+            <strong>Total: </strong>
+            <span id="checkout-total">$0</span>
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</main>
+
+
+<footer class="footer">
+  <div class="container cols">
+    <div class="brand-small">
+      <img src="images/logo-entrealas.jpg" alt="Logo">
+      <div><strong>Entre Alas y Raíces SpA</strong></div>
+    </div>
+
+    <div><strong>Soporte</strong><p class="mt-3"><a href="contacto.html">¿Necesitas ayuda?</a></p></div>
+    <div><strong>Pagos seguros</strong><p class="mt-3">Redirección a Getnet (Santander).</p></div>
+  </div>
+</footer>
+
+
+<script>
+/* ======================================
+   RENDER RESUMEN DE PEDIDO
+====================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const cart = getCart();
+  const cont = document.getElementById('checkout-items');
+  const total = document.getElementById('checkout-total');
+
+  if(cart.length === 0){
+    cont.innerHTML = "<p>No hay productos en tu carrito.</p>";
+    total.textContent = "$0";
+    return;
+  }
+
+  cont.innerHTML = cart.map(p => `
+    <p><strong>${p.name}</strong> (x${p.qty})<br>
+    <small>$${p.price.toLocaleString('es-CL')}</small></p>
+  `).join("");
+
+  total.textContent = "$" + cartTotal().toLocaleString("es-CL");
+});
+
+
+/* ======================================
+   FORMULARIO → GENERAR CSV → GETNET
+====================================== */
+document.getElementById('checkoutForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const data = {
+    nombre: this.nombre.value,
+    correo: this.correo.value,
+    telefono: this.telefono.value,
+    direccion: this.direccion.value
+  };
+
+  // ----- generar CSV -----
+  const csv = `Nombre,Correo,Telefono,Direccion\n${data.nombre},${data.correo},${data.telefono},${data.direccion}`;
+  const blob = new Blob([csv], {type: "text/csv"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "pedido_entrealasyraices.csv";
+  a.click();
+
+  // ----- REDIRECCIÓN A GETNET -----
+  // cuando tengas tu link oficial → reemplace esta línea
+  window.location.href = "https://getnet.cl/link-provisorio";
+});
+</script>
+
+</body>
+</html>
