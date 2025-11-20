@@ -78,11 +78,14 @@ document.addEventListener('DOMContentLoaded', renderCart);
 
 // Pago externo (ej. Mercado Pago) – link placeholder para editar
 function goToPayment(){
-  if(getCart().length===0){ alert('Tu carrito está vacío.'); return; }
-  // Aquí puedes reemplazar por tu preferencia de checkout externo.
-  // Ejemplo: URL de preferencia de Mercado Pago una vez creada:
-  // location.href = 'https://www.mercadopago.cl/checkout/v1/redirect?preference-id=XXXX';
-  location.href = 'https://www.mercadopago.cl/';
+  if(getCart().length===0){
+    alert('Tu carrito está vacío.');
+    return;
+  }
+  // LINK GETNET PROVISORIO
+  location.href = "https://getnet.cl/link-provisorio";
+}
+
 }
 /* =========================================
    AIDA – JS base (carrusel + badge carrito)
