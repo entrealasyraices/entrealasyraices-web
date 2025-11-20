@@ -165,8 +165,39 @@ function renderCart() {
     table.appendChild(tr);
   });
 
-  totalEl.textContent = '$' + cartTotal().toLocaleString('es-CL');
+  function renderCart() {
+  const table = document.getElementById('cart-table-body');
+  const totalEl = document.getElementById('cart-total');
+  const subtotalEl = document.getElementById('cart-subtotal');
+  if (!table || !totalEl) return;
+
+  const cart = getCart();
+  table.innerHTML = '';
+
+  cart.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${p.name}</strong><br><small>${p.desc || ''}</small></td>
+      <td>$${p.price.toLocaleString('es-CL')}</td>
+      <td>
+        <input type="number" min="1" value="${p.qty}" style="width:80px"
+               onchange="updateQty('${p.id}', parseInt(this.value, 10))">
+      </td>
+      <td>$${(p.price * p.qty).toLocaleString('es-CL')}</td>
+      <td><button class="btn btn-outline" onclick="removeFromCart('${p.id}')">Eliminar</button></td>
+    `;
+    table.appendChild(tr);
+  });
+
+  const subtotal = cartTotal();
+  const total = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
+
+  if (subtotalEl) {
+    subtotalEl.textContent = '$' + subtotal.toLocaleString('es-CL');
+  }
+  totalEl.textContent = '$' + total.toLocaleString('es-CL');
 }
+
 
 // Pago externo – Getnet (placeholder)
 function goToPayment() {
