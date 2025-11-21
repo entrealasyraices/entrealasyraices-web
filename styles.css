@@ -217,9 +217,9 @@ a:hover{ text-decoration:underline }
 
 /* ---------- Footer ---------- */
 .footer{
-  padding:var(--space-4) 0 var(--space-3); /* menos alto y más compacto */
-  border-top:1px solid var(--border);
-  background:#FCFCFD;
+  padding:var(--space-6) 0; 
+  border-top:1px solid var(--border); 
+  background:#FCFCFD; 
   color:var(--muted);
 }
 
