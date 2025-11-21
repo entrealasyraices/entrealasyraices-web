@@ -216,16 +216,37 @@ a:hover{ text-decoration:underline }
 .textarea{ min-height:140px; }
 
 /* ---------- Footer ---------- */
+/* ---------- Footer ---------- */
 .footer{
-  padding:var(--space-6) 0; 
-  border-top:1px solid var(--border); 
-  background:#FCFCFD; 
+  padding: var(--space-5) 0 var(--space-4);
+  border-top:1px solid var(--border);
+  background:#FCFCFD;
   color:var(--muted);
 }
 
-.footer .brand-small{ display:flex; align-items:center; gap:.6rem; }
-.footer img{ height:40px; border-radius:.4rem; }
-@media (max-width:900px){ .footer .cols{ grid-template-columns:1fr; } }
+/* columnas del footer */
+.footer .cols{
+  display:grid;
+  gap:var(--space-4);
+  grid-template-columns:2fr 1fr 1fr;
+}
+
+.footer .brand-small{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+
+.footer img{
+  height:40px;
+  border-radius:.4rem;
+}
+
+@media (max-width:900px){
+  .footer .cols{
+    grid-template-columns:1fr;
+  }
+}
 
 /* ---------- Utilidades ---------- */
 .m0{margin:0}
