@@ -4,7 +4,7 @@
 const crypto = require("crypto");
 
 module.exports = async (req, res) => {
-  // Solo permitimos método POST
+  // Aceptamos solo método POST
   if (req.method !== "POST") {
     res.status(405).json({ error: "Método no permitido" });
     return;
@@ -22,10 +22,10 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // 2. Credenciales desde Vercel
+    // 2. Credenciales desde las variables de entorno de Vercel
     const baseUrl = process.env.GETNET_BASE_URL;      // https://checkout.test.getnet.cl
     const login = process.env.GETNET_LOGIN;           // Login de pruebas
-    const secretKey = process.env.GETNET_SECRET_KEY;  // Trankey de pruebas
+    const secretKey = process.env.GETNET_SECRET_KEY;  // Secretkey/Trankey de pruebas
 
     if (!baseUrl || !login || !secretKey) {
       res.status(500).json({
@@ -35,16 +35,18 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // 3. AUTENTICACIÓN según manual:
-    // tranKey = Base64( SHA-256( nonce + seed + secretKey ) )
-    // nonce se envía en Base64
-    const seed = new Date().toISOString(); // fecha en formato ISO 8601
-    const nonce = crypto.randomBytes(16).toString("base64");
+    // 3. AUTENTICACIÓN:
+    // tranKey = Base64( SHA-256( nonce_original + seed + secretKey ) )
+    // nonce_original = bytes sin codificar; nonce enviado = Base64(bytes)
+    const seed = new Date().toISOString();           // Fecha ISO 8601
+    const nonceBytes = crypto.randomBytes(16);       // bytes aleatorios
+    const nonce = nonceBytes.toString("base64");     // lo que se envía en el JSON
 
-    const tranKey = crypto
-      .createHash("sha256")
-      .update(nonce + seed + secretKey, "utf8")
-      .digest("base64");
+    const hash = crypto.createHash("sha256");
+    hash.update(nonceBytes);                         // nonce ORIGINAL (no base64)
+    hash.update(seed);
+    hash.update(secretKey);
+    const tranKey = hash.digest("base64");
 
     // 4. Otros campos requeridos
     const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString();
@@ -56,11 +58,11 @@ module.exports = async (req, res) => {
 
     const userAgent = req.headers["user-agent"] || "EntreAlasYRaices";
 
-    // URL donde el cliente vuelve después de pagar
+    // URL donde el cliente vuelve después del pago
     const returnUrl =
       "https://entrealasyraices-web.vercel.app/getnet-retorno.html";
 
-    // 5. Cuerpo de la petición CreateRequest (Web Checkout)
+    // 5. Cuerpo de la petición CreateRequest
     const requestBody = {
       auth: {
         login,
