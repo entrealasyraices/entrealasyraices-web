@@ -1,23 +1,25 @@
 // api/getnet-create-session.js
-// Función de Vercel que crea la sesión de pago en Getnet
+// Función de Vercel que crea la sesión de pago en Getnet (ambiente de pruebas)
 
 const crypto = require("crypto");
 
 module.exports = async (req, res) => {
+  // Solo permitimos método POST
   if (req.method !== "POST") {
     res.statusCode = 405;
     res.json({ error: "Método no permitido" });
     return;
   }
 
+  // 1. Datos que vienen desde el front (monto, referencia, descripción)
   const { amount, reference, description } = req.body;
 
-  // 1. Credenciales desde las variables de entorno de Vercel
-  const baseUrl = process.env.GETNET_BASE_URL;
-  const login = process.env.GETNET_LOGIN;
-  const secretKey = process.env.GETNET_SECRET_KEY;
+  // 2. Credenciales desde las variables de entorno de Vercel
+  const baseUrl = process.env.GETNET_BASE_URL;   // https://checkout.test.getnet.cl
+  const login = process.env.GETNET_LOGIN;        // Login de pruebas
+  const secretKey = process.env.GETNET_TRANKEY;  // Trankey de pruebas
 
-  // 2. Armamos el objeto auth (según manual Web Checkout)
+  // 3. Armamos el objeto auth (según documentación Web Checkout)
   const seed = new Date().toISOString(); // fecha actual en ISO 8601
   const nonceRaw = crypto.randomBytes(16); // número aleatorio
   const nonce = nonceRaw.toString("base64");
@@ -27,6 +29,7 @@ module.exports = async (req, res) => {
     .update(nonceRaw.toString("utf8") + seed + secretKey)
     .digest("base64");
 
+  // IP y userAgent (obligatorios en la API)
   const ipAddress =
     (req.headers["x-forwarded-for"] || "").split(",")[0] ||
     req.socket?.remoteAddress ||
@@ -34,13 +37,12 @@ module.exports = async (req, res) => {
 
   const userAgent = req.headers["user-agent"] || "EntreAlasYRaices";
 
-  // 3. La sesión vence en 15 minutos más (recomendación manual)
+  // 4. La sesión vence en 15 minutos más
   const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-  // ⚠️ Reemplaza TU-DOMINIO-VERCEL por el dominio real de tu sitio
-  const returnUrl = `https://TU-DOMINIO-VERCEL/getnet-retorno.html?reference=${encodeURIComponent(
-    reference
-  )}`;
+  // 5. URL de retorno (por ahora usaremos el dominio de Vercel)
+  const returnUrl =
+    "https://entrealasyraices-web.vercel.app/getnet-retorno.html";
 
   const body = {
     auth: {
@@ -74,6 +76,7 @@ module.exports = async (req, res) => {
     const data = await response.json();
 
     if (data.status && data.status.status === "OK") {
+      // Todo salió bien: devolvemos la URL de pago
       res.statusCode = 200;
       res.json({
         ok: true,
@@ -81,14 +84,16 @@ module.exports = async (req, res) => {
         processUrl: data.processUrl,
       });
     } else {
+      // Hubo algún problema en la creación de la sesión
       res.statusCode = 400;
       res.json({
         ok: false,
-        message: "Error al crear la sesión de pago",
+        message: "Error al crear la sesión de pago en Getnet",
         data,
       });
     }
   } catch (err) {
+    // Error de conexión o similar
     res.statusCode = 500;
     res.json({
       ok: false,
