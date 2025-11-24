@@ -1,77 +1,82 @@
 // /api/getnet-create-session.js
+// Integración Web Checkout API 2.3 – Getnet Chile (Ambiente de pruebas)
+
+import fetch from "node-fetch";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
-  const { amount, reference, description } = req.body;
-  const baseUrl = process.env.GETNET_BASE_URL;
-  const login = process.env.GETNET_LOGIN;
-  const secretKey = process.env.GETNET_SECRET_KEY;
-
   try {
-    // 1) Crear Auth Token
-    const authResponse = await fetch(`${baseUrl}/v1/auth`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        login,
-        tranKey: secretKey
-      }),
-    });
+    const { amount, reference, description } = req.body;
 
-    const authData = await authResponse.json();
-
-    if (!authData.token) {
+    if (!amount || !reference || !description) {
       return res.status(400).json({
         ok: false,
-        error: "Error autenticando en Getnet",
-        details: authData
+        error: "Faltan campos obligatorios: amount, reference, description"
       });
     }
 
-    const token = authData.token;
+    // Credenciales desde Vercel
+    const login = process.env.GETNET_LOGIN;
+    const secretKey = process.env.GETNET_SECRET_KEY;
+    const baseUrl = process.env.GETNET_BASE_URL;
 
-    // 2) Crear la sesión WebCheckout
-    const sessionResponse = await fetch(`${baseUrl}/v1/session`, {
+    if (!login || !secretKey || !baseUrl) {
+      return res.status(500).json({
+        ok: false,
+        error: "Faltan variables GETNET en Vercel"
+      });
+    }
+
+    // Construcción de Basic Auth (según API 2.3)
+    const base64Credentials = Buffer.from(`${login}:${secretKey}`).toString("base64");
+
+    // Body según API 2.3
+    const bodyRequest = {
+      amount: amount,
+      reference: reference,
+      description: description,
+      currency: "CLP",
+      webpay: {
+        callbackUrl: "https://entrealasyraices.cl/pago-exitoso.html"
+      }
+    };
+
+    // Llamado a iniciar pago
+    const response = await fetch(`${baseUrl}/webpay/v2.3/initiate-payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": token
+        "Authorization": `Basic ${base64Credentials}`
       },
-      body: JSON.stringify({
-        amount: amount,
-        currency: "CLP",
-        buyOrder: reference,
-        sessionId: reference,
-        returnUrl: "https://entrealasyraices.cl/confirmacion.html",
-        cancelUrl: "https://entrealasyraices.cl/cancelado.html",
-        merchant: login,
-        description
-      }),
+      body: JSON.stringify(bodyRequest)
     });
 
-    const sessionData = await sessionResponse.json();
+    const data = await response.json();
 
-    if (!sessionData.processUrl) {
-      return res.status(400).json({
-        ok: false,
-        error: "Getnet rechazó la creación de la sesión",
-        details: sessionData
+    // Si Getnet entrega processUrl → OK
+    if (data.processUrl) {
+      return res.status(200).json({
+        ok: true,
+        processUrl: data.processUrl
       });
     }
 
-    return res.status(200).json({
-      ok: true,
-      processUrl: sessionData.processUrl
+    // Si falla → mostrar detalle
+    return res.status(400).json({
+      ok: false,
+      error: "Getnet rechazó la creación de la sesión",
+      details: data
     });
 
-  } catch (err) {
+  } catch (error) {
     return res.status(500).json({
       ok: false,
-      error: "Error interno de servidor",
-      details: err.message
+      error: "Error interno",
+      details: error.message
     });
   }
 }
+
