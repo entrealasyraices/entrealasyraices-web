@@ -1,18 +1,18 @@
 // api/getnet-create-session.js
-// Función Serverless (Vercel) para crear una sesión de pago en Getnet Web Checkout (ambiente de pruebas)
+// Función Serverless (Vercel) para crear una sesión de pago en Getnet Web Checkout (pruebas)
 
 const crypto = require("crypto");
 
 module.exports = async (req, res) => {
-  // Aceptamos solo método POST
+  // Solo permitimos método POST
   if (req.method !== "POST") {
     res.status(405).json({ error: "Método no permitido" });
     return;
   }
 
   try {
-    // 1. Recibir datos desde el front-end
-    const { amount, reference, description } = req.body;
+    // 1. Datos que vienen desde el front-end
+    const { amount, reference, description } = req.body || {};
 
     if (!amount || !reference || !description) {
       res.status(400).json({
@@ -22,10 +22,10 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // 2. Leer credenciales desde Vercel
-    const baseUrl = process.env.GETNET_BASE_URL;   // Ej: https://checkout.test.getnet.cl
-    const login = process.env.GETNET_LOGIN;        // Login de pruebas
-    const secretKey = process.env.GETNET_SECRET_KEY; // Trankey de pruebas
+    // 2. Credenciales desde Vercel
+    const baseUrl = process.env.GETNET_BASE_URL;      // https://checkout.test.getnet.cl
+    const login = process.env.GETNET_LOGIN;           // Login de pruebas
+    const secretKey = process.env.GETNET_SECRET_KEY;  // Trankey de pruebas
 
     if (!baseUrl || !login || !secretKey) {
       res.status(500).json({
@@ -35,26 +35,32 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // 3. Construir autenticación (según documentación Web Checkout Getnet)
-    const seed = new Date().toISOString(); // Fecha en formato ISO 8601
-    const nonceRaw = crypto.randomBytes(16); // bytes aleatorios
-    const nonce = nonceRaw.toString("base64");
+    // 3. AUTENTICACIÓN según manual:
+    // tranKey = Base64( SHA-256( nonce + seed + secretKey ) )
+    // nonce se envía en Base64
+    const seed = new Date().toISOString(); // fecha en formato ISO 8601
+    const nonce = crypto.randomBytes(16).toString("base64");
 
     const tranKey = crypto
       .createHash("sha256")
-      .update(nonceRaw.toString("utf8") + seed + secretKey)
+      .update(nonce + seed + secretKey, "utf8")
       .digest("base64");
 
-    // 4. Construir valores obligatorios requeridos por la API
+    // 4. Otros campos requeridos
     const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-    const ipAddress = req.headers["x-forwarded-for"]?.split(",")[0] || "127.0.0.1";
+
+    const ipAddress =
+      (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+      req.socket?.remoteAddress ||
+      "127.0.0.1";
+
     const userAgent = req.headers["user-agent"] || "EntreAlasYRaices";
 
-    // **IMPORTANTE**
-    // Esta será la URL donde Getnet redirige al usuario después del pago.
-    const returnUrl = "https://entrealasyraices-web.vercel.app/getnet-retorno.html";
+    // URL donde el cliente vuelve después de pagar
+    const returnUrl =
+      "https://entrealasyraices-web.vercel.app/getnet-retorno.html";
 
-    // 5. Estructura que exige Getnet Web Checkout
+    // 5. Cuerpo de la petición CreateRequest (Web Checkout)
     const requestBody = {
       auth: {
         login,
@@ -77,7 +83,7 @@ module.exports = async (req, res) => {
       userAgent,
     };
 
-    // 6. Llamado al endpoint oficial de Getnet
+    // 6. Llamado al endpoint de Getnet
     const response = await fetch(`${baseUrl}/api/session/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -86,12 +92,12 @@ module.exports = async (req, res) => {
 
     const data = await response.json();
 
-    // 7. Validación de respuesta Getnet
-    if (data.status?.status === "OK") {
+    // 7. Validar respuesta
+    if (data.status && data.status.status === "OK") {
       res.status(200).json({
         ok: true,
         requestId: data.requestId,
-        processUrl: data.processUrl, // URL donde el cliente realiza el pago
+        processUrl: data.processUrl,
       });
     } else {
       res.status(400).json({
@@ -101,7 +107,6 @@ module.exports = async (req, res) => {
       });
     }
   } catch (err) {
-    // 8. Manejo de errores del servidor
     res.status(500).json({
       ok: false,
       error: "Error interno al comunicar con Getnet",
