@@ -1,8 +1,3 @@
-// /api/getnet-create-session.js
-// Integración Web Checkout API 2.3 – Getnet Chile (Ambiente de pruebas)
-
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -14,27 +9,27 @@ export default async function handler(req, res) {
     if (!amount || !reference || !description) {
       return res.status(400).json({
         ok: false,
-        error: "Faltan campos obligatorios: amount, reference, description"
+        error: "Faltan campos obligatorios"
       });
     }
 
-    // Credenciales desde Vercel
-    const login = process.env.GETNET_LOGIN;
-    const secretKey = process.env.GETNET_SECRET_KEY;
-    const baseUrl = process.env.GETNET_BASE_URL;
+    // Variables desde Vercel
+    const LOGIN = process.env.GETNET_LOGIN;
+    const SECRET = process.env.GETNET_SECRET_KEY;
+    const BASE_URL = process.env.GETNET_BASE_URL;
 
-    if (!login || !secretKey || !baseUrl) {
+    if (!LOGIN || !SECRET || !BASE_URL) {
       return res.status(500).json({
         ok: false,
-        error: "Faltan variables GETNET en Vercel"
+        error: "Variables de entorno faltantes"
       });
     }
 
-    // Construcción de Basic Auth
-    const base64Credentials = Buffer.from(`${login}:${secretKey}`).toString("base64");
+    // Basic Auth
+    const token = Buffer.from(`${LOGIN}:${SECRET}`).toString("base64");
 
-    // Body según API 2.3
-    const bodyRequest = {
+    // Body para API Getnet
+    const body = {
       amount: amount,
       reference: reference,
       description: description,
@@ -44,8 +39,51 @@ export default async function handler(req, res) {
       }
     };
 
-    // ENDPOINT CORRECTO API 2.3 (la parte que estaba mal)
-    const response = await fetch(`${baseUrl}/api/webpay/v2.3/initiate-payment`, {
+    // Llamado Getnet
+    const response = await fetch(`${BASE_URL}/webpay/v2.3/initiate-payment`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Authorization": `Basic ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    // Getnet a veces responde en texto → NO usar response.json() directamente
+    const text = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return res.status(500).json({
+        ok: false,
+        error: "Getnet devolvió una respuesta no JSON",
+        raw: text
+      });
+    }
+
+    // Si viene el processUrl
+    if (data?.processUrl) {
+      return res.status(200).json({
+        ok: true,
+        processUrl: data.processUrl
+      });
+    }
+
+    // Si falla
+    return res.status(400).json({
+      ok: false,
+      error: "Getnet rechazó la creación",
+      details: data
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: "Error interno del servidor",
+      details: err.message
+    });
+  }
+}
