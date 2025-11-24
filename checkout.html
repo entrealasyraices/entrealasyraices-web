@@ -259,10 +259,40 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e){
   a.download = "pedido_entrealasyraices.csv";
   a.click();
 
-  // ----- REDIRECCIÓN A GETNET -----
-  // cuando tengas tu link oficial → reemplace esta línea
-  window.location.href = "https://getnet.cl/link-provisorio";
-});
+  /// ----- LLAMADO REAL A GETNET -----
+(async () => {
+  try {
+
+    // Calcular total con envío
+    const subtotal = cartTotal();
+    const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
+
+    const amount = totalConEnvio;
+    const reference = "ORD-" + Date.now();
+    const description = "Compra en Entre Alas y Raíces";
+
+    const response = await fetch("/api/getnet-create-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount, reference, description }),
+    });
+
+    const data = await response.json();
+
+    if (data.ok && data.processUrl) {
+      // Redirigir al Web Checkout real
+      window.location.href = data.processUrl;
+    } else {
+      alert("No se pudo iniciar el pago con Getnet");
+      console.error("Error Getnet:", data);
+    }
+
+  } catch (error) {
+    alert("Ocurrió un error al contactar a Getnet.");
+    console.error(error);
+  }
+})();
+
 </script>
 
 </body>
