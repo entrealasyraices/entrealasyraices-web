@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Construcción de Basic Auth (según API 2.3)
+    // Construcción de Basic Auth
     const base64Credentials = Buffer.from(`${login}:${secretKey}`).toString("base64");
 
     // Body según API 2.3
@@ -44,39 +44,8 @@ export default async function handler(req, res) {
       }
     };
 
-    // Llamado a iniciar pago
-    const response = await fetch(`${baseUrl}/webpay/v2.3/initiate-payment`, {
+    // ENDPOINT CORRECTO API 2.3 (la parte que estaba mal)
+    const response = await fetch(`${baseUrl}/api/webpay/v2.3/initiate-payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Basic ${base64Credentials}`
-      },
-      body: JSON.stringify(bodyRequest)
-    });
-
-    const data = await response.json();
-
-    // Si Getnet entrega processUrl → OK
-    if (data.processUrl) {
-      return res.status(200).json({
-        ok: true,
-        processUrl: data.processUrl
-      });
-    }
-
-    // Si falla → mostrar detalle
-    return res.status(400).json({
-      ok: false,
-      error: "Getnet rechazó la creación de la sesión",
-      details: data
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      error: "Error interno",
-      details: error.message
-    });
-  }
-}
-
