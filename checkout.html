@@ -213,45 +213,57 @@
 /* ======================================
    RENDER RESUMEN DE PEDIDO
 ====================================== */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const cart = getCart();
-  const cont = document.getElementById('checkout-items');
-  const total = document.getElementById('checkout-total');
+  const cont = document.getElementById("checkout-items");
+  const total = document.getElementById("checkout-total");
 
-  if(cart.length === 0){
+  if (!cart || cart.length === 0) {
     cont.innerHTML = "<p>No hay productos en tu carrito.</p>";
     total.textContent = "$0";
     return;
   }
 
-    cont.innerHTML = cart.map(p => `
+  cont.innerHTML = cart
+    .map(
+      (p) => `
     <p><strong>${p.name}</strong> (x${p.qty})<br>
-    <small>$${p.price.toLocaleString('es-CL')}</small></p>
-  `).join("");
+    <small>$${p.price.toLocaleString("es-CL")}</small></p>
+  `
+    )
+    .join("");
 
   const subtotal = cartTotal();
   const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
   total.textContent = "$" + totalConEnvio.toLocaleString("es-CL");
-
 });
 
-
 /* ======================================
-   FORMULARIO → GENERAR CSV → GETNET
+   FORMULARIO → CSV + LLAMADO A GETNET
 ====================================== */
-document.getElementById('checkoutForm').addEventListener('submit', function(e){
-  e.preventDefault();
+const form = document.getElementById("checkoutForm");
 
+form.addEventListener("submit", async function (e) {
+  e.preventDefault(); // evita que la página se recargue
+
+  // 1) Verificar que haya productos en el carrito
+  const cart = getCart();
+  if (!cart || cart.length === 0) {
+    alert("Tu carrito está vacío. Agrega productos antes de continuar.");
+    return;
+  }
+
+  // 2) Datos del formulario
   const data = {
     nombre: this.nombre.value,
     correo: this.correo.value,
     telefono: this.telefono.value,
-    direccion: this.direccion.value
+    direccion: this.direccion.value,
   };
 
-  // ----- generar CSV -----
+  // 3) Generar y descargar CSV (como ya lo hacías)
   const csv = `Nombre,Correo,Telefono,Direccion\n${data.nombre},${data.correo},${data.telefono},${data.direccion}`;
-  const blob = new Blob([csv], {type: "text/csv"});
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
@@ -259,18 +271,16 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e){
   a.download = "pedido_entrealasyraices.csv";
   a.click();
 
-  /// ----- LLAMADO REAL A GETNET -----
-(async () => {
+  // 4) Calcular monto total con envío
+  const subtotal = cartTotal();
+  const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
+
+  const amount = totalConEnvio;
+  const reference = "ORD-" + Date.now();
+  const description = "Compra en Entre Alas y Raíces";
+
+  // 5) Llamar a tu API en Vercel para crear la sesión Getnet
   try {
-
-    // Calcular total con envío
-    const subtotal = cartTotal();
-    const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
-
-    const amount = totalConEnvio;
-    const reference = "ORD-" + Date.now();
-    const description = "Compra en Entre Alas y Raíces";
-
     const response = await fetch("/api/getnet-create-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -280,20 +290,16 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e){
     const data = await response.json();
 
     if (data.ok && data.processUrl) {
-      // Redirigir al Web Checkout real
+      // 6) Redirigir al formulario de pago de Getnet
       window.location.href = data.processUrl;
     } else {
-      alert("No se pudo iniciar el pago con Getnet");
-      console.error("Error Getnet:", data);
+      alert("No se pudo iniciar el pago con Getnet. Revisa la consola.");
+      console.error("Respuesta Getnet:", data);
     }
-
   } catch (error) {
     alert("Ocurrió un error al contactar a Getnet.");
-    console.error(error);
+    console.error("Error fetch:", error);
   }
-})();
-
+});
 </script>
 
-</body>
-</html>
