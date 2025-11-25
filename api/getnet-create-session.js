@@ -74,10 +74,12 @@ export default async function handler(req, res) {
 
     // Si falla
     return res.status(400).json({
-      ok: false,
-      error: "Getnet rechazó la creación",
-      details: data
-    });
+  ok: false,
+  error: "Getnet rechazó la creación",
+  details: data,
+  rawResponse: text
+});
+
 
   } catch (err) {
     return res.status(500).json({
