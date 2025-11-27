@@ -1,3 +1,6 @@
+// /api/getnet-create-session.js
+import crypto from "crypto";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -9,83 +12,117 @@ export default async function handler(req, res) {
     if (!amount || !reference || !description) {
       return res.status(400).json({
         ok: false,
-        error: "Faltan campos obligatorios"
+        error: "Faltan campos obligatorios (amount, reference, description)",
       });
     }
 
-    // Variables desde Vercel
     const LOGIN = process.env.GETNET_LOGIN;
     const SECRET = process.env.GETNET_SECRET_KEY;
-    const BASE_URL = process.env.GETNET_BASE_URL;
+    const BASE_URL = process.env.GETNET_BASE_URL; // debe ser https://checkout.test.getnet.cl en pruebas
 
     if (!LOGIN || !SECRET || !BASE_URL) {
       return res.status(500).json({
         ok: false,
-        error: "Variables de entorno faltantes"
+        error: "Variables de entorno GETNET_LOGIN / GETNET_SECRET_KEY / GETNET_BASE_URL no están definidas",
       });
     }
 
-    // Basic Auth
-    const token = Buffer.from(`${LOGIN}:${SECRET}`).toString("base64");
+    // ============================
+    // 1. Autenticación Web Checkout
+    // ============================
+    const seed = new Date().toISOString(); // ISO 8601
+    const nonceRaw = crypto.randomBytes(16).toString("hex"); // valor original
+    const nonceBase64 = Buffer.from(nonceRaw).toString("base64");
 
-    // Body para API Getnet
-    const body = {
-      amount: amount,
-      reference: reference,
-      description: description,
-      currency: "CLP",
-      webpay: {
-        callbackUrl: "https://entrealasyraices.cl/pago-exitoso.html"
-      }
+    const tranKey = crypto
+      .createHash("sha256")
+      .update(nonceRaw + seed + SECRET)
+      .digest("base64");
+
+    const auth = {
+      login: LOGIN,
+      tranKey,
+      nonce: nonceBase64,
+      seed,
     };
 
-    // Llamado Getnet
-    const response = await fetch(`${BASE_URL}/webpay/v2.3/initiate-payment`, {
+    // ============================
+    // 2. Datos del pago (createRequest)
+    // ============================
+    const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // +15 minutos
+
+    const clientIp =
+      (req.headers["x-forwarded-for"] || "")
+        .toString()
+        .split(",")[0]
+        .trim() || req.socket.remoteAddress || "127.0.0.1";
+
+    const userAgent = req.headers["user-agent"] || "Unknown";
+
+    const body = {
+      auth,
+      locale: "es_CL",
+      payment: {
+        reference,      // esta será la referencia que después reportas a Getnet
+        description,
+        amount: {
+          currency: "CLP",
+          total: Number(amount),
+        },
+      },
+      expiration,
+      returnUrl: `https://entrealasyraices.cl/pago-exitoso.html?reference=${encodeURIComponent(
+        reference
+      )}`,
+      ipAddress: clientIp,
+      userAgent,
+    };
+
+    // ============================
+    // 3. Llamada a Web Checkout
+    // ============================
+    const response = await fetch(`${BASE_URL}/api/session/`, {
       method: "POST",
       headers: {
-        "Authorization": `Basic ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
-    // Getnet a veces responde en texto → NO usar response.json() directamente
     const text = await response.text();
-
     let data;
-
     try {
       data = JSON.parse(text);
     } catch {
+      console.error("Respuesta no JSON desde Getnet:", text);
       return res.status(500).json({
         ok: false,
         error: "Getnet devolvió una respuesta no JSON",
-        raw: text
+        raw: text,
       });
     }
 
-    // Si viene el processUrl
-    if (data?.processUrl) {
-      return res.status(200).json({
-        ok: true,
-        processUrl: data.processUrl
+    if (!response.ok || data.status?.status !== "OK") {
+      console.error("Error desde Getnet createRequest:", data);
+      return res.status(500).json({
+        ok: false,
+        error: "Error al crear la sesión en Getnet",
+        getnetStatus: data.status || null,
       });
     }
 
-    // Si falla
-    return res.status(400).json({
-  ok: false,
-  error: "Getnet rechazó la creación",
-  details: data,
-  rawResponse: text
-});
-
-
+    // Si todo va bien, retornamos la URL donde debe ir el cliente
+    return res.status(200).json({
+      ok: true,
+      requestId: data.requestId,
+      processUrl: data.processUrl,
+    });
   } catch (err) {
+    console.error("Error interno en getnet-create-session:", err);
     return res.status(500).json({
       ok: false,
       error: "Error interno del servidor",
-      details: err.message
+      details: err.message,
     });
   }
 }
