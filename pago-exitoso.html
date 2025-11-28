@@ -13,16 +13,17 @@
     .success-container {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       margin-top: 3rem;
+      padding: 0 1rem;
     }
 
     .success-card {
       background: #fff;
       padding: 2rem;
       border-radius: 1.5rem;
-      text-align: center;
-      max-width: 540px;
+      text-align: left;
+      max-width: 640px;
       width: 100%;
       box-shadow: 0 6px 18px rgba(0,0,0,0.07);
       border-left: 8px solid #2E7D66;
@@ -34,6 +35,7 @@
       color: #2E7D66;
       font-size: 2rem;
       font-family: 'Lora', serif;
+      text-align: center;
     }
 
     .success-card p {
@@ -53,22 +55,133 @@
       font-size: 1rem;
     }
 
+    .order-summary {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+      font-size: .95rem;
+    }
+
+    .order-summary h2 {
+      font-size: 1.2rem;
+      margin-bottom: .5rem;
+      color: #1f2933;
+    }
+
+    .order-item {
+      margin-bottom: .4rem;
+    }
+
+    .order-item small {
+      color: #6b7280;
+    }
+
+    .order-totals {
+      margin-top: .8rem;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: .25rem;
+    }
+
+    .order-row strong {
+      font-weight: 600;
+    }
+
+    .order-iva {
+      margin-top: .4rem;
+      font-size: .85rem;
+      color: #4b5563;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
+  <script>
+    function formatCLP(value) {
+      return "$" + Number(value || 0).toLocaleString("es-CL");
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Mostrar correo del comprador si existe
       const email = localStorage.getItem("correoComprador");
       if (email) {
         const correoEl = document.getElementById("correo-cliente");
         if (correoEl) correoEl.textContent = email;
       }
+
+      // Mostrar resumen de la última orden si existe
+      const rawOrder = localStorage.getItem("ear_last_order");
+      if (!rawOrder) return;
+
+      let order;
+      try {
+        order = JSON.parse(rawOrder);
+      } catch {
+        return;
+      }
+
+      const summaryContainer = document.getElementById("order-summary");
+      if (!summaryContainer) return;
+
+      const itemsHtml = (order.items || [])
+        .map(
+          (p) => `
+            <div class="order-item">
+              <strong>${p.name}</strong> (x${p.qty})<br>
+              <small>${formatCLP(p.price)} c/u</small>
+            </div>
+          `
+        )
+        .join("");
+
+      summaryContainer.innerHTML = `
+        <h2>Resumen de tu pedido</h2>
+        <p><strong>N° de pedido:</strong> ${order.reference || "—"}</p>
+
+        ${itemsHtml || "<p>No se encontraron productos en el pedido.</p>"}
+
+        <div class="order-totals">
+          <div class="order-row">
+            <span>Subtotal</span>
+            <span>${formatCLP(order.subtotal)}</span>
+          </div>
+          <div class="order-row">
+            <span>Envío</span>
+            <span>${formatCLP(order.shipping)}</span>
+          </div>
+          <div class="order-row">
+            <strong>Total pagado</strong>
+            <strong>${formatCLP(order.amount)}</strong>
+          </div>
+        </div>
+
+        <p class="order-iva">
+          Incluye IVA (19%) sobre productos: <strong>${formatCLP(order.iva)}</strong>
+        </p>
+      `;
+
+      // Enviar notificación interna SOLO una vez por referencia
+      const notifiedRef = localStorage.getItem("ear_last_order_notified");
+      if (order.reference && order.reference !== notifiedRef) {
+        try {
+          await fetch("/api/order-notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: rawOrder,
+          });
+          localStorage.setItem("ear_last_order_notified", order.reference);
+        } catch (err) {
+          console.warn("No se pudo enviar la notificación interna de pedido:", err);
+        }
+      }
     });
   </script>
-
 </head>
 
 <body>
@@ -102,6 +215,8 @@
       📧 <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
       📧 <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a>
     </p>
+
+    <div id="order-summary" class="order-summary"></div>
 
     <a class="btn" href="productos.html">Seguir comprando</a>
   </div>
