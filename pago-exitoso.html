@@ -5,54 +5,138 @@
   <title>Pago Exitoso – Entre Alas y Raíces</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="images/logo-entrealas.jpg" type="image/jpeg">
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #E9F6F1;
+    .success-container {
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 3rem 1rem;
-      color: #2E7D66;
+      margin-top: 3rem;
     }
 
-    .card {
-      background: white;
+    .success-card {
+      background: #fff;
       padding: 2rem;
-      border-radius: 1.2rem;
-      max-width: 480px;
+      border-radius: 1.5rem;
       text-align: center;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      border-left: 6px solid #2E7D66;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      border-left: 8px solid #2E7D66;
+      animation: fadeIn .7s ease;
     }
 
-    h1 {
+    .success-card h1 {
       margin-top: 0;
+      color: #2E7D66;
       font-size: 2rem;
+      font-family: 'Lora', serif;
     }
 
-    a.btn {
+    .success-card p {
+      color: #374151;
+      margin-top: .6rem;
+      font-size: 1rem;
+    }
+
+    .btn {
       display: inline-block;
       margin-top: 1.5rem;
-      padding: 0.9rem 1.2rem;
+      padding: .9rem 1.5rem;
       background: #2E7D66;
       color: white;
       border-radius: 10px;
       text-decoration: none;
       font-size: 1rem;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const email = localStorage.getItem("correoComprador");
+      if (email) {
+        const correoEl = document.getElementById("correo-cliente");
+        if (correoEl) correoEl.textContent = email;
+      }
+    });
+  </script>
+
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>¡Pago realizado con éxito!</h1>
-    <p>Gracias por tu compra en <strong>Entre Alas y Raíces</strong>.</p>
-    <p>Pronto recibirás un correo con los detalles de tu pedido.</p>
+<header class="topbar">
+  <a href="index.html">
+    <img src="images/logo-entrealas.jpg" alt="Entre Alas y Raíces" style="height:48px;">
+  </a>
+  <a href="index.html" class="site-slogan">Sanar, sostener y crecer</a>
+  <button class="hamburger" aria-label="Abrir menú">☰</button>
+</header>
 
-    <a class="btn" href="index.html">Volver al inicio</a>
+<nav class="navbar menu">
+  <a href="index.html">Inicio</a>
+  <a href="productos.html">Productos</a>
+  <a href="capacitaciones.html">Capacitaciones</a>
+  <a href="contacto.html">Contacto</a>
+</nav>
+
+<main class="success-container">
+  <div class="success-card">
+    <h1>¡Gracias por tu compra! 🎉</h1>
+
+    <p>Tu pago fue procesado con éxito.</p>
+
+    <p>En un plazo máximo de <strong>24–48 horas hábiles</strong> recibirás tu
+    <strong>boleta o factura electrónica</strong> en tu correo:
+    <strong id="correo-cliente"></strong></p>
+
+    <p>Si no la recibes, escribe a:<br>
+      📧 <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
+      📧 <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a>
+    </p>
+
+    <a class="btn" href="productos.html">Seguir comprando</a>
   </div>
+</main>
+
+<footer class="footer">
+  <div class="container cols">
+
+    <div class="brand-small">
+      <img src="images/logo-entrealas.jpg" alt="Logo Entre Alas y Raíces">
+      <div>
+        <strong>Entre Alas y Raíces SpA</strong><br>
+        <small>RUT: 78.224.149-4</small>
+      </div>
+    </div>
+
+    <div>
+      <strong>Legal</strong>
+      <p class="mt-3">
+        <a href="privacidad.html">Política de Privacidad</a><br>
+        <a href="terminos.html">Términos y Condiciones</a><br>
+        <a href="envios.html">Envíos y Devoluciones</a>
+      </p>
+    </div>
+
+    <div>
+      <strong>Contacto</strong>
+      <p class="mt-3">
+        <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
+        <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a>
+      </p>
+    </div>
+
+  </div>
+</footer>
 
 </body>
 </html>
