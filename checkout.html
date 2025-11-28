@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="images/logo-entrealas.jpg" type="image/jpeg">
 
+  <!-- Tu JS global (carrito, etc.) -->
   <script defer src="script.js"></script>
 
   <style>
@@ -18,15 +19,9 @@
        ======================= */
     .checkout-grid {
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.1fr);
       gap: 2rem;
       margin-top: 2rem;
-    }
-
-    @media (max-width: 900px) {
-      .checkout-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     .checkout-card {
@@ -39,7 +34,6 @@
 
     .checkout-card h3 {
       margin-top: 0;
-      font-family: "Lora", serif;
     }
 
     .checkout-form label {
@@ -58,6 +52,9 @@
       border: 1px solid #ccc;
       font-size: .95rem;
       font-family: inherit;
+    }
+
+    .checkout-form textarea {
       resize: vertical;
     }
 
@@ -77,7 +74,7 @@
     }
 
     .btn-pay:hover {
-      background: #245f4f;
+      filter: brightness(1.05);
     }
 
     .notice-envio {
@@ -86,85 +83,56 @@
       padding: 1rem;
       border-radius: 8px;
       margin-top: 1.5rem;
-      font-size: .95rem;
+      font-size: .9rem;
     }
 
-    .field-group {
-      margin-bottom: .5rem;
-    }
-
-    .billing-toggle {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: .5rem;
-      margin-bottom: .5rem;
-      flex-wrap: wrap;
-    }
-
-    .billing-toggle label {
-      display: flex;
-      align-items: center;
-      gap: .35rem;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .billing-section-title {
-      margin-top: 1.5rem;
-      margin-bottom: .5rem;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .order-lines p {
-      margin: .25rem 0;
-    }
-
-    .order-divider {
-      margin: 1rem 0;
+    .tipo-doc {
       border: none;
-      border-top: 1px solid #e5e7eb;
+      padding: 0;
+      margin-top: 1.5rem;
     }
 
-    .order-line {
+    .tipo-doc legend {
+      font-weight: 600;
+      margin-bottom: .5rem;
+    }
+
+    .tipo-doc-block {
+      font-size: .9rem;
+    }
+
+    .summary-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      margin-top: .4rem;
       font-size: .95rem;
-      margin: .15rem 0;
     }
 
-    .order-line.order-total {
+    .summary-row strong {
+      font-weight: 600;
+    }
+
+    .summary-total {
+      margin-top: .6rem;
       font-weight: 700;
       font-size: 1.05rem;
-      margin-top: .35rem;
     }
 
-    .order-iva {
+    .summary-iva {
       font-size: .85rem;
-      margin-top: .35rem;
-      color: #4b5563;
+      color: #555;
+      margin-top: .3rem;
     }
 
-    .checkout-steps {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
+    .summary-total-envio {
+      margin-top: .8rem;
+      font-weight: 700;
     }
 
-    .checkout-steps .step {
-      padding: .45rem 1rem;
-      border-radius: 999px;
-      border: 1px solid #2E7D66;
-      font-size: .9rem;
-      color: #2E7D66;
-      background: #fff;
-    }
-
-    .checkout-steps .step.active {
-      background: #2E7D66;
-      color: #fff;
+    @media (max-width: 900px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -195,8 +163,8 @@
     <div class="container">
 
       <header class="section-header center">
-        <h1>Finalizar compra</h1>
-        <p class="m0">Completa tus datos para confirmar tu pedido</p>
+        <h1>Completa tus datos para confirmar tu pedido</h1>
+        <p class="m0">Paso 2 de 4 · Tus datos</p>
       </header>
 
       <!-- PASOS DEL CHECKOUT -->
@@ -213,126 +181,183 @@
              FORMULARIO COMPLETO
         ======================== -->
         <div class="checkout-card">
-          <form id="checkoutForm" class="checkout-form" novalidate>
-            <!-- FACTURACIÓN Y ENVÍO -->
-            <h3>Datos de facturación y envío</h3>
+          <h3>Datos de facturación y envío</h3>
 
-            <div class="billing-section-title">Tipo de documento</div>
-            <div class="billing-toggle">
-              <label>
-                <input type="radio" name="billingType" value="boleta" checked>
+          <form id="checkoutForm" class="checkout-form">
+
+            <!-- DATOS DEL COMPRADOR (SIEMPRE VISIBLES) -->
+            <label for="nombreComprador">Nombre</label>
+            <input
+              type="text"
+              id="nombreComprador"
+              name="nombreComprador"
+              required
+            >
+
+            <label for="apellidoComprador">Apellido</label>
+            <input
+              type="text"
+              id="apellidoComprador"
+              name="apellidoComprador"
+              required
+            >
+
+            <label for="rutComprador">RUT</label>
+            <input
+              type="text"
+              id="rutComprador"
+              name="rutComprador"
+              required
+            >
+
+            <label for="telefonoComprador">Teléfono</label>
+            <input
+              type="tel"
+              id="telefonoComprador"
+              name="telefonoComprador"
+              required
+            >
+
+            <label for="correoComprador">Correo electrónico</label>
+            <input
+              type="email"
+              id="correoComprador"
+              name="correoComprador"
+              required
+            >
+
+            <!-- TIPO DE DOCUMENTO (DEBAJO DE LOS DATOS DEL COMPRADOR) -->
+            <fieldset class="tipo-doc">
+              <legend>Tipo de documento</legend>
+
+              <label style="display:inline-flex; align-items:center; gap:.4rem;">
+                <input
+                  type="radio"
+                  name="tipoDocumento"
+                  value="boleta"
+                  checked
+                >
                 Boleta
               </label>
-              <label>
-                <input type="radio" name="billingType" value="factura">
+
+              <label style="display:inline-flex; align-items:center; gap:.4rem; margin-left:1.5rem;">
+                <input
+                  type="radio"
+                  name="tipoDocumento"
+                  value="factura"
+                >
                 Factura
               </label>
+            </fieldset>
+
+            <!-- INFO PARA BOLETA -->
+            <div id="boletaInfo" class="tipo-doc-block">
+              <p style="margin-top:.5rem;">
+                Si eliges <strong>Boleta</strong>, se emitirá boleta electrónica con los
+                datos del comprador indicados arriba.
+              </p>
             </div>
 
-            <!-- Campos Boleta -->
-            <div class="billing-section-title">Datos para boleta</div>
+            <!-- CAMPOS EXTRA SOLO PARA FACTURA -->
+            <div id="facturaFields" class="tipo-doc-block" style="display:none; margin-top:1rem;">
+              <h4 style="margin-bottom:.5rem;">Datos para factura</h4>
 
-            <div class="field-group billing-boleta">
-              <label for="boletaNombre">Nombre</label>
-              <input id="boletaNombre" name="boletaNombre" type="text">
-            </div>
-
-            <div class="field-group billing-boleta">
-              <label for="boletaApellido">Apellido</label>
-              <input id="boletaApellido" name="boletaApellido" type="text">
-            </div>
-
-            <div class="field-group billing-boleta">
-              <label for="boletaRut">RUT</label>
-              <input id="boletaRut" name="boletaRut" type="text">
-            </div>
-
-            <div class="field-group billing-boleta">
-              <label for="boletaTelefono">Teléfono</label>
-              <input id="boletaTelefono" name="boletaTelefono" type="tel">
-            </div>
-
-            <div class="field-group billing-boleta">
-              <label for="boletaCorreo">Correo electrónico</label>
-              <input id="boletaCorreo" name="boletaCorreo" type="email">
-            </div>
-
-            <!-- Campos Factura -->
-            <div class="billing-section-title">Datos para factura</div>
-
-            <div class="field-group billing-factura">
               <label for="facturaEmpresa">Nombre de la empresa *</label>
-              <input id="facturaEmpresa" name="facturaEmpresa" type="text">
-            </div>
+              <input
+                type="text"
+                id="facturaEmpresa"
+                name="facturaEmpresa"
+              >
 
-            <div class="field-group billing-factura">
               <label for="facturaRut">RUT empresa *</label>
-              <input id="facturaRut" name="facturaRut" type="text">
-            </div>
+              <input
+                type="text"
+                id="facturaRut"
+                name="facturaRut"
+              >
 
-            <div class="field-group billing-factura">
               <label for="facturaRazon">Razón social *</label>
-              <input id="facturaRazon" name="facturaRazon" type="text">
-            </div>
+              <input
+                type="text"
+                id="facturaRazon"
+                name="facturaRazon"
+              >
 
-            <div class="field-group billing-factura">
               <label for="facturaDireccion">Dirección *</label>
-              <input id="facturaDireccion" name="facturaDireccion" type="text">
+              <input
+                type="text"
+                id="facturaDireccion"
+                name="facturaDireccion"
+              >
             </div>
 
             <!-- DATOS DE DESPACHO -->
             <h3 style="margin-top:2rem;">Datos de despacho</h3>
 
-            <div class="field-group">
-              <label for="despachoDireccion">Dirección de la calle *</label>
-              <input id="despachoDireccion" name="despachoDireccion" type="text" required>
-            </div>
+            <label for="direccionCalle">Dirección de la calle *</label>
+            <input
+              type="text"
+              id="direccionCalle"
+              name="direccionCalle"
+              required
+            >
 
-            <div class="field-group">
-              <label for="despachoComuna">Comuna *</label>
-              <input id="despachoComuna" name="despachoComuna" type="text" required>
-            </div>
+            <label for="comuna">Comuna *</label>
+            <input
+              type="text"
+              id="comuna"
+              name="comuna"
+              required
+            >
 
-            <div class="field-group">
-              <label for="despachoCiudad">Localidad / Ciudad *</label>
-              <input id="despachoCiudad" name="despachoCiudad" type="text" required>
-            </div>
+            <label for="ciudad">Localidad / Ciudad *</label>
+            <input
+              type="text"
+              id="ciudad"
+              name="ciudad"
+              required
+            >
 
-            <div class="field-group">
-              <label for="despachoRegion">Región / Provincia *</label>
-              <select id="despachoRegion" name="despachoRegion" required>
-                <option value="" disabled selected>Selecciona una región</option>
-                <option>Arica y Parinacota</option>
-                <option>Tarapacá</option>
-                <option>Antofagasta</option>
-                <option>Atacama</option>
-                <option>Coquimbo</option>
-                <option>Valparaíso</option>
-                <option>Metropolitana de Santiago</option>
-                <option>O’Higgins</option>
-                <option>Maule</option>
-                <option>Ñuble</option>
-                <option>Biobío</option>
-                <option>La Araucanía</option>
-                <option>Los Ríos</option>
-                <option>Los Lagos</option>
-                <option>Aysén</option>
-                <option>Magallanes y de la Antártica Chilena</option>
-              </select>
-            </div>
+            <label for="region">Región / Provincia *</label>
+            <select id="region" name="region" required>
+              <option value="">Selecciona una región</option>
+              <option value="Arica y Parinacota">Arica y Parinacota</option>
+              <option value="Tarapacá">Tarapacá</option>
+              <option value="Antofagasta">Antofagasta</option>
+              <option value="Atacama">Atacama</option>
+              <option value="Coquimbo">Coquimbo</option>
+              <option value="Valparaíso">Valparaíso</option>
+              <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+              <option value="O’Higgins">O’Higgins</option>
+              <option value="Maule">Maule</option>
+              <option value="Ñuble">Ñuble</option>
+              <option value="Biobío">Biobío</option>
+              <option value="La Araucanía">La Araucanía</option>
+              <option value="Los Ríos">Los Ríos</option>
+              <option value="Los Lagos">Los Lagos</option>
+              <option value="Aysén">Aysén</option>
+              <option value="Magallanes">Magallanes</option>
+            </select>
 
-            <div class="field-group">
-              <label for="despachoInfo">Información adicional para el despacho</label>
-              <textarea id="despachoInfo" name="despachoInfo" rows="2"></textarea>
-            </div>
+            <label for="infoAdicional">Información adicional para el despacho</label>
+            <input
+              type="text"
+              id="infoAdicional"
+              name="infoAdicional"
+              placeholder="Ej: casa verde, portón café, dejar en conserjería"
+            >
 
-            <div class="field-group">
-              <label for="despachoComentarios">Comentarios (opcional)</label>
-              <textarea id="despachoComentarios" name="despachoComentarios" rows="2"></textarea>
-            </div>
+            <label for="comentarios">Comentarios (opcional)</label>
+            <textarea
+              id="comentarios"
+              name="comentarios"
+              rows="3"
+            ></textarea>
 
+            <!-- BOTÓN DE CONTINUAR -->
             <button type="submit" class="btn-pay">Continuar con el pago</button>
 
+            <!-- INFORMACIÓN DE ENTREGA -->
             <div class="notice-envio">
               <strong>Información de entrega:</strong>
               <p>Despacho a domicilio en la Región Metropolitana dentro de <strong>5 días hábiles</strong>.</p>
@@ -351,12 +376,28 @@
         <div class="checkout-card">
           <h3>Resumen del pedido</h3>
 
-          <div id="checkout-items" class="order-lines"></div>
+          <div id="checkout-items"></div>
 
-          <p style="margin-top:1rem; font-size:1.1rem;">
-            <strong>Total (incluye envío $2.990 RM): </strong>
-            <span id="checkout-total">$0</span>
-          </p>
+          <div style="margin-top:1rem; border-top:1px solid #e5e7eb; padding-top:.8rem;">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">$0</span>
+            </div>
+            <div class="summary-row">
+              <span>Envío</span>
+              <span id="summary-shipping">$0</span>
+            </div>
+            <div class="summary-row summary-total">
+              <span>Total</span>
+              <span id="summary-total">$0</span>
+            </div>
+            <div class="summary-iva">
+              Incluye IVA (19%) sobre productos: <span id="summary-iva-amount">$0</span>
+            </div>
+            <div class="summary-total-envio">
+              Total (incluye envío $2.990 RM): <span id="summary-total-incl-envio">$0</span>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -393,185 +434,129 @@
       </p>
     </div>
 
+    <div>
+      <strong>Soporte</strong>
+      <p class="mt-3">
+        <a href="contacto.html">¿Necesitas ayuda?</a><br>
+        <span>Pagos seguros: Redirección a Getnet (Santander).</span>
+      </p>
+    </div>
+
   </div>
 </footer>
 
+<!-- ================================
+     LÓGICA DEL RESUMEN + GETNET
+================================ -->
 <script>
-  function formatCLP(value) {
-    return "$" + Number(value || 0).toLocaleString("es-CL");
-  }
-
-  /* ======================================
-     RENDER RESUMEN DE PEDIDO
-  ====================================== */
   document.addEventListener("DOMContentLoaded", () => {
-    const cart = getCart();
-    const cont = document.getElementById("checkout-items");
-    const totalEl = document.getElementById("checkout-total");
+    // ----- Mostrar / ocultar campos de FACTURA -----
+    const tipoDocRadios = document.querySelectorAll('input[name="tipoDocumento"]');
+    const facturaFields  = document.getElementById("facturaFields");
+    const facturaInputs  = facturaFields.querySelectorAll("input");
 
-    if (!cart || cart.length === 0) {
-      cont.innerHTML = "<p>No hay productos en tu carrito.</p>";
-      totalEl.textContent = "$0";
-      return;
-    }
+    function actualizarTipoDocumento() {
+      const seleccionado = document.querySelector('input[name="tipoDocumento"]:checked')?.value;
 
-    let subtotal = 0;
-    const linesHtml = cart
-      .map((p) => {
-        const lineTotal = p.price * p.qty;
-        subtotal += lineTotal;
-        return `
-          <p>
-            <strong>${p.name}</strong> (x${p.qty})<br>
-            <small>${formatCLP(p.price)} c/u</small><br>
-            <small>Total: ${formatCLP(lineTotal)}</small>
-          </p>
-        `;
-      })
-      .join("");
-
-    const shipping = SHIPPING_COST || 0;
-    const iva = Math.round(subtotal * 0.19); // IVA solo sobre productos
-    const total = subtotal + shipping;
-
-    cont.innerHTML = `
-      ${linesHtml}
-      <hr class="order-divider">
-      <div class="order-line">
-        <span>Subtotal</span>
-        <span>${formatCLP(subtotal)}</span>
-      </div>
-      <div class="order-line">
-        <span>Envío</span>
-        <span>${formatCLP(shipping)}</span>
-      </div>
-      <div class="order-line order-total">
-        <span>Total</span>
-        <span>${formatCLP(total)}</span>
-      </div>
-      <p class="order-iva">
-        Incluye IVA (19%) sobre productos: <strong>${formatCLP(iva)}</strong>
-      </p>
-    `;
-
-    totalEl.textContent = formatCLP(total);
-
-    setupBillingToggle();
-  });
-
-  /* ======================================
-     TOGGLE BOLETA / FACTURA
-  ====================================== */
-  function setupBillingToggle() {
-    const radios = document.querySelectorAll('input[name="billingType"]');
-    const boletaBlocks = document.querySelectorAll(".billing-boleta");
-    const facturaBlocks = document.querySelectorAll(".billing-factura");
-
-    function setMode(mode) {
-      const isBoleta = mode === "boleta";
-
-      boletaBlocks.forEach((block) => {
-        block.style.display = isBoleta ? "" : "none";
-        const input = block.querySelector("input");
-        if (input) input.required = isBoleta;
-      });
-
-      facturaBlocks.forEach((block) => {
-        block.style.display = isBoleta ? "none" : "";
-        const input = block.querySelector("input");
-        if (input) input.required = !isBoleta;
-      });
-    }
-
-    radios.forEach((r) => {
-      r.addEventListener("change", () => setMode(r.value));
-    });
-
-    const checked = document.querySelector('input[name="billingType"]:checked');
-    setMode(checked ? checked.value : "boleta");
-  }
-
-  /* ======================================
-     FORMULARIO → LLAMADO A GETNET
-  ====================================== */
-  const form = document.getElementById("checkoutForm");
-
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    // Validación HTML5 (con los required que vamos activando)
-    if (!form.reportValidity()) {
-      return;
-    }
-
-    const cart = getCart();
-    if (!cart || cart.length === 0) {
-      alert("Tu carrito está vacío. Agrega productos antes de continuar.");
-      return;
-    }
-
-    // Totales
-    const subtotal = cartTotal();
-    const shipping = cart.length > 0 ? SHIPPING_COST : 0;
-    const amount = subtotal + shipping;
-
-    // Descripción amigable para Getnet
-    const itemsDesc = cart
-      .map((p) => `${p.name} x${p.qty}`)
-      .join(", ");
-    const reference = "ORD-" + Date.now();
-    const description = "Compra en Entre Alas y Raíces (" + itemsDesc + ")";
-
-    // Datos que podrías usar más adelante (por ahora el backend los ignora)
-    const billingType = form.billingType.value;
-
-    const payload = {
-      amount,
-      reference,
-      description,
-      billingType,
-      boleta: {
-        nombre: form.boletaNombre.value,
-        apellido: form.boletaApellido.value,
-        rut: form.boletaRut.value,
-        telefono: form.boletaTelefono.value,
-        correo: form.boletaCorreo.value,
-      },
-      factura: {
-        empresa: form.facturaEmpresa.value,
-        rutEmpresa: form.facturaRut.value,
-        razonSocial: form.facturaRazon.value,
-        direccion: form.facturaDireccion.value,
-      },
-      despacho: {
-        direccion: form.despachoDireccion.value,
-        comuna: form.despachoComuna.value,
-        ciudad: form.despachoCiudad.value,
-        region: form.despachoRegion.value,
-        infoAdicional: form.despachoInfo.value,
-        comentarios: form.despachoComentarios.value,
-      },
-    };
-
-    try {
-      const response = await fetch("/api/getnet-create-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (data.ok && data.processUrl) {
-        window.location.href = data.processUrl;
+      if (seleccionado === "factura") {
+        facturaFields.style.display = "block";
+        facturaInputs.forEach(i => i.required = true);
       } else {
-        alert("No se pudo iniciar el pago con Getnet. Intenta nuevamente.");
-        console.error("Respuesta Getnet:", data);
+        facturaFields.style.display = "none";
+        facturaInputs.forEach(i => i.required = false);
       }
-    } catch (error) {
-      alert("Ocurrió un error al contactar a Getnet.");
-      console.error("Error fetch:", error);
     }
+
+    tipoDocRadios.forEach(r => r.addEventListener("change", actualizarTipoDocumento));
+    actualizarTipoDocumento(); // estado inicial
+
+    // ----- RENDER RESUMEN DE PEDIDO -----
+    const cart = typeof getCart === "function" ? getCart() : [];
+    const contItems = document.getElementById("checkout-items");
+
+    const subtotalEl = document.getElementById("summary-subtotal");
+    const shippingEl = document.getElementById("summary-shipping");
+    const totalEl = document.getElementById("summary-total");
+    const ivaEl = document.getElementById("summary-iva-amount");
+    const totalInclEnvioEl = document.getElementById("summary-total-incl-envio");
+    const checkoutTotalEl = document.getElementById("checkout-total"); // por compatibilidad si existe
+
+    if (!cart || cart.length === 0) {
+      contItems.innerHTML = "<p>No hay productos en tu carrito.</p>";
+      subtotalEl.textContent = "$0";
+      shippingEl.textContent = "$0";
+      totalEl.textContent = "$0";
+      ivaEl.textContent = "$0";
+      totalInclEnvioEl.textContent = "$0";
+    } else {
+      contItems.innerHTML = cart
+        .map(
+          (p) => `
+            <div style="margin-bottom:.6rem;">
+              <strong>${p.name}</strong> (x${p.qty})<br>
+              <small>$${p.price.toLocaleString("es-CL")} c/u</small>
+            </div>
+          `
+        )
+        .join("");
+
+      const subtotal = typeof cartTotal === "function" ? cartTotal() : 0;
+      const shipping = typeof SHIPPING_COST !== "undefined" ? SHIPPING_COST : 0;
+      const total = subtotal + shipping;
+      const ivaProductos = Math.round(subtotal * 0.19);
+
+      subtotalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
+      shippingEl.textContent = "$" + shipping.toLocaleString("es-CL");
+      totalEl.textContent = "$" + total.toLocaleString("es-CL");
+      ivaEl.textContent = "$" + ivaProductos.toLocaleString("es-CL");
+      totalInclEnvioEl.textContent = "$" + total.toLocaleString("es-CL");
+
+      if (checkoutTotalEl) {
+        checkoutTotalEl.textContent = "$" + total.toLocaleString("es-CL");
+      }
+    }
+
+    // ----- FORMULARIO → LLAMADO A GETNET -----
+    const form = document.getElementById("checkoutForm");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const cartNow = typeof getCart === "function" ? getCart() : [];
+      if (!cartNow || cartNow.length === 0) {
+        alert("Tu carrito está vacío. Agrega productos antes de continuar.");
+        return;
+      }
+
+      // Monto total (productos + envío)
+      const subtotal = typeof cartTotal === "function" ? cartTotal() : 0;
+      const shipping = typeof SHIPPING_COST !== "undefined" ? SHIPPING_COST : 0;
+      const totalConEnvio = subtotal + shipping;
+
+      const amount = totalConEnvio;
+      const reference = "ORD-" + Date.now();
+      const description = "Compra en Entre Alas y Raíces";
+
+      try {
+        const response = await fetch("/api/getnet-create-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount, reference, description }),
+        });
+
+        const data = await response.json();
+
+        if (data.ok && data.processUrl) {
+          window.location.href = data.processUrl;
+        } else {
+          alert("No se pudo iniciar el pago con Getnet. Revisa la consola.");
+          console.error("Respuesta Getnet:", data);
+        }
+      } catch (error) {
+        alert("Ocurrió un error al contactar a Getnet.");
+        console.error("Error fetch:", error);
+      }
+    });
   });
 </script>
 
