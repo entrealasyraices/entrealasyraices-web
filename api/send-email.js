@@ -1,110 +1,142 @@
+// /API/send-email.js
 import nodemailer from "nodemailer";
+
+const formatCLP = (value) => {
+  const n = Number(value || 0);
+  return n.toLocaleString("es-CL");
+};
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ ok: false, error: "Método no permitido" });
   }
 
-  const {
-    nombre,
-    apellido,
-    rut,
-    telefono,
-    correo,
-    tipoDocumento,
-    empresa,
-    rutEmpresa,
-    razonSocial,
-    direccionEmpresa,
-    direccionDespacho,
-    comuna,
-    ciudad,
-    region,
-    comentarios,
-    productos,
-    subtotal,
-    envio,
-    total,
-    ivaProducto
-  } = req.body;
-
   try {
+    const {
+      nombre,
+      apellido,
+      rut,
+      telefono,
+      correo,
+      tipoDocumento,
+      empresa,
+      rutEmpresa,
+      razonSocial,
+      direccionEmpresa,
+      direccionDespacho,
+      comuna,
+      ciudad,
+      region,
+      comentarios,
+      productos,
+      subtotal,
+      envio,
+      total,
+      ivaProducto,
+    } = req.body;
+
+    // Transport con Gmail + contraseña de aplicación
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
+        user: process.env.GMAIL_USER, // contacto@entrealasyraices.cl
+        pass: process.env.GMAIL_PASS, // contraseña de aplicación de Google
       },
     });
 
-    // 📌 Email para ti (notificación del pedido)
+    // ==========================
+    // 1) Correo para TI (notificación interna)
+    // ==========================
+    const productosHtml = (productos || [])
+      .map(
+        (p) =>
+          `<li>${p.name} x${p.qty} — $${formatCLP(
+            p.price
+          )} c/u (subtotal $${formatCLP(p.price * p.qty)})</li>`
+      )
+      .join("");
+
     await transporter.sendMail({
       from: `"Entre Alas y Raíces" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
-      subject: `🛍️ Nuevo Pedido - ${nombre} ${apellido}`,
+      subject: `🛍️ Nuevo pedido - ${nombre} ${apellido}`,
       html: `
-        <h2>Nuevo Pedido Recibido</h2>
-        <p><strong>Cliente:</strong> ${nombre} ${apellido}</p>
+        <h2>Nuevo pedido recibido</h2>
+
+        <h3>Datos de la persona que compra</h3>
+        <p><strong>Nombre:</strong> ${nombre} ${apellido}</p>
         <p><strong>RUT:</strong> ${rut}</p>
         <p><strong>Teléfono:</strong> ${telefono}</p>
-        <p><strong>Email:</strong> ${correo}</p>
-        <p><strong>Tipo de Documento:</strong> ${tipoDocumento}</p>
+        <p><strong>Correo:</strong> ${correo}</p>
+
+        <h3>Documento solicitado</h3>
+        <p><strong>Tipo de documento:</strong> ${tipoDocumento}</p>
 
         ${
           tipoDocumento === "Factura"
             ? `
-          <h3>Datos de Empresa</h3>
-          <p><strong>RUT Empresa:</strong> ${rutEmpresa}</p>
-          <p><strong>Razón Social:</strong> ${razonSocial}</p>
-          <p><strong>Dirección Empresa:</strong> ${direccionEmpresa}</p>
+        <h4>Datos de empresa</h4>
+        <p><strong>Nombre empresa:</strong> ${empresa || "-"}</p>
+        <p><strong>RUT empresa:</strong> ${rutEmpresa || "-"}</p>
+        <p><strong>Razón social:</strong> ${razonSocial || "-"}</p>
+        <p><strong>Dirección empresa:</strong> ${direccionEmpresa || "-"}</p>
         `
             : ""
         }
 
-        <h3>Datos de Entrega</h3>
+        <h3>Datos de despacho</h3>
         <p><strong>Dirección:</strong> ${direccionDespacho}</p>
         <p><strong>Comuna:</strong> ${comuna}</p>
         <p><strong>Ciudad:</strong> ${ciudad}</p>
         <p><strong>Región:</strong> ${region}</p>
         <p><strong>Comentarios:</strong> ${comentarios || "Sin comentarios"}</p>
 
-        <h3>Pedido</h3>
-        ${productos
-          ?.map(
-            (p) =>
-              `<p>${p.name} x${p.qty} — $${p.price.toLocaleString("es-CL")}</p>`
-          )
-          .join("")}
+        <h3>Detalle del pedido</h3>
+        <ul>
+          ${productosHtml || "<li>(Sin detalle de productos)</li>"}
+        </ul>
 
-        <p><strong>Subtotal:</strong> $${subtotal.toLocaleString("es-CL")}</p>
-        <p><strong>Envío:</strong> $${envio.toLocaleString("es-CL")}</p>
-        <p><strong>Total:</strong> $${total.toLocaleString("es-CL")}</p>
-        <p><strong>Incluye IVA:</strong> $${ivaProducto.toLocaleString(
-          "es-CL"
+        <p><strong>Subtotal productos:</strong> $${formatCLP(subtotal)}</p>
+        <p><strong>Envío:</strong> $${formatCLP(envio)}</p>
+        <p><strong>Total:</strong> $${formatCLP(total)}</p>
+        <p><strong>IVA (19% sobre productos):</strong> $${formatCLP(
+          ivaProducto
         )}</p>
       `,
     });
 
-    // 📌 Email para el cliente
+    // ==========================
+    // 2) Correo para la PERSONA que compra
+    // ==========================
     await transporter.sendMail({
       from: `"Entre Alas y Raíces" <${process.env.GMAIL_USER}>`,
       to: correo,
-      subject: "✨ Tu compra fue recibida - Entre Alas y Raíces",
+      subject: "✨ Hemos recibido tu compra – Entre Alas y Raíces",
       html: `
         <h2>¡Gracias por tu compra, ${nombre}! 💚</h2>
-        <p>Estamos preparando tu pedido y te avisaremos cuando esté en camino.</p>
-        <p><strong>Total pagado:</strong> $${total.toLocaleString("es-CL")}</p>
-        <p>Si necesitas ayuda, escríbenos a:<br>
+        <p>Estamos preparando tu pedido. Pronto recibirás nuevas noticias cuando esté listo para despacho.</p>
+
+        <p><strong>Resumen:</strong></p>
+        <ul>
+          ${productosHtml || "<li>Pedido registrado.</li>"}
+        </ul>
+
+        <p><strong>Total pagado:</strong> $${formatCLP(total)}</p>
+        <p><strong>Incluye IVA (19% sobre productos):</strong> $${formatCLP(
+          ivaProducto
+        )}</p>
+
+        <p>Si tienes dudas, puedes escribirnos a:<br>
         contacto@entrealasyraices.cl</p>
-        <p>¡Gracias por confiar en nosotros! 🌱</p>
+
+        <p>Gracias por confiar en <strong>Entre Alas y Raíces</strong> 🌱</p>
       `,
     });
 
-    res.json({ ok: true });
+    return res.status(200).json({ ok: true });
   } catch (error) {
     console.error("Error al enviar correos:", error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: "Error al enviar correos",
       details: error.message,
