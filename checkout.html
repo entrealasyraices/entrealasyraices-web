@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="images/logo-entrealas.jpg" type="image/jpeg">
 
-  <!-- Tu JS global (carrito, etc.) -->
+  <!-- JS global (carrito, etc.) -->
   <script defer src="script.js"></script>
 
   <style>
@@ -34,6 +34,7 @@
 
     .checkout-card h3 {
       margin-top: 0;
+      font-family: "Lora", serif;
     }
 
     .checkout-form label {
@@ -127,6 +128,27 @@
     .summary-total-envio {
       margin-top: .8rem;
       font-weight: 700;
+    }
+
+    .checkout-steps {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .checkout-steps .step {
+      padding: .45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid #2E7D66;
+      font-size: .9rem;
+      color: #2E7D66;
+      background: #fff;
+    }
+
+    .checkout-steps .step.active {
+      background: #2E7D66;
+      color: #fff;
     }
 
     @media (max-width: 900px) {
@@ -434,23 +456,19 @@
       </p>
     </div>
 
-    <div>
-      <strong>Soporte</strong>
-      <p class="mt-3">
-        <a href="contacto.html">¿Necesitas ayuda?</a><br>
-        <span>Pagos seguros: Redirección a Getnet (Santander).</span>
-      </p>
-    </div>
-
   </div>
 </footer>
 
 <!-- ================================
-     LÓGICA DEL RESUMEN + GETNET
+     LÓGICA CHECKOUT + GETNET + LOCALSTORAGE
 ================================ -->
 <script>
+  function formatCLP(value) {
+    return "$" + Number(value || 0).toLocaleString("es-CL");
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
-    // ----- Mostrar / ocultar campos de FACTURA -----
+    // ----- Toggle Boleta / Factura -----
     const tipoDocRadios = document.querySelectorAll('input[name="tipoDocumento"]');
     const facturaFields  = document.getElementById("facturaFields");
     const facturaInputs  = facturaFields.querySelectorAll("input");
@@ -470,7 +488,7 @@
     tipoDocRadios.forEach(r => r.addEventListener("change", actualizarTipoDocumento));
     actualizarTipoDocumento(); // estado inicial
 
-    // ----- RENDER RESUMEN DE PEDIDO -----
+    // ----- Render resumen de pedido -----
     const cart = typeof getCart === "function" ? getCart() : [];
     const contItems = document.getElementById("checkout-items");
 
@@ -479,7 +497,6 @@
     const totalEl = document.getElementById("summary-total");
     const ivaEl = document.getElementById("summary-iva-amount");
     const totalInclEnvioEl = document.getElementById("summary-total-incl-envio");
-    const checkoutTotalEl = document.getElementById("checkout-total"); // por compatibilidad si existe
 
     if (!cart || cart.length === 0) {
       contItems.innerHTML = "<p>No hay productos en tu carrito.</p>";
@@ -494,7 +511,7 @@
           (p) => `
             <div style="margin-bottom:.6rem;">
               <strong>${p.name}</strong> (x${p.qty})<br>
-              <small>$${p.price.toLocaleString("es-CL")} c/u</small>
+              <small>${formatCLP(p.price)} c/u</small>
             </div>
           `
         )
@@ -505,22 +522,23 @@
       const total = subtotal + shipping;
       const ivaProductos = Math.round(subtotal * 0.19);
 
-      subtotalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
-      shippingEl.textContent = "$" + shipping.toLocaleString("es-CL");
-      totalEl.textContent = "$" + total.toLocaleString("es-CL");
-      ivaEl.textContent = "$" + ivaProductos.toLocaleString("es-CL");
-      totalInclEnvioEl.textContent = "$" + total.toLocaleString("es-CL");
-
-      if (checkoutTotalEl) {
-        checkoutTotalEl.textContent = "$" + total.toLocaleString("es-CL");
-      }
+      subtotalEl.textContent = formatCLP(subtotal);
+      shippingEl.textContent = formatCLP(shipping);
+      totalEl.textContent = formatCLP(total);
+      ivaEl.textContent = formatCLP(ivaProductos);
+      totalInclEnvioEl.textContent = formatCLP(total);
     }
 
-    // ----- FORMULARIO → LLAMADO A GETNET -----
+    // ----- Envío del formulario → Getnet + guardar orden -----
     const form = document.getElementById("checkoutForm");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
+
+      // Validación HTML5
+      if (!form.reportValidity()) {
+        return;
+      }
 
       const cartNow = typeof getCart === "function" ? getCart() : [];
       if (!cartNow || cartNow.length === 0) {
@@ -528,15 +546,60 @@
         return;
       }
 
-      // Monto total (productos + envío)
       const subtotal = typeof cartTotal === "function" ? cartTotal() : 0;
       const shipping = typeof SHIPPING_COST !== "undefined" ? SHIPPING_COST : 0;
       const totalConEnvio = subtotal + shipping;
 
       const amount = totalConEnvio;
       const reference = "ORD-" + Date.now();
-      const description = "Compra en Entre Alas y Raíces";
 
+      const itemsDesc = cartNow.map(p => `${p.name} x${p.qty}`).join(", ");
+      const description = "Compra en Entre Alas y Raíces (" + itemsDesc + ")";
+
+      // Datos del formulario
+      const buyerEmail = form.correoComprador.value;
+
+      const order = {
+        reference,
+        amount,
+        subtotal,
+        shipping,
+        iva: Math.round(subtotal * 0.19),
+        createdAt: new Date().toISOString(),
+        tipoDocumento: form.tipoDocumento.value,
+        comprador: {
+          nombre: form.nombreComprador.value,
+          apellido: form.apellidoComprador.value,
+          rut: form.rutComprador.value,
+          telefono: form.telefonoComprador.value,
+          correo: buyerEmail,
+        },
+        factura: {
+          empresa: form.facturaEmpresa.value,
+          rutEmpresa: form.facturaRut.value,
+          razonSocial: form.facturaRazon.value,
+          direccion: form.facturaDireccion.value,
+        },
+        despacho: {
+          direccionCalle: form.direccionCalle.value,
+          comuna: form.comuna.value,
+          ciudad: form.ciudad.value,
+          region: form.region.value,
+          infoAdicional: form.infoAdicional.value,
+          comentarios: form.comentarios.value,
+        },
+        items: cartNow,
+      };
+
+      // Guardar en localStorage para usar en pago-exitoso.html
+      try {
+        localStorage.setItem("ear_last_order", JSON.stringify(order));
+        localStorage.setItem("correoComprador", buyerEmail || "");
+      } catch (err) {
+        console.warn("No se pudo guardar la orden en localStorage:", err);
+      }
+
+      // Llamado a Getnet (como antes)
       try {
         const response = await fetch("/api/getnet-create-session", {
           method: "POST",
