@@ -12,65 +12,65 @@
 
   <script defer src="script.js"></script>
 
-<style>
-/* =======================
-   ESTILOS PROPIOS checkout
-   ======================= */
-.checkout-grid {
-  display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 2rem;
-  margin-top: 2rem;
-}
+  <style>
+  /* =======================
+     ESTILOS PROPIOS checkout
+     ======================= */
+  .checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 
-.checkout-card {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 3px 10px rgba(0,0,0,.07);
-}
+  .checkout-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,.08);
+    box-shadow: 0 3px 10px rgba(0,0,0,.07);
+  }
 
-.checkout-card h3 {
-  margin-top: 0;
-}
+  .checkout-card h3 {
+    margin-top: 0;
+  }
 
-.checkout-form label {
-  font-weight: 600;
-  margin-top: 1rem;
-  display: block;
-}
+  .checkout-form label {
+    font-weight: 600;
+    margin-top: 1rem;
+    display: block;
+  }
 
-.checkout-form input {
-  width: 100%;
-  padding: .7rem;
-  margin-top: .4rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: .95rem;
-}
+  .checkout-form input {
+    width: 100%;
+    padding: .7rem;
+    margin-top: .4rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: .95rem;
+  }
 
-.btn-pay {
-  width: 100%;
-  padding: .9rem;
-  border-radius: 12px;
-  background: #2E7D66;
-  color: white;
-  font-size: 1.1rem;
-  text-align: center;
-  display: block;
-  text-decoration: none;
-  margin-top: 1rem;
-}
+  .btn-pay {
+    width: 100%;
+    padding: .9rem;
+    border-radius: 12px;
+    background: #2E7D66;
+    color: white;
+    font-size: 1.1rem;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
 
-.notice-envio {
-  background: #f5f7f6;
-  border-left: 5px solid #2E7D66;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1.5rem;
-}
-</style>
+  .notice-envio {
+    background: #f5f7f6;
+    border-left: 5px solid #2E7D66;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+  }
+  </style>
 
 </head>
 
@@ -104,13 +104,14 @@
         <h1>Finalizar compra</h1>
         <p class="m0">Completa tus datos para confirmar tu pedido</p>
       </header>
-<!-- PASOS DEL CHECKOUT -->
-<div class="checkout-steps">
-  <div class="step">1. Carrito</div>
-  <div class="step active">2. Tus Datos</div>
-  <div class="step">3. Pago</div>
-  <div class="step">4. Confirmación</div>
-</div>
+
+      <!-- PASOS DEL CHECKOUT -->
+      <div class="checkout-steps">
+        <div class="step">1. Carrito</div>
+        <div class="step active">2. Tus Datos</div>
+        <div class="step">3. Pago</div>
+        <div class="step">4. Confirmación</div>
+      </div>
 
       <div class="checkout-grid">
 
@@ -158,9 +159,9 @@
           <div id="checkout-items"></div>
 
           <p style="margin-top:1rem; font-size:1.2rem;">
-  <strong>Total (incluye envío $2.990 RM): </strong>
-  <span id="checkout-total">$0</span>
-</p>
+            <strong>Total (incluye envío $2.990 RM): </strong>
+            <span id="checkout-total">$0</span>
+          </p>
 
         </div>
 
@@ -239,7 +240,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================================
-   FORMULARIO → CSV + LLAMADO A GETNET
+   FORMULARIO → LLAMADO A GETNET
+   (sin generar archivo Excel/CSV)
 ====================================== */
 const form = document.getElementById("checkoutForm");
 
@@ -253,25 +255,16 @@ form.addEventListener("submit", async function (e) {
     return;
   }
 
-  // 2) Datos del formulario
+  // 2) Datos del formulario (por ahora solo se podrían usar luego para tu backend)
   const data = {
     nombre: this.nombre.value,
     correo: this.correo.value,
     telefono: this.telefono.value,
     direccion: this.direccion.value,
   };
+  // Si más adelante quieres enviar estos datos a tu API, se pueden usar aquí.
 
-  // 3) Generar y descargar CSV (como ya lo hacías)
-  const csv = `Nombre,Correo,Telefono,Direccion\n${data.nombre},${data.correo},${data.telefono},${data.direccion}`;
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "pedido_entrealasyraices.csv";
-  a.click();
-
-  // 4) Calcular monto total con envío
+  // 3) Calcular monto total con envío
   const subtotal = cartTotal();
   const totalConEnvio = cart.length > 0 ? subtotal + SHIPPING_COST : 0;
 
@@ -279,7 +272,7 @@ form.addEventListener("submit", async function (e) {
   const reference = "ORD-" + Date.now();
   const description = "Compra en Entre Alas y Raíces";
 
-  // 5) Llamar a tu API en Vercel para crear la sesión Getnet
+  // 4) Llamar a tu API en Vercel para crear la sesión Getnet
   try {
     const response = await fetch("/api/getnet-create-session", {
       method: "POST",
@@ -287,14 +280,14 @@ form.addEventListener("submit", async function (e) {
       body: JSON.stringify({ amount, reference, description }),
     });
 
-    const data = await response.json();
+    const dataResponse = await response.json();
 
-    if (data.ok && data.processUrl) {
-      // 6) Redirigir al formulario de pago de Getnet
-      window.location.href = data.processUrl;
+    if (dataResponse.ok && dataResponse.processUrl) {
+      // 5) Redirigir al formulario de pago de Getnet
+      window.location.href = dataResponse.processUrl;
     } else {
       alert("No se pudo iniciar el pago con Getnet. Revisa la consola.");
-      console.error("Respuesta Getnet:", data);
+      console.error("Respuesta Getnet:", dataResponse);
     }
   } catch (error) {
     alert("Ocurrió un error al contactar a Getnet.");
@@ -303,3 +296,5 @@ form.addEventListener("submit", async function (e) {
 });
 </script>
 
+</body>
+</html>
