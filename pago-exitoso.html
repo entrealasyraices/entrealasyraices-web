@@ -272,24 +272,36 @@
 
 <main class="success-container">
   <div class="success-card">
-    <h1>¡Gracias por tu compra! 🎉</h1>
+    <h1 id="titulo-estado">Hemos recibido tu intento de pago</h1>
 
-    <p>Tu pago fue procesado con éxito.</p>
+    <p id="mensaje-estado">
+      Estamos esperando la confirmación definitiva de la plataforma de pagos.
+      Si la transacción fue aprobada, te enviaremos tu boleta o factura electrónica
+      dentro de las próximas <strong>24–48 horas hábiles</strong> al correo:
+      <strong id="correo-cliente"></strong>.
+    </p>
 
-    <p>En un plazo máximo de <strong>24–48 horas hábiles</strong> recibirás tu
-    <strong>boleta o factura electrónica</strong> en tu correo:
-    <strong id="correo-cliente"></strong></p>
+    <p>
+      Si durante el proceso viste un mensaje de error (por ejemplo:
+      <em>“No se ha logrado conexión con el servicio externo”</em>) o sospechas
+      que el pago podría no haberse realizado, es probable que
+      <strong>NO se haya generado ningún cobro</strong>.
+    </p>
 
-    <p>Si no la recibes, escribe a:<br>
+    <p>
+      Ante cualquier duda, escríbenos indicando el número de pedido que aparece
+      más abajo para que podamos revisar el estado directamente con el sistema:
+      <br>
       📧 <a href="mailto:ventas@entrealasyraices.cl">ventas@entrealasyraices.cl</a><br>
       📧 <a href="mailto:contacto@entrealasyraices.cl">contacto@entrealasyraices.cl</a>
     </p>
 
     <div id="order-summary" class="order-summary"></div>
 
-    <a class="btn" href="productos.html">Seguir comprando</a>
+    <a class="btn" href="productos.html">Volver a productos</a>
   </div>
 </main>
+
 
 <footer class="footer">
   <div class="container cols">
