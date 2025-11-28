@@ -107,6 +107,68 @@
       return "$" + Number(value || 0).toLocaleString("es-CL");
     }
 
+    // ---- Envío de correos usando /api/send-email ----
+    async function enviarCorreosPedido(order) {
+      // Datos que guardamos en checkout.html
+      const rawCheckout = localStorage.getItem("checkoutData");
+      const rawCart = localStorage.getItem("cart") || "[]";
+
+      if (!rawCheckout) {
+        console.warn("No hay checkoutData en localStorage, no se envían correos.");
+        return;
+      }
+
+      let datosPedido, carrito;
+      try {
+        datosPedido = JSON.parse(rawCheckout);
+        carrito = JSON.parse(rawCart);
+      } catch (err) {
+        console.warn("No se pudieron parsear checkoutData/cart:", err);
+        return;
+      }
+
+      if (!carrito || carrito.length === 0) {
+        console.warn("Carrito vacío al intentar enviar correos.");
+      }
+
+      const subtotal = carrito.reduce((acc, p) => acc + (p.price || 0) * (p.qty || 1), 0);
+      // Si en ear_last_order guardaste shipping/amount/iva, los usamos; si no, ponemos valores por defecto
+      const shipping = typeof order.shipping === "number" ? order.shipping : 2990;
+      const ivaProducto = typeof order.iva === "number" ? order.iva : Math.round(subtotal * 0.19);
+      const total = typeof order.amount === "number" ? order.amount : subtotal + shipping;
+
+      const payload = {
+        reference: order.reference || "",
+        // datos del formulario de checkout
+        ...datosPedido,
+        // detalle de compra
+        productos: carrito,
+        subtotal,
+        envio: shipping,
+        total,
+        ivaProducto
+      };
+
+      try {
+        const resp = await fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await resp.json();
+        console.log("Respuesta /api/send-email:", data);
+
+        if (data.ok) {
+          // Limpiamos carrito y datos de checkout si todo salió bien
+          localStorage.removeItem("cart");
+          localStorage.removeItem("checkoutData");
+        }
+      } catch (err) {
+        console.error("Error llamando a /api/send-email:", err);
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", async () => {
       // Mostrar correo del comprador si existe
       const email = localStorage.getItem("correoComprador");
@@ -166,7 +228,7 @@
         </p>
       `;
 
-      // Enviar notificación interna SOLO una vez por referencia
+      // ----- Notificación interna (tu correo / registro) -----
       const notifiedRef = localStorage.getItem("ear_last_order_notified");
       if (order.reference && order.reference !== notifiedRef) {
         try {
@@ -179,6 +241,13 @@
         } catch (err) {
           console.warn("No se pudo enviar la notificación interna de pedido:", err);
         }
+      }
+
+      // ----- Envío de correos al cliente y a ti (usando Gmail /api/send-email) -----
+      const lastEmailRef = localStorage.getItem("ear_last_email_ref");
+      if (order.reference && order.reference !== lastEmailRef) {
+        await enviarCorreosPedido(order);
+        localStorage.setItem("ear_last_email_ref", order.reference);
       }
     });
   </script>
