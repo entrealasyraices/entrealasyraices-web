@@ -379,6 +379,9 @@
             <!-- BOTÓN DE CONTINUAR -->
             <button type="submit" class="btn-pay">Continuar con el pago</button>
 
+            <!-- MENSAJE DE ESTADO DEL PAGO / ERRORES -->
+            <p id="paymentStatus" style="margin-top:1rem; font-size:.9rem; color:#B91C1C;"></p>
+
             <!-- INFORMACIÓN DE ENTREGA -->
             <div class="notice-envio">
               <strong>Información de entrega:</strong>
@@ -531,9 +534,13 @@
 
     // ----- Envío del formulario → Getnet + guardar orden -----
     const form = document.getElementById("checkoutForm");
+    const paymentStatusEl = document.getElementById("paymentStatus");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
+
+      // limpiar mensaje previo
+      if (paymentStatusEl) paymentStatusEl.textContent = "";
 
       // Validación HTML5
       if (!form.reportValidity()) {
@@ -591,7 +598,7 @@
         items: cartNow,
       };
 
-      // Guardar en localStorage para usar en pago-exitoso.html
+      // Guardar en localStorage para usar en la página de resultado
       try {
         localStorage.setItem("ear_last_order", JSON.stringify(order));
         localStorage.setItem("correoComprador", buyerEmail || "");
@@ -599,8 +606,13 @@
         console.warn("No se pudo guardar la orden en localStorage:", err);
       }
 
-      // Llamado a Getnet (como antes)
+      // Llamado a Getnet
       try {
+        if (paymentStatusEl) {
+          paymentStatusEl.style.color = "#374151";
+          paymentStatusEl.textContent = "Conectando con el servidor de pagos...";
+        }
+
         const response = await fetch("/api/getnet-create-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -609,14 +621,38 @@
 
         const data = await response.json();
 
-        if (data.ok && data.processUrl) {
-          window.location.href = data.processUrl;
-        } else {
-          alert("No se pudo iniciar el pago con Getnet. Revisa la consola.");
-          console.error("Respuesta Getnet:", data);
+        if (!data.ok) {
+          if (paymentStatusEl) {
+            paymentStatusEl.style.color = "#B91C1C";
+            paymentStatusEl.textContent =
+              data.error || "No se pudo iniciar el pago con el servidor de pagos.";
+          }
+          console.error("Respuesta Getnet (error):", data);
+          return;
         }
+
+        if (!data.processUrl) {
+          if (paymentStatusEl) {
+            paymentStatusEl.style.color = "#B91C1C";
+            paymentStatusEl.textContent =
+              "El servidor de pagos no devolvió la URL de proceso.";
+          }
+          console.error("Falta processUrl en la respuesta Getnet:", data);
+          return;
+        }
+
+        if (paymentStatusEl) {
+          paymentStatusEl.style.color = "#166534";
+          paymentStatusEl.textContent = "Redirigiendo al portal de pago seguro…";
+        }
+
+        window.location.href = data.processUrl;
       } catch (error) {
-        alert("Ocurrió un error al contactar a Getnet.");
+        if (paymentStatusEl) {
+          paymentStatusEl.style.color = "#B91C1C";
+          paymentStatusEl.textContent =
+            "Ocurrió un error al contactar al servidor de pagos.";
+        }
         console.error("Error fetch:", error);
       }
     });
