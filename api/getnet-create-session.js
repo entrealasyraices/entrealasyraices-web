@@ -18,20 +18,19 @@ export default async function handler(req, res) {
 
     const LOGIN = process.env.GETNET_LOGIN;
     const SECRET = process.env.GETNET_SECRET_KEY;
-    const BASE_URL = process.env.GETNET_BASE_URL; // debe ser https://checkout.test.getnet.cl en pruebas
+    const BASE_URL = process.env.GETNET_BASE_URL; // https://checkout.test.getnet.cl en pruebas
 
     if (!LOGIN || !SECRET || !BASE_URL) {
       return res.status(500).json({
         ok: false,
-        error: "Variables de entorno GETNET_LOGIN / GETNET_SECRET_KEY / GETNET_BASE_URL no están definidas",
+        error:
+          "Variables de entorno GETNET_LOGIN / GETNET_SECRET_KEY / GETNET_BASE_URL no están definidas",
       });
     }
 
-    // ============================
     // 1. Autenticación Web Checkout
-    // ============================
-    const seed = new Date().toISOString(); // ISO 8601
-    const nonceRaw = crypto.randomBytes(16).toString("hex"); // valor original
+    const seed = new Date().toISOString();
+    const nonceRaw = crypto.randomBytes(16).toString("hex");
     const nonceBase64 = Buffer.from(nonceRaw).toString("base64");
 
     const tranKey = crypto
@@ -46,10 +45,8 @@ export default async function handler(req, res) {
       seed,
     };
 
-    // ============================
     // 2. Datos del pago (createRequest)
-    // ============================
-    const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // +15 minutos
+    const expiration = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     const clientIp =
       (req.headers["x-forwarded-for"] || "")
@@ -63,7 +60,7 @@ export default async function handler(req, res) {
       auth,
       locale: "es_CL",
       payment: {
-        reference,      // esta será la referencia que después reportas a Getnet
+        reference,
         description,
         amount: {
           currency: "CLP",
@@ -71,16 +68,15 @@ export default async function handler(req, res) {
         },
       },
       expiration,
-      returnUrl: `https://entrealasyraices.cl/pago-exitoso.html?reference=${encodeURIComponent(
+      // ⬇⬇ CAMBIO IMPORTANTE: página neutra de resultado, NO "exitoso"
+      returnUrl: `https://entrealasyraices.cl/pago-resultado.html?reference=${encodeURIComponent(
         reference
       )}`,
       ipAddress: clientIp,
       userAgent,
     };
 
-    // ============================
     // 3. Llamada a Web Checkout
-    // ============================
     const response = await fetch(`${BASE_URL}/api/session/`, {
       method: "POST",
       headers: {
