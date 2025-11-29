@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Pago Exitoso – Entre Alas y Raíces</title>
+  <title>Resultado del pago – Entre Alas y Raíces</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
@@ -107,6 +107,20 @@
       return "$" + Number(value || 0).toLocaleString("es-CL");
     }
 
+    // Obtiene el posible estado de pago desde la URL (?status=APPROVED, etc.)
+    function getPaymentStatusFromUrl() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const raw =
+          params.get("status") ||
+          params.get("paymentStatus") ||
+          "";
+        return raw.toString().trim().toUpperCase();
+      } catch {
+        return "";
+      }
+    }
+
     // ---- Envío de correos usando /api/send-email ----
     async function enviarCorreosPedido(order) {
       // Datos que guardamos en checkout.html
@@ -170,14 +184,65 @@
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // Mostrar correo del comprador si existe
+      const tituloEl = document.getElementById("titulo-estado");
+      const mensajeEl = document.getElementById("mensaje-estado");
+
+      // 1) Ajustar mensajes según posible estado del pago en la URL
+      const estado = getPaymentStatusFromUrl();
+      console.log("Estado de pago detectado en URL:", estado || "(sin estado)");
+
+      if (estado && tituloEl && mensajeEl) {
+        if (estado === "APPROVED") {
+          tituloEl.textContent = "¡Pago realizado con éxito!";
+          mensajeEl.innerHTML = `
+            Tu compra fue procesada correctamente. En breve recibirás tu
+            boleta o factura electrónica en el correo:
+            <strong id="correo-cliente"></strong>.
+            <br><br>
+            Si no ves el cobro reflejado o tienes dudas, escríbenos indicándonos tu número de pedido.
+          `;
+        } else if (estado === "REJECTED") {
+          tituloEl.textContent = "Tu pago fue rechazado";
+          mensajeEl.innerHTML = `
+            La transacción no se completó exitosamente. Es probable que
+            <strong>NO se haya generado ningún cobro</strong>.
+            <br><br>
+            Puedes intentar nuevamente realizar tu compra o contactar a tu banco
+            si el problema persiste. Ante cualquier duda, escríbenos indicándonos
+            el número de pedido para revisar el estado.
+          `;
+        } else if (estado === "FAILED" || estado === "CANCELED" || estado === "CANCELLED") {
+          tituloEl.textContent = "Compra cancelada";
+          mensajeEl.innerHTML = `
+            El proceso de pago fue cancelado o no pudo completarse correctamente.
+            En principio <strong>no debería haberse generado ningún cobro</strong>.
+            <br><br>
+            Si deseas, puedes volver a intentar el pago desde la sección de productos
+            o escribirnos para verificar la información de tu intento de compra.
+          `;
+        } else if (estado === "PENDING") {
+          tituloEl.textContent = "Estamos revisando tu pago";
+          mensajeEl.innerHTML = `
+            Tu transacción quedó en estado <strong>pendiente</strong>. En cuanto tengamos
+            confirmación definitiva desde la plataforma de pagos, revisaremos tu pedido
+            y te contactaremos al correo:
+            <strong id="correo-cliente"></strong>.
+            <br><br>
+            Si tienes dudas sobre el cobro en tu tarjeta, también puedes revisar directamente
+            con tu banco.
+          `;
+        }
+        // Si el estado no es uno de los anteriores, se deja el texto por defecto del HTML.
+      }
+
+      // 2) Mostrar correo del comprador si existe
       const email = localStorage.getItem("correoComprador");
       if (email) {
         const correoEl = document.getElementById("correo-cliente");
         if (correoEl) correoEl.textContent = email;
       }
 
-      // Mostrar resumen de la última orden si existe
+      // 3) Mostrar resumen de la última orden si existe
       const rawOrder = localStorage.getItem("ear_last_order");
       if (!rawOrder) return;
 
@@ -218,7 +283,7 @@
             <span>${formatCLP(order.shipping)}</span>
           </div>
           <div class="order-row">
-            <strong>Total pagado</strong>
+            <strong>Total</strong>
             <strong>${formatCLP(order.amount)}</strong>
           </div>
         </div>
@@ -228,7 +293,7 @@
         </p>
       `;
 
-      // ----- Notificación interna (tu correo / registro) -----
+      // 4) Notificación interna (tu correo / registro)
       const notifiedRef = localStorage.getItem("ear_last_order_notified");
       if (order.reference && order.reference !== notifiedRef) {
         try {
@@ -243,7 +308,7 @@
         }
       }
 
-      // ----- Envío de correos al cliente y a ti (usando Gmail /api/send-email) -----
+      // 5) Envío de correos al cliente y a ti (usando Gmail /api/send-email)
       const lastEmailRef = localStorage.getItem("ear_last_email_ref");
       if (order.reference && order.reference !== lastEmailRef) {
         await enviarCorreosPedido(order);
@@ -276,9 +341,9 @@
 
     <p id="mensaje-estado">
       Estamos esperando la confirmación definitiva de la plataforma de pagos.
-      Si la transacción fue aprobada, te enviaremos tu boleta o factura electrónica
-      dentro de las próximas <strong>24–48 horas hábiles</strong> al correo:
-      <strong id="correo-cliente"></strong>.
+      Si la transacción fue aprobada, te enviaremos tu boleta o factura
+      electrónica dentro de las próximas <strong>24–48 horas hábiles</strong>
+      al correo: <strong id="correo-cliente"></strong>.
     </p>
 
     <p>
@@ -301,7 +366,6 @@
     <a class="btn" href="productos.html">Volver a productos</a>
   </div>
 </main>
-
 
 <footer class="footer">
   <div class="container cols">
